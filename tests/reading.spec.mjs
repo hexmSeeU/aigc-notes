@@ -3,3 +3,11 @@ for(const width of [320,375,768,1440])test(`reading at ${width}`,async({page})=>
 test('home does not load math',async({page})=>{await page.goto('/');await expect(page.locator('script[src*="tex-mml"]')).toHaveCount(0);});
 test('Chinese language and skip link',async({page})=>{await page.goto('/posts/ae-to-vae/');await expect(page.locator('html')).toHaveAttribute('lang','zh-CN');await page.keyboard.press('Tab');await expect(page.locator('.skip-link')).toBeFocused();await expect(page.locator('#main-content')).toHaveCount(1);});
 test('all math delimiters and unique heading IDs',async({page})=>{await page.goto('/math-regression/');await expect(page.locator('mjx-container')).toHaveCount(3);const ids=await page.locator('.post-content h2').evaluateAll(xs=>xs.map(x=>x.id));expect(new Set(ids).size).toBe(ids.length);});
+test('VAE article renders inline math in prose and the shape table',async({page})=>{
+  await page.goto('/posts/ae-to-vae/');
+  await expect(page.locator('.post-content p mjx-container:not([display="true"])').first()).toBeVisible();
+  await expect(page.locator('.post-content td mjx-container:not([display="true"])').first()).toBeVisible();
+  await expect(page.locator('.post-content mjx-container[display="true"]').first()).toBeVisible();
+  await expect(page.locator('.post-content mjx-merror')).toHaveCount(0);
+  await expect(page.locator('.post-content')).not.toContainText('\\(');
+});
