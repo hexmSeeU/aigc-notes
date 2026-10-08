@@ -1,0 +1,23 @@
+name: Check content
+on: [pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: '22'
+      - run: bash scripts/prepare-theme.sh
+      - run: npm ci --ignore-scripts && node scripts/prepare-assets.mjs && npm test && npm run check
+      - run: |
+          curl -fsSL https://github.com/gohugoio/hugo/releases/download/v0.150.1/hugo_extended_0.150.1_linux-amd64.tar.gz -o /tmp/hugo.tgz
+          tar -xzf /tmp/hugo.tgz -C /tmp
+          echo /tmp >> "$GITHUB_PATH"
+      - run: hugo --destination /tmp/root-site --baseURL https://example.org/ && node scripts/check-output.mjs /tmp/root-site https://example.org/
+      - run: hugo --destination /tmp/sub-site --baseURL https://example.org/aigc-notes/ && node scripts/check-output.mjs /tmp/sub-site https://example.org/aigc-notes/
+      - run: npx playwright install --with-deps chromium && npm run test:browser
