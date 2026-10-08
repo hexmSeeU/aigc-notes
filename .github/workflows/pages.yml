@@ -28,7 +28,7 @@ jobs:
       - run: npm test && npm run check
       - run: hugo --destination /tmp/root-site --baseURL https://example.org/ && node scripts/check-output.mjs /tmp/root-site https://example.org/
       - run: npx playwright install --with-deps chromium && npm run test:browser
-      - run: hugo --minify --baseURL 'https://hexmSeeU.github.io/aigc-notes/'
+      - run: hugo --minify --cleanDestinationDir --baseURL 'https://hexmSeeU.github.io/aigc-notes/'
       - run: node scripts/check-output.mjs public
       - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
         with:
