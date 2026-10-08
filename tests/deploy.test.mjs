@@ -6,3 +6,8 @@ const upload=workflow.split(/(?=^      - )/m).find(step=>step.includes('uses: ac
 assert.ok(upload,'Pages artifact upload step is required');
 assert.match(upload,/^          path: public$/m);
 });
+test('Pages deployment uses the verified upstream deploy-pages commit',()=>{
+const workflow=fs.readFileSync('.github/workflows/pages.yml','utf8');
+const pin=workflow.match(/uses: actions\/deploy-pages@([^\s]+)/)?.[1];
+assert.equal(pin,'d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e');
+});
