@@ -1,0 +1,48 @@
+name: Publish blog
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: '22'
+          cache: npm
+      - run: bash scripts/prepare-theme.sh
+      - run: npm ci --ignore-scripts && node scripts/prepare-assets.mjs
+      - run: |
+          curl -fsSL https://github.com/gohugoio/hugo/releases/download/v0.150.1/hugo_extended_0.150.1_linux-amd64.tar.gz -o /tmp/hugo.tgz
+          tar -xzf /tmp/hugo.tgz -C /tmp
+          echo /tmp >> "$GITHUB_PATH"
+      - run: npm test && npm run check
+      - run: hugo --destination /tmp/root-site --baseURL https://example.org/ && node scripts/check-output.mjs /tmp/root-site https://example.org/
+      - run: npx playwright install --with-deps chromium && npm run test:browser
+      - run: hugo --minify --baseURL 'https://hexmSeeU.github.io/aigc-notes/'
+      - run: node scripts/check-output.mjs public
+      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
+        with:
+          retention-days: 1
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@d6db90192e4c0b7ab4d8c3f998b618ab480a9206
