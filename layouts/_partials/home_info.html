@@ -1,0 +1,25 @@
+{{- with site.Params.homeInfoParams }}
+<section class="home-info home-cover" data-home-cover data-animation="static" aria-labelledby="home-cover-title">
+  <div class="home-cover__copy">
+    <p class="home-cover__eyebrow">GENERATIVE AI · FIELD NOTES</p>
+    <h1 class="home-cover__title" id="home-cover-title">{{ .Title | markdownify }}</h1>
+    <div class="home-cover__intro md-content">
+      {{- $opts := dict "display" "block" -}}
+      {{ .Content | $.Page.RenderString $opts }}
+    </div>
+    <span class="home-cover__rule" aria-hidden="true"></span>
+  </div>
+  <div class="home-cover__visual">
+    <img class="home-cover__image" src="{{ "images/home-cover.webp" | relURL }}" width="1536" height="1024" alt="青绿色山峦与云海，映着淡紫和桃色晨光" fetchpriority="high" decoding="async">
+    <span class="home-cover__veil" aria-hidden="true"></span>
+    <span class="home-cover__grain" aria-hidden="true"></span>
+    <div class="home-cover__caption" aria-hidden="true"><span></span> FROM NOISE TO FORM</div>
+    <button class="home-cover__toggle" data-home-cover-toggle type="button" aria-label="暂停封面动画" aria-pressed="false" hidden>
+      <svg class="home-cover__pause-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M5 3v10M11 3v10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      <svg class="home-cover__play-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="m5 3 8 5-8 5Z" fill="currentColor"/></svg>
+      <span data-home-cover-toggle-label>暂停</span>
+    </button>
+  </div>
+</section>
+<script defer src="{{ "js/home-cover.js" | relURL }}"></script>
+{{- end -}}
