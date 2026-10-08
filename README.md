@@ -21,7 +21,7 @@ hugo server --buildDrafts
 ```sh
 npm test
 npm run check
-hugo --minify --baseURL https://hexmSeeU.github.io/aigc-notes/
+hugo --minify --cleanDestinationDir --baseURL https://hexmSeeU.github.io/aigc-notes/
 node scripts/check-output.mjs public
 npx playwright install chromium
 npm run test:browser
