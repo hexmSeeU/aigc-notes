@@ -1,0 +1,1 @@
+export default {testDir:'./tests',use:{baseURL:'http://127.0.0.1:1313'},webServer:{command:'node scripts/prepare-test-fixtures.mjs && hugo server --buildDrafts --bind 127.0.0.1 --port 1313',url:'http://127.0.0.1:1313',reuseExistingServer:true},reporter:'list'};

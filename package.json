@@ -1,0 +1,1 @@
+{"name":"aigc-notes","private":true,"type":"module","scripts":{"test":"node --test tests/*.test.mjs","check":"node scripts/check-content.mjs","test:browser":"playwright test"},"devDependencies":{"@playwright/test":"1.55.1","mathjax":"3.2.2"}}

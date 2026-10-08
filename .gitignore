@@ -1,0 +1,13 @@
+public/
+resources/
+node_modules/
+.hugo_build.lock
+test-results/
+playwright-report/
+.superpowers/
+
+static/vendor/mathjax/
+
+content/math-regression/
+
+themes/PaperMod/

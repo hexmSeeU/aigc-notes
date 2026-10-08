@@ -1,0 +1,4 @@
+{{ if .TableOfContents }}
+<aside class="reading-toc"><details class="toc"><summary>本篇目录</summary>{{ .TableOfContents }}</details></aside>
+<script>const t=document.querySelector('.reading-toc details');const mq=matchMedia('(min-width:1200px)');function syncTOC(){if(t)t.open=mq.matches}syncTOC();mq.addEventListener('change',syncTOC);</script>
+{{ end }}

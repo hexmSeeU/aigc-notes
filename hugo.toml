@@ -1,0 +1,55 @@
+baseURL = 'https://example.org/'
+languageCode = 'zh-CN'
+defaultContentLanguage = 'zh'
+hasCJKLanguage = true
+title = 'mingNotes'
+theme = 'PaperMod'
+enableRobotsTXT = true
+buildDrafts = false
+[permalinks]
+posts = '/posts/:slug/'
+[params]
+defaultTheme = 'light'
+disableThemeToggle = true
+description = '从直觉到公式，记录生成式 AI 的学习过程。'
+ShowReadingTime = true
+ShowCodeCopyButtons = true
+ShowToc = true
+TocOpen = false
+ShowPostNavLinks = true
+hideFooter = true
+[params.homeInfoParams]
+Title = '理解原理，记录探索。'
+Content = 'AIGC 学习笔记 · 从基础概念到研究前沿'
+[[menu.main]]
+name = '文章'
+url = '/posts/'
+weight = 1
+[[menu.main]]
+name = '基础'
+url = '/categories/基础/'
+weight = 2
+[[menu.main]]
+name = '前沿'
+url = '/categories/前沿/'
+weight = 3
+[[menu.main]]
+name = '归档'
+url = '/archives/'
+weight = 4
+[markup.goldmark.extensions.passthrough]
+enable = true
+[markup.goldmark.extensions.passthrough.delimiters]
+block = [['\[', '\]'], ['$$', '$$']]
+inline = [['\(', '\)']]
+[markup.goldmark.renderer]
+unsafe = false
+[markup.tableOfContents]
+startLevel = 2
+endLevel = 3
+[params.assets]
+favicon = 'favicon.svg'
+favicon16x16 = 'favicon.svg'
+favicon32x32 = 'favicon.svg'
+apple_touch_icon = 'favicon.svg'
+safari_pinned_tab = 'favicon.svg'
