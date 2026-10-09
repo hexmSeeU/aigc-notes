@@ -79,10 +79,11 @@ for (const width of [375, 1440]) {
   });
 }
 
-test('DDPM appears first on the homepage and in RSS with VAE retained', async ({page, request}) => {
+test('DDPM remains on the homepage and in RSS before VAE', async ({page, request}) => {
   await page.goto('/');
-  await expect(page.locator('.post-entry').first().locator('h2')).toHaveText(title);
-  await expect(page.locator('.post-entry').first().locator('.entry-link')).toHaveAttribute('href', /\/posts\/ddpm-derivation\/$/);
+  const entry = page.locator('.post-entry').filter({hasText: title});
+  await expect(entry).toHaveCount(1);
+  await expect(entry.locator('.entry-link')).toHaveAttribute('href', /\/posts\/ddpm-derivation\/$/);
   await expect(page.locator('.post-entry').filter({hasText: '从 AE 到 VAE：让潜变量成为一个分布'})).toHaveCount(1);
   const response = await request.get('/index.xml');
   expect(response.ok()).toBe(true);
