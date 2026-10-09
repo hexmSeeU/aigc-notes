@@ -2,6 +2,7 @@
   "title": "DDPM：从似然目标到噪声预测的完整推导",
   "description": "从负对数似然与路径上界出发，逐步推导反向后验、高斯 KL 和噪声预测，完整证明参考后验训练与真实反向拟合的常数等价关系。",
   "date": "2026-10-08T22:57:50+08:00",
+  "lastmod": "2026-10-09T17:20:00+08:00",
   "slug": "ddpm-derivation",
   "categories": [
     "基础"
@@ -41,6 +42,8 @@ DDPM 想解决的是：怎样让一个从高斯噪声出发的模型，生成符
 | \(I\)，\(\epsilon\)，\(z\) | 单位矩阵、直接加噪时的标准噪声、反向采样时新抽的标准噪声 |
 | \(\tilde\mu_t\)，\(\tilde\beta_t\) | 已知 \(x_0,x_t\) 时的真实后验均值与方差 |
 | \(\mu_\theta\)，\(\sigma_t^2\) | 模型反向分布的均值与方差；\(\sigma_t\) 是标准差 |
+
+**图片维数 d。** \(d\) 是一张图片展开后的标量总数：高为 \(H\)、宽为 \(W\)、通道数为 \(C\) 时，\(d=H\times W\times C\)。例如 \(32\times32\) 的 RGB 图片有 \(d=32\times32\times3=3072\) 个分量。它不是训练集中的图片数；\(I\) 是 \(d\times d\) 的单位矩阵。
 
 ## 1 正向加噪为什么能一步到达任意时刻
 
@@ -622,6 +625,70 @@ $$L_{\mathrm{simple}}(\theta)=
 
 去权重改变了各噪声程度的相对训练重点，是**重新加权后的目标**，不是简单删去与 \(\theta\) 无关的常数。\(L_{\mathrm{simple}}\) 不能直接当作原始负对数似然的上界，也不与原始 ELBO 严格等价。[原论文第 3.3–3.4 节及式（13）（14）](https://arxiv.org/pdf/2006.11239)
 
+## 参数速查：beta、alpha 与 sigma 怎样赋值
+
+前面的推导说明了这些量怎样进入公式。实际使用时，顺序是：**先选正向噪声日程，再算出信号系数，最后选择反向方差。** 它们不是三组互不相关的参数。
+
+### 正向噪声 beta：先选一张随时间变化的表
+
+原始 DDPM 的常见起点是 \(T=1000\)，让每一步的噪声方差从 \(10^{-4}\) 线性增大到 \(0.02\)：
+
+$$\beta_t=\beta_{\min}+\frac{t-1}{T-1}(\beta_{\max}-\beta_{\min}),\qquad t=1,\ldots,T,$$
+
+其中 \(\beta_{\min}=10^{-4}\)、\(\beta_{\max}=0.02\)。因此第一步 \(\beta_1=0.0001\)，最后一步 \(\beta_{1000}=0.02\)。训练前算好整张表，此后不随网络参数更新；“固定”指对训练固定，不是每个时间步取相同的值。这是原论文在像素缩放到 \([-1,1]\)、总步数为 1000 时使用的设置。[原论文第 4 节](https://arxiv.org/pdf/2006.11239)
+
+如果改变总步数，不能只照抄两个端点就假定总加噪效果不变，因为累计乘积也会改变。应一起检查最终的 \(\overline{\alpha}_T\) 是否足够小，以及训练和采样使用的日程是否一致。
+
+### 信号系数 alpha：由 beta 算出，不再独立挑选
+
+$$\alpha_t=1-\beta_t,\qquad
+\overline{\alpha}_t=\prod_{s=1}^{t}\alpha_s,\qquad
+\overline{\alpha}_0=1.$$
+
+例如上述线性日程给出 \(\alpha_1=0.9999\)、\(\alpha_{1000}=0.98\)；而 \(\overline{\alpha}_{1000}\approx4.04\times10^{-5}\)，是全部 1000 个信号系数的乘积。**单步的 alpha 接近 1，不代表走完所有步以后还保留很多原图信号。**
+
+实现时先对 beta 表逐项做 \(1-\beta_t\)，再做累计乘积即可。正向单步式（1）使用 \(\sqrt{\alpha_t}\)，直接构造任意时刻的式（3）使用 \(\sqrt{\overline{\alpha}_t}\)，不要混用。
+
+### 另一种常见日程：从累计信号设计 cosine
+
+Improved DDPM 使用余弦日程。它先指定一条累计信号的目标曲线：
+
+$$f(t)=\cos^2\!\left(\frac{t/T+s}{1+s}\frac{\pi}{2}\right),\qquad
+\overline{\alpha}^{*}_t=\frac{f(t)}{f(0)},\qquad s=0.008.$$
+
+再由相邻时刻的比值反推出单步噪声方差，并给它设置上限：
+
+$$\beta_t=\min\!\left(1-\frac{\overline{\alpha}^{*}_t}{\overline{\alpha}^{*}_{t-1}},\ 0.999\right).$$
+
+星号表示“设计的目标曲线”。归一化保证 \(\overline{\alpha}^{*}_0=1\)；上限避免最后一步出现 \(\beta_t=1\)、\(\alpha_t=0\)。**截断后，实际使用的 \(\overline{\alpha}_t\) 仍要从最终 beta 表按累计乘积重算**，不能把目标曲线的末端零值直接当成实际乘积。余弦设计与线性 beta 都是可选的日程，并非互相推导出来的同一组数值。[Improved DDPM 第 3.2 节](https://proceedings.mlr.press/v139/nichol21a/nichol21a.pdf)，[官方日程实现](https://github.com/openai/improved-diffusion/blob/main/improved_diffusion/gaussian_diffusion.py)
+
+### 反向噪声 sigma：选的是方差，采样乘的是标准差
+
+在本文的固定方差模型中，\(t\geq2\) 时有两种经典选择：
+
+**选择一：使用正向单步方差。**
+
+$$\sigma_t^2=\beta_t,\qquad \sigma_t=\sqrt{\beta_t}.$$
+
+**选择二：使用参考后验方差。**
+
+$$\begin{aligned}
+\sigma_t^2&=\tilde\beta_t=\frac{1-\overline{\alpha}_{t-1}}{1-\overline{\alpha}_t}\beta_t,\\
+\sigma_t&=\sqrt{\tilde\beta_t}.
+\end{aligned}$$
+
+第二种里的 \(\tilde\beta_t\) 是式（12）推导出的量，无须另外调参。第一种和第二种都是反向模型的方差选择；选择其中一种后，按时间步固定下来。由于累计信号随步数下降，\(t\geq2\) 时有 \(0<\tilde\beta_t<\beta_t\)，所以两种选择注入的随机噪声大小不同。[原论文第 3.2 节](https://arxiv.org/pdf/2006.11239)
+
+**一个只用于手算的两步例子。** 假设 \(\beta_1=0.1\)、\(\beta_2=0.2\)，则 \(\alpha_1=0.9\)、\(\alpha_2=0.8\)、\(\overline{\alpha}_2=0.72\)，因此
+
+$$\tilde\beta_2=\frac{1-0.9}{1-0.72}\times0.2\approx0.07143.$$
+
+若选 \(\sigma_2^2=\beta_2\)，采样乘的是 \(\sigma_2=\sqrt{0.2}\approx0.4472\)；若选 \(\sigma_2^2=\tilde\beta_2\)，则乘 \(\sigma_2\approx0.2673\)。这组两步数值仅用于区分各符号，不是推荐的完整训练日程。
+
+**最后一步单独看。** \(\tilde\beta_1=0\) 是已知原图时后验退化的结果，不能把零方差直接代入普通高斯密度或第 7 节的 KL 公式。训练中的重建项按第 11 节处理；原始 DDPM 的采样算法则在 \(t=1\) 设 \(z=0\)，输出反向均值。
+
+后续工作也会让网络学习反向方差，例如 Improved DDPM 的 learned variance。此时方差依赖网络参数，本文“固定方差后，把其余部分当作常数”的化简不能原样照搬；纯噪声均方误差也不能单独训练方差输出。本篇先掌握上面两种固定选择即可。[Improved DDPM 第 3.1 节](https://proceedings.mlr.press/v139/nichol21a/nichol21a.pdf)
+
 ## 12 训练与采样分别怎样执行
 
 ### 训练一次参数更新
@@ -636,7 +703,7 @@ $$L_{\mathrm{simple}}(\theta)=
 $$\mathbb E_{t\sim\mathrm{Uniform}\{1,\ldots,T\}}[\ell_t(\theta)]
 =\frac1T\sum_{t=1}^{T}\ell_t(\theta).$$
 
-因此，随机 timestep 是对**已经选定的平均目标**进行无偏抽样估计。它和上一节的“去掉权重”是两个不同操作。训练只需直接构造选中时刻的 \(x_t\)，不必生成完整路径，也不必真的抽出 \(x_{t-1}\)。[原论文算法 1](https://arxiv.org/pdf/2006.11239)
+因此，随机 timestep 是对**已经选定的平均目标**进行无偏抽样估计。它和第 11 节的“去掉权重”是两个不同操作。训练只需直接构造选中时刻的 \(x_t\)，不必生成完整路径，也不必真的抽出 \(x_{t-1}\)。[原论文算法 1](https://arxiv.org/pdf/2006.11239)
 
 ### 生成一张图片
 
@@ -663,3 +730,7 @@ $$x_{t-1}=\frac1{\sqrt{\alpha_t}}
 [1] Ho, Jain, Abbeel. [Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2006.11239), 2020. 重点对照式（1）至（14）、算法 1–2、附录 A。
 
 [2] Lilian Weng. [What are Diffusion Models?](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/), 2021. 本文仅使用 DDPM 基础相关部分。
+
+[3] Nichol, Dhariwal. [Improved Denoising Diffusion Probabilistic Models](https://proceedings.mlr.press/v139/nichol21a.html), 2021. 第 3.1–3.2 节：学习反向方差与余弦噪声日程。
+
+[4] OpenAI. [improved-diffusion 官方实现](https://github.com/openai/improved-diffusion/blob/main/improved_diffusion/gaussian_diffusion.py). 对照日程构造和方差选项。

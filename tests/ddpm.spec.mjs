@@ -13,8 +13,8 @@ for (const width of [320, 375, 768, 1440]) {
     await expect(page.locator('h1')).toHaveText(title);
     const content = page.locator('.post-content');
     await expect(content).toHaveCSS('font-size', '18px');
-    await expect(content.locator('mjx-container[display="true"]')).toHaveCount(75);
-    await expect(content.locator('mjx-container:not([display="true"])')).toHaveCount(189);
+    await expect(content.locator('mjx-container[display="true"]')).toHaveCount(82);
+    await expect(content.locator('mjx-container:not([display="true"])')).toHaveCount(233);
     await expect(content.locator('mjx-merror, [data-mjx-error]')).toHaveCount(0);
     await expect(content.locator('p mjx-container:not([display="true"])').first()).toBeVisible();
     await expect(content.locator('td mjx-container:not([display="true"])').first()).toBeVisible();
@@ -65,7 +65,7 @@ for (const width of [375, 1440]) {
     const ids = await page.locator('.post-content h2, .post-content h3').evaluateAll(elements =>
       elements.map(el => el.id));
     expect(new Set(ids).size).toBe(ids.length);
-    expect(ids.length).toBe(21);
+    expect(ids.length).toBe(26);
     const links = toc.locator('a');
     await expect(links).toHaveCount(ids.length);
     expect(await links.evaluateAll(elements => elements.map(el => decodeURIComponent(el.hash.slice(1)))))

@@ -26,7 +26,10 @@ test('DDPM is the published second article with a real dated math-enabled bundle
 });
 
 test('DDPM retains all approved mathematical expressions and equation numbers', () => {
-  const {body} = readArticle();
+  const {body: fullBody} = readArticle();
+  const body = fullBody
+    .replace(/^\*\*图片维数 d。\*\*[^\n]*\n\n/m, '')
+    .replace(/^## 参数速查：beta、alpha 与 sigma 怎样赋值\n[\s\S]*?(?=^## 12 )/m, '');
   const blocks = [...body.matchAll(/\$\$([\s\S]*?)\$\$/g)].map(match => match[1]);
   const prose = body.replace(/\$\$[\s\S]*?\$\$/g, '');
   const inline = [...prose.matchAll(/\\\(([\s\S]*?)\\\)/g)].map(match => match[1]);
@@ -60,4 +63,24 @@ test('DDPM preserves the constant-equivalence proof and web heading hierarchy', 
     String.raw`C_t=\mathbb E_{x_0\sim q_{\mathrm{data}}}`,
     '不是两个概率密度', '必须先进行数据平均', '不能直接当作原始负对数似然的上界',
   ]) assert.ok(body.includes(fragment), fragment);
+});
+
+test('DDPM documents schedule choices, standard deviations, and the endpoint separately', () => {
+  const {body} = readArticle();
+  const supplement = body.split('## 参数速查：beta、alpha 与 sigma 怎样赋值\n')[1]?.split('## 12 ')[0];
+  assert.ok(supplement, 'The parameter assignment section must precede training and sampling');
+  for (const fragment of [
+    String.raw`\beta_t=\beta_{\min}+\frac{t-1}{T-1}(\beta_{\max}-\beta_{\min})`,
+    String.raw`\alpha_t=1-\beta_t`, String.raw`\overline{\alpha}_0=1`,
+    String.raw`\overline{\alpha}^{*}_t=\frac{f(t)}{f(0)}`, 's=0.008', '0.999',
+    String.raw`\sigma_t^2=\beta_t,\qquad \sigma_t=\sqrt{\beta_t}`,
+    String.raw`\sigma_t&=\sqrt{\tilde\beta_t}`, '0.07143', '0.4472', '0.2673',
+    '截断后', '累计乘积重算', '第 7 节的 KL 公式',
+    '不能把零方差直接代入普通高斯密度', '纯噪声均方误差也不能单独训练方差输出',
+  ]) assert.ok(supplement.includes(fragment), fragment);
+  assert.match(body, /图片维数 d[\s\S]*?3072/);
+  const alphaBarT = Array.from({length: 1000}, (_, index) =>
+    1 - (1e-4 + index / 999 * (0.02 - 1e-4))).reduce((product, alpha) => product * alpha, 1);
+  assert.ok(Math.abs(alphaBarT - 4.04e-5) < 5e-8);
+  assert.ok(supplement.includes(String.raw`4.04\times10^{-5}`));
 });
