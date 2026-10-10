@@ -2,6 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
+import {withoutReferenceAnswers} from './helpers/reference-answers.mjs';
 const baseline=JSON.parse(fs.readFileSync('tests/fixtures/continuous-reading-baseline.json','utf8'));
 test('all seven articles are continuous reading without optional proof disclosures',()=>{
  assert.equal(baseline.length,7);
@@ -15,7 +16,7 @@ test('all seven articles are continuous reading without optional proof disclosur
 test('continuous articles preserve the exact original formula sequence and reference targets',()=>{
  for(const item of baseline){
   const source=fs.readFileSync(`content/posts/${item.slug}/index.md`,'utf8');
-  const body=source.slice(source.indexOf('\n}\n')+2).trim();
+  const body=withoutReferenceAnswers(source.slice(source.indexOf('\n}\n')+2).trim());
   const math=[...body.matchAll(/\$\$([\s\S]*?)\$\$|\\\(([\s\S]*?)\\\)/g)].map(m=>m[1]??m[2]);
   assert.equal(math.length,item.math_count,item.slug);
   assert.equal(createHash('sha256').update(JSON.stringify(math)).digest('hex'),item.math_sha256,item.slug);

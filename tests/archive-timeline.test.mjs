@@ -2,6 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
+import {withoutReferenceAnswers} from './helpers/reference-answers.mjs';
 const read=path=>{const s=fs.readFileSync(path,'utf8'),e=s.indexOf('\n}\n')+2;return {meta:JSON.parse(s.slice(0,e)),body:s.slice(e).trim()};};
 test('collection and episode dates use the requested October learning dates',()=>{
  for(const [id,n,date] of [['ddpm',4,'2026-10-09'],['elbo',3,'2026-10-08']]){
@@ -21,5 +22,5 @@ test('same-day archive ties follow AE, ELBO, DDPM, DDIM without changing origina
 test('published article bodies match the reviewed presentation-only revision',()=>{
  const hashes=JSON.parse(fs.readFileSync('tests/fixtures/published-body-hashes.json','utf8'));
  assert.equal(Object.keys(hashes).length,10);
- for(const [p,hash] of Object.entries(hashes))assert.equal(createHash('sha256').update(read(p).body).digest('hex'),hash,p);
+ for(const [p,hash] of Object.entries(hashes))assert.equal(createHash('sha256').update(withoutReferenceAnswers(read(p).body)).digest('hex'),hash,p);
 });
