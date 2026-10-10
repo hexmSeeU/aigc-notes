@@ -1,21 +1,29 @@
 {{ define "main" }}
-<header class="page-header"><h1>{{ .Title }}</h1><p class="post-description">按合集顺序阅读，也可以直接打开一篇笔记。</p></header>
-<section class="archive-collections" aria-labelledby="collections-heading">
-<h2 id="collections-heading">学习合集</h2>
-{{ range (where site.RegularPages "Section" "collections").ByWeight }}
-  {{ $episodes := (where site.RegularPages "Params.collection" .Params.collectionId).ByParam "episode" }}
-  <details class="archive-collection" open>
-    <summary><span>{{ .Title }}</span><span class="collection-count">{{ len $episodes }} 篇</span></summary>
-    <p>{{ .Description }}</p><a class="collection-index-link" href="{{ .RelPermalink }}">打开合集 →</a>
-    <ol class="episode-list">{{ range $episodes }}<li><a href="{{ .RelPermalink }}"><span class="episode-number">{{ .Params.episode }}</span><span>{{ .Title }}</span></a></li>{{ end }}</ol>
-  </details>
-{{ end }}
+<header class="page-header"><h1>{{ .Title }}</h1></header>
+{{- $pages := where site.RegularPages "Section" "in" (slice "posts" "collections") }}
+{{- $pages = where $pages "Params.collection" "==" nil }}
+{{- $pages = where $pages "Params.legacyCollection" "==" nil }}
+{{- range $pages.GroupByDate "2006" "asc" }}
+<section class="archive-year">
+  <h2 class="archive-year-header" id="{{ .Key }}"><a class="archive-header-link" href="#{{ .Key }}">{{ .Key }}</a><sup class="archive-count"> {{ len .Pages }}</sup></h2>
+  {{- $year := .Key }}
+  {{- range .Pages.GroupByDate "01" "asc" }}
+  <div class="archive-month">
+    <h3 class="archive-month-header" id="{{ $year }}-{{ .Key }}"><a class="archive-header-link" href="#{{ $year }}-{{ .Key }}">{{ (index .Pages 0).Date.Format "1月" }}</a><sup class="archive-count"> {{ len .Pages }}</sup></h3>
+    <div class="archive-posts">
+      {{- range .Pages.GroupByDate "2006-01-02" "asc" }}
+      {{/* Same-day entries follow the author's chosen learning sequence. */}}
+      {{- range .Pages.ByParam "archiveOrder" }}
+      <article class="archive-entry">
+        <h3 class="archive-entry-title">{{ .Title }}</h3>
+        <div class="archive-meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006年1月2日" }}</time>{{ with .Params.collectionId }} · {{ len (where site.RegularPages "Params.collection" .) }} 篇{{ else }} · {{ .ReadingTime }} 分钟{{ end }}</div>
+        <a class="entry-link" aria-label="{{ .Title }}" href="{{ .RelPermalink }}"></a>
+      </article>
+      {{- end }}
+      {{- end }}
+    </div>
+  </div>
+  {{- end }}
 </section>
-<section class="archive-standalone" aria-labelledby="standalone-heading"><h2 id="standalone-heading">独立笔记</h2>
-{{ $posts := where site.RegularPages "Section" "posts" }}
-{{ range $posts.ByDate.Reverse }}{{ if and (not .Params.collection) (not .Params.legacyCollection) }}
-<article class="archive-note"><a href="{{ .RelPermalink }}">{{ .Title }}</a><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time></article>
-{{ end }}{{ end }}
-</section>
-{{ with site.GetPage "/posts/ddpm-derivation" }}<p class="archive-legacy"><a href="{{ .RelPermalink }}">DDPM 原完整笔记</a> · 保留旧链接，供回查使用</p>{{ end }}
+{{- end }}
 {{ end }}

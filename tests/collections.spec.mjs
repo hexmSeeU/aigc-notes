@@ -10,6 +10,8 @@ for(const width of [320,375,768,1440]){
       await page.setViewportSize({width,height:900});
       await page.goto(url(baseURL,`posts/${slug}/`));
       await expect(page.locator('.collection-nav [aria-current="page"]')).toHaveCount(1);
+      await expect(page.locator('.post-meta')).toContainText(slug.startsWith('ddpm')?'2026年10月9日':'2026年10月8日');
+      if(slug.startsWith('ddpm'))await expect(page.locator('.collection-nav__header a')).toHaveText('理解 DDPM：原理与推导');
       await expect(page.locator('.post-content details.proof')).toHaveCount(item.proofs);
       const content=page.locator('.post-content');
       await expect(content).toHaveCSS('font-size','18px');
@@ -49,14 +51,23 @@ for(const width of [320,375,768,1440]){
   test(`Archive and collection order at ${width}px`,async({page,baseURL})=>{
     await page.setViewportSize({width,height:900});
     await page.goto(url(baseURL,'archives/'));
-    await expect(page.locator('.archive-collection')).toHaveCount(2);
+    const entries=page.locator('.archive-entry');
+    await expect(entries).toHaveCount(4);
+    await expect(entries.locator('h3')).toHaveText(['从 AE 到 VAE：让潜变量成为一个分布','ELBO：从似然下界到训练损失','理解 DDPM：原理与推导','DDIM：从边缘分布到跳步采样']);
+    expect(await entries.locator('time').evaluateAll(xs=>xs.map(x=>x.getAttribute('datetime')))).toEqual(['2026-10-08','2026-10-08','2026-10-09','2026-10-09']);
+    expect(await entries.locator('.entry-link').evaluateAll(xs=>xs.map(x=>new URL(x.href).pathname.split('/').filter(Boolean).slice(-2).join('/')))).toEqual(['posts/ae-to-vae','collections/elbo','collections/ddpm','posts/ddim-derivation']);
+    expect(await entries.evaluateAll(xs=>xs.map(x=>x.className))).toEqual(Array(4).fill('archive-entry'));
+    const styles=await entries.locator('h3').evaluateAll(xs=>xs.map(x=>({font:getComputedStyle(x).fontFamily,size:getComputedStyle(x).fontSize,weight:getComputedStyle(x).fontWeight,color:getComputedStyle(x).color})));
+    for(const style of styles)expect(style).toEqual(styles[0]);
+    await expect(page.locator('.archive-collections,.archive-standalone,details')).toHaveCount(0);
+    await expect(page.locator('main')).not.toContainText('学习合集');
+    await expect(page.locator('main')).not.toContainText('独立笔记');
+    await expect(page.locator('main a[href$="/posts/ddpm-derivation/"]')).toHaveCount(0);
     for(const [id,count] of [['ddpm',4],['elbo',3]]){
-      const folder=page.locator('.archive-collection').filter({has:page.locator(`a[href$="/collections/${id}/"]`)});
-      await expect(folder.locator('.episode-list a')).toHaveCount(count);
-      await folder.locator('summary').click();await expect(folder).not.toHaveAttribute('open','');
-      await folder.locator('summary').click();await expect(folder).toHaveAttribute('open','');
-      await folder.locator('.collection-index-link').click();
+      await page.locator(`.archive-entry a[href$="/collections/${id}/"]`).click();
       await expect(page).toHaveURL(url(baseURL,`collections/${id}/`));
+      await expect(page.locator('.collection-count time')).toHaveAttribute('datetime',id==='ddpm'?'2026-10-09':'2026-10-08');
+      if(id==='ddpm')await expect(page.locator('h1')).toHaveText('理解 DDPM：原理与推导');
       const links=page.locator('.collection-episodes .episode-card');
       expect(await links.evaluateAll(xs=>xs.map(x=>new URL(x.href).pathname.split('/').filter(Boolean).at(-1)))).toEqual(Array.from({length:count},(_,i)=>`${id}-${i+1}`));
       expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
@@ -74,8 +85,8 @@ for(const width of [320,375,768,1440]){
       await page.goForward();await expect(page).toHaveURL(url(baseURL,`collections/${id}/`));
       await page.goto(url(baseURL,'archives/'));
     }
-    await expect(page.locator('.archive-standalone a[href$="/posts/ae-to-vae/"]')).toHaveCount(1);
-    await expect(page.locator('.archive-standalone a[href$="/posts/ddim-derivation/"]')).toHaveCount(1);
+    await expect(page.locator('.archive-entry a[href$="/posts/ae-to-vae/"]')).toHaveCount(1);
+    await expect(page.locator('.archive-entry a[href$="/posts/ddim-derivation/"]')).toHaveCount(1);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   });
 }
@@ -115,4 +126,15 @@ test('capture desktop and phone collection reading layouts',async({page,baseURL}
     await proof.locator('summary').click();await proof.scrollIntoViewIfNeeded();
     await page.screenshot({path:`test-results/visual-review/expanded-proof-${width}.png`});
   }
+});
+
+test('RSS uses the same requested dates as collection articles',async({request,baseURL})=>{
+ const rss=await (await request.get(url(baseURL,'index.xml'))).text();
+ for(const item of manifest){
+   const slug=item.target.split('/')[2];
+   const entry=[...rss.matchAll(/<item>([\s\S]*?)<\/item>/g)].map(m=>m[1]).find(x=>x.includes(`/posts/${slug}/`));
+   expect(entry).toBeDefined();
+   const date=entry.match(/<pubDate>(.*?)<\/pubDate>/)[1];
+   expect(new Date(date).toISOString().slice(0,10)).toBe(slug.startsWith('ddpm')?'2026-10-09':'2026-10-08');
+ }
 });

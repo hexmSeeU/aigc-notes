@@ -5,5 +5,7 @@
   "collectionId": "elbo",
   "weight": 2,
   "hiddenInRss": true,
-  "ShowToc": false
+  "ShowToc": false,
+  "date": "2026-10-08T14:52:00+08:00",
+  "archiveOrder": 2
 }

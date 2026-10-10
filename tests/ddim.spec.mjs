@@ -86,8 +86,8 @@ test('DDIM and VAE remain available alongside the new releases', async ({page, r
     await expect(page.locator('.post-entry .entry-link[href$="/posts/ddpm-derivation/"]')).toHaveCount(0);
   }
   await page.goto('/archives/');
-  await expect(page.locator('.archive-standalone .archive-note')).toHaveCount(2);
-  await expect(page.locator('.archive-standalone .archive-note').first()).toContainText(title);
+  await expect(page.locator('.archive-entry')).toHaveCount(4);
+  await expect(page.locator('.archive-entry').last()).toContainText(title);
   const response = await request.get('/index.xml');
   expect(response.ok()).toBe(true);
   const rss = await response.text();
