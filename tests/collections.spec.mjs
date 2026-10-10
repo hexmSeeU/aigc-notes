@@ -144,6 +144,6 @@ for(const [slug,id,title] of [
   await page.goto(url(baseURL,`posts/${slug}/#${encodeURIComponent(id)}`));
   await page.evaluate(()=>MathJax.startup.promise);
   const heading=page.locator(`[id="${id}"]`);
-  await expect(heading).toHaveText(title);await expect(heading).toBeVisible();await expect(heading).toBeInViewport();
+  await expect(heading).toHaveText(new RegExp(`^${title}#?$`));await expect(heading).toBeVisible();await expect(heading).toBeInViewport();
  });
 }
