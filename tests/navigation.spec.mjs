@@ -32,7 +32,7 @@ for (const width of [320, 375, 1440]) {
       await home.click();
       await expect(page).toHaveURL(homeURL);
       await expect(page.locator('[data-home-cover]')).toBeVisible();
-      await expect(page.locator('#home-cover-title')).toHaveText('理解原理，记录探索。');
+      await expect(page.locator('#home-cover-title')).toHaveText('从噪声，到可能');
       const image = page.locator('.home-cover__image');
       await expect(image).toBeVisible();
       expect(await image.evaluate(el => el.complete && el.naturalWidth > 0)).toBe(true);

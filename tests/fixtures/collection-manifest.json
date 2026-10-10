@@ -13,7 +13,7 @@
     "target": "content/posts/ddpm-2/index.md",
     "display_math": 13,
     "inline_math": 59,
-    "proofs": 2
+    "proofs": 0
   },
   {
     "source": "03-why-ddpm-works.md",
@@ -21,7 +21,7 @@
     "target": "content/posts/ddpm-3/index.md",
     "display_math": 74,
     "inline_math": 183,
-    "proofs": 8
+    "proofs": 0
   },
   {
     "source": "04-how-ddpm-samples.md",
@@ -29,7 +29,7 @@
     "target": "content/posts/ddpm-4/index.md",
     "display_math": 17,
     "inline_math": 78,
-    "proofs": 2
+    "proofs": 0
   },
   {
     "source": "01-why-elbo.md",
@@ -53,6 +53,6 @@
     "target": "content/posts/elbo-3/index.md",
     "display_math": 23,
     "inline_math": 90,
-    "proofs": 1
+    "proofs": 0
   }
 ]

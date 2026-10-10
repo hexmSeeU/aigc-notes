@@ -18,7 +18,7 @@ test('same-day archive ties follow AE, ELBO, DDPM, DDIM without changing origina
  assert.equal(read('content/posts/ae-to-vae/index.md').meta.date,'2026-10-08T16:00:00+08:00');
  assert.equal(read('content/posts/ddim-derivation/index.md').meta.date,'2026-10-09T18:17:00+08:00');
 });
-test('archive and metadata refinement leaves every article body unchanged',()=>{
+test('published article bodies match the reviewed presentation-only revision',()=>{
  const hashes=JSON.parse(fs.readFileSync('tests/fixtures/published-body-hashes.json','utf8'));
  assert.equal(Object.keys(hashes).length,10);
  for(const [p,hash] of Object.entries(hashes))assert.equal(createHash('sha256').update(read(p).body).digest('hex'),hash,p);

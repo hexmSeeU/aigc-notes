@@ -1,4 +1,5 @@
 import {test, expect} from '@playwright/test';
+import fs from 'node:fs/promises';
 
 const cover = page => page.locator('[data-home-cover]');
 const animationStates = (page, waitUntilReady = false) =>
@@ -37,7 +38,7 @@ for (const width of [320, 375, 768, 1440]) {
     await page.setViewportSize({width, height: 900});
     await page.goto('/');
     await expect(cover(page)).toBeVisible();
-    await expect(page.locator('#home-cover-title')).toHaveText('理解原理，记录探索。');
+    await expect(page.locator('#home-cover-title')).toHaveText('从噪声，到可能');
     await expect(cover(page)).toContainText('AIGC 学习笔记 · 从基础概念到研究前沿');
     const image = cover(page).locator('img');
     await expect(image).toBeVisible();
@@ -81,6 +82,7 @@ test('reduced motion displays a still image without motion controls', async ({pa
   await expect(page.locator('[data-home-cover-toggle]')).toBeHidden();
   expect(await animationTimes(page)).toHaveLength(0);
   await expect(page.locator('.home-cover__grain')).toHaveCSS('opacity', '0');
+  await expect(page.locator('.home-cover__veil')).toHaveCSS('opacity', '0');
 });
 
 test('live motion preference changes and offscreen suspension preserve manual pause', async ({page}) => {
@@ -135,6 +137,7 @@ test('without JavaScript the artwork and copy remain visible and still', async (
   await expect(page.locator('[data-home-cover-toggle]')).toBeHidden();
   await expect(page.locator('.home-cover__image')).toHaveCSS('animation-name', 'none');
   await expect(page.locator('.home-cover__grain')).toHaveCSS('opacity', '0');
+  await expect(page.locator('.home-cover__veil')).toHaveCSS('opacity', '0');
   await context.close();
 });
 
@@ -143,5 +146,49 @@ for (const url of ['/posts/ae-to-vae/', '/posts/', '/archives/', '/categories/�
     await page.goto(url);
     await expect(cover(page)).toHaveCount(0);
     await expect(page.locator('script[src*="home-cover.js"]')).toHaveCount(0);
+  });
+}
+
+for (const width of [375, 1440]) {
+  test(`noise resolves into the original artwork at ${width}px`, async ({page}) => {
+    await page.setViewportSize({width, height: 900});
+    await page.goto('/');
+    await expect(cover(page)).toHaveAttribute('data-animation', 'running');
+    await page.getByRole('button', {name: '暂停封面动画'}).click();
+    await expectFrozen(page);
+    await fs.mkdir('test-results/visual-review', {recursive: true});
+
+    const frames = [
+      {name: 'start', time: 0, opacity: 1},
+      {name: 'early', time: 1200, opacity: 1},
+      {name: 'middle', time: 3600},
+      {name: 'clear', time: 7200, opacity: 0},
+      {name: 'last-clear', time: 9600, opacity: 0},
+    ];
+    for (const frame of frames) {
+      await page.locator('.home-cover__visual').evaluate((el, time) => {
+        for (const animation of el.getAnimations({subtree: true})) {
+          animation.currentTime = time;
+        }
+      }, frame.time);
+      const opacity = await page.locator('.home-cover__visual').evaluate(el => ({
+        veil: Number(getComputedStyle(el.querySelector('.home-cover__veil')).opacity),
+        grain: Number(getComputedStyle(el.querySelector('.home-cover__grain')).opacity),
+      }));
+      if (frame.opacity !== undefined) {
+        expect(opacity.veil).toBeCloseTo(frame.opacity, 3);
+        expect(opacity.grain).toBeCloseTo(frame.opacity, 3);
+      } else {
+        expect(opacity.veil).toBeGreaterThan(0.1);
+        expect(opacity.veil).toBeLessThan(0.9);
+        expect(opacity.grain).toBeGreaterThan(0.1);
+        expect(opacity.grain).toBeLessThan(0.9);
+      }
+      await cover(page).screenshot({
+        path: `test-results/visual-review/home-cover-${width}-${frame.name}.png`,
+        animations: 'allow',
+      });
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   });
 }

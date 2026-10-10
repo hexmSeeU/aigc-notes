@@ -1,18 +1,19 @@
 import {test, expect} from '@playwright/test';
 import fs from 'node:fs';
 const manifest=JSON.parse(fs.readFileSync('tests/fixtures/collection-manifest.json','utf8'));
+const baseline=JSON.parse(fs.readFileSync('tests/fixtures/continuous-reading-baseline.json','utf8'));
 const url=(base,path)=>new URL(path,base).href;
 for(const width of [320,375,768,1440]){
   for(const item of manifest){
     const slug=item.target.split('/')[2];
-    test(`${slug} preserves all math and folded proofs at ${width}px`,async({page,baseURL})=>{
+    test(`${slug} preserves all math as continuous visible reading at ${width}px`,async({page,baseURL})=>{
       const errors=[];page.on('pageerror',e=>errors.push(e.message));
       await page.setViewportSize({width,height:900});
       await page.goto(url(baseURL,`posts/${slug}/`));
       await expect(page.locator('.collection-nav [aria-current="page"]')).toHaveCount(1);
       await expect(page.locator('.post-meta')).toContainText(slug.startsWith('ddpm')?'2026年10月9日':'2026年10月8日');
       if(slug.startsWith('ddpm'))await expect(page.locator('.collection-nav__header a')).toHaveText('理解 DDPM：原理与推导');
-      await expect(page.locator('.post-content details.proof')).toHaveCount(item.proofs);
+      await expect(page.locator('.post-content details,.post-content summary')).toHaveCount(0);
       const content=page.locator('.post-content');
       await expect(content).toHaveCSS('font-size','18px');
       if(item.display_math+item.inline_math){
@@ -25,13 +26,9 @@ for(const width of [320,375,768,1440]){
       await expect(content.locator('mjx-merror,[data-mjx-error]')).toHaveCount(0);
       await expect(content).not.toContainText('$$');
       expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
-      // Opening every proof exercises hidden math, tables and long equations as well.
-      const proofs=content.locator('details.proof');
-      for(let i=0;i<await proofs.count();i++){
-        await proofs.nth(i).locator('summary').click();
-        await expect(proofs.nth(i)).toHaveAttribute('open','');
-      }
-      expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+      expect(await content.locator('mjx-container').evaluateAll(xs=>xs.every(x=>x.getClientRects().length>0 && !x.closest('details')))).toBe(true);
+      for(const id of baseline.find(x=>x.slug===slug).heading_ids)await expect(content.locator(`[id="${id}"]`)).toHaveCount(1);
+      await expect(content).not.toContainText(/选读|按需查阅|可选验算|第一次可以不展开|正文到这里结束/);
       const boxes=await content.locator('mjx-container[display="true"]').evaluateAll(xs=>xs.map(x=>({left:x.getBoundingClientRect().left,right:x.getBoundingClientRect().right,overflow:getComputedStyle(x).overflowX})));
       for(const box of boxes){expect(box.left).toBeGreaterThanOrEqual(0);expect(box.right).toBeLessThanOrEqual(width);expect(box.overflow).toBe('auto');}
       if(width<768 && slug==='ddpm-3'){
@@ -90,22 +87,22 @@ for(const width of [320,375,768,1440]){
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   });
 }
-test('direct proof anchors reveal content and remain usable after repeated navigation',async({page,baseURL})=>{
+test('direct proof anchors reach continuous content and remain usable after repeated navigation',async({page,baseURL})=>{
   await page.goto(url(baseURL,'posts/ddpm-3/'));
-  const heading=page.locator('.proof h3').filter({hasText:'先积分原图 再识别真实反向 KL'});
+  const heading=page.locator('.post-content h3').filter({hasText:'先积分原图 再识别真实反向 KL'});
   const id=await heading.getAttribute('id');
   await page.goto('about:blank');
   await page.goto(url(baseURL,`posts/ddpm-3/#${encodeURIComponent(id)}`));
   await page.evaluate(()=>MathJax.startup.promise);
   await expect(heading).toBeVisible();await expect(heading).toBeInViewport();
-  const proof=heading.locator('xpath=ancestor::details');
-  await proof.locator('summary').click();await expect(proof).not.toHaveAttribute('open','');
+  await expect(page.locator('.post-content details')).toHaveCount(0);
   const toc=page.locator('.reading-toc details');await toc.evaluate(el=>el.open=true);
   await toc.locator(`a[href="#${id}"]`).click();await expect(heading).toBeVisible();
 });
 test('home and RSS expose seven releases without duplicate legacy or collection entries',async({page,request,baseURL})=>{
   await page.goto(baseURL);
-  await expect(page.locator('.home-collections a')).toHaveCount(2);
+  await expect(page.locator('.home-collections')).toHaveCount(0);
+  await expect(page.locator('main')).not.toContainText('学习合集');
   await expect(page.locator('.post-entry')).toHaveCount(9);
   const rss=await (await request.get(url(baseURL,'index.xml'))).text();
   for(const item of manifest)expect(rss).toContain(`/posts/${item.target.split('/')[2]}/`);
@@ -122,9 +119,9 @@ test('capture desktop and phone collection reading layouts',async({page,baseURL}
       if(route.startsWith('posts/'))await expect(page.locator('.post-content mjx-container').first()).toBeVisible();
       await page.screenshot({path:`test-results/visual-review/${route.replaceAll('/','_')}${width}.png`,fullPage:route==='archives/'||route.startsWith('collections/')});
     }
-    const proof=page.locator('.post-content details.proof').first();
-    await proof.locator('summary').click();await proof.scrollIntoViewIfNeeded();
-    await page.screenshot({path:`test-results/visual-review/expanded-proof-${width}.png`});
+    const derivation=page.locator('.post-content h3').filter({hasText:'一维高斯 KL 的公式从哪里来'});
+    await derivation.scrollIntoViewIfNeeded();await expect(derivation).toBeVisible();
+    await page.screenshot({path:`test-results/visual-review/continuous-derivation-${width}.png`});
   }
 });
 
@@ -138,3 +135,15 @@ test('RSS uses the same requested dates as collection articles',async({request,b
    expect(new Date(date).toISOString().slice(0,10)).toBe(slug.startsWith('ddpm')?'2026-10-09':'2026-10-08');
  }
 });
+
+for(const [slug,id,title] of [
+ ['ddpm-2','选读两条方便训练的计算依据','两条方便训练的计算依据'],
+ ['ddpm-3','选读完整推导与边界','完整推导与边界'],
+ ['ddpm-4','选读原参数说明与采样算法完整表述','参数说明与完整采样算法']]){
+ test(`${slug} retains the former section deep link`,async({page,baseURL})=>{
+  await page.goto(url(baseURL,`posts/${slug}/#${encodeURIComponent(id)}`));
+  await page.evaluate(()=>MathJax.startup.promise);
+  const heading=page.locator(`[id="${id}"]`);
+  await expect(heading).toHaveText(title);await expect(heading).toBeVisible();await expect(heading).toBeInViewport();
+ });
+}

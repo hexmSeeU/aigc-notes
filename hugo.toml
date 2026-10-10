@@ -19,7 +19,7 @@ TocOpen = false
 ShowPostNavLinks = true
 hideFooter = true
 [params.homeInfoParams]
-Title = '理解原理，记录探索。'
+Title = '从噪声，到可能'
 Content = 'AIGC 学习笔记 · 从基础概念到研究前沿'
 [[menu.main]]
 name = '首页'
