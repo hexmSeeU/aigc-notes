@@ -102,7 +102,7 @@
 }
 
 .home-cover .home-cover__grain {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.94' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%239ca59b' filter='url(%23n)' opacity='.95' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.94' numOctaves='3' stitchTiles='stitch'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Cpath fill='%239ca59b' filter='url(%23n)' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
   background-size: 180px 180px;
 }
 
@@ -191,14 +191,15 @@
   55%, 78% { transform: scale(1); }
 }
 
+/* Hold an opaque noise field for the opening 1.2 seconds, then reveal the original artwork. */
 @keyframes home-cover-reveal {
-  0%, 100% { opacity: 0.56; }
+  0%, 10%, 100% { opacity: 1; }
   52%, 80% { opacity: 0; }
 }
 
 @keyframes home-cover-grain {
-  0%, 100% { opacity: 0.8; transform: translate3d(-1%, 1%, 0); }
-  52%, 80% { opacity: 0.025; transform: translate3d(1%, -1%, 0); }
+  0%, 10%, 100% { opacity: 1; transform: translate3d(-1%, 1%, 0); }
+  52%, 80% { opacity: 0; transform: translate3d(1%, -1%, 0); }
 }
 
 @media (max-width: 900px) {

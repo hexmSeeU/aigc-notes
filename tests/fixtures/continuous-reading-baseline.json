@@ -1,0 +1,195 @@
+[
+  {
+    "slug": "ddpm-1",
+    "math_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "math_count": 0,
+    "links": [
+      "{{< relref \"posts/ddpm-2\" >}}",
+      "https://arxiv.org/pdf/2006.11239"
+    ],
+    "heading_ids": [
+      "为什么先把好好的图片弄坏",
+      "真正想学的是往回走",
+      "这一篇先停在哪里"
+    ]
+  },
+  {
+    "slug": "ddpm-2",
+    "math_sha256": "ff09f5b0537162e685e07d4f89c1128abb52f43c0fa54c2ed04ab34b4c336d6d",
+    "math_count": 72,
+    "links": [
+      "{{< relref \"posts/ddpm-1\" >}}",
+      "{{< relref \"posts/ddpm-3\" >}}",
+      "{{< relref \"posts/ddpm-4\" >}}",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://arxiv.org/pdf/2006.11239"
+    ],
+    "heading_ids": [
+      "先做一道自己知道答案的题",
+      "怎样制造指定噪声程度的输入",
+      "让网络作答再比较误差",
+      "一次参数更新就是这四步",
+      "有答案也不表示每道题都能猜中",
+      "选读两条方便训练的计算依据",
+      "训练一次参数更新"
+    ]
+  },
+  {
+    "slug": "ddpm-3",
+    "math_sha256": "223e8ea9e563966c0b66f6797a8fda1824756691210fefcd1de3b8b4352853bd",
+    "math_count": 257,
+    "links": [
+      "{{< relref \"posts/ddpm-2\" >}}",
+      "{{< relref \"posts/ddpm-4\" >}}",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://lilianweng.github.io/posts/2021-07-11-diffusion-models/",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://arxiv.org/abs/2006.11239",
+      "https://lilianweng.github.io/posts/2021-07-11-diffusion-models/",
+      "https://proceedings.mlr.press/v139/nichol21a.html",
+      "https://github.com/openai/improved-diffusion/blob/main/improved_diffusion/gaussian_diffusion.py"
+    ],
+    "heading_ids": [
+      "先说明什么叫学到了图片规律",
+      "难点在于一张图片可以对应很多生成路径",
+      "整体目标可以拆成每一步的匹配任务",
+      "训练知道原图所以有一个能算的参考答案",
+      "用噪声来表达均值训练就接上了",
+      "第二篇的简单损失仍然多做了一次选择",
+      "选读完整推导与边界",
+      "阅读路线",
+      "符号约定",
+      "为什么从负对数似然走向路径上界",
+      "如何把正向路径改写成反向条件乘积",
+      "为什么单步-kl-外面留下这个期望",
+      "为什么给定原图的反向后验能够精确求出",
+      "配方读出后验均值和方差",
+      "高斯-kl-怎样变成均值平方误差",
+      "为什么预测噪声就能确定反向均值",
+      "训练知道原图-为什么模型仍只需要带噪输入",
+      "先积分原图-再识别真实反向-kl",
+      "这个常数等价结论究竟说明什么",
+      "用参考后验训练与拟合真实反向分布等价",
+      "简化噪声损失与原始上界差在哪里",
+      "从带权目标转向简化噪声损失",
+      "完整参考资料"
+    ]
+  },
+  {
+    "slug": "ddpm-4",
+    "math_sha256": "83730c97993ae6ad4745e6eb689d2f0f3d2c955cbd1c7c28ec854ea79bad0860",
+    "math_count": 95,
+    "links": [
+      "{{< relref \"posts/ddpm-2\" >}}",
+      "{{< relref \"posts/ddpm-3\" >}}",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://proceedings.mlr.press/v139/nichol21a/nichol21a.pdf",
+      "https://github.com/openai/improved-diffusion/blob/main/improved_diffusion/gaussian_diffusion.py",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://proceedings.mlr.press/v139/nichol21a/nichol21a.pdf",
+      "https://arxiv.org/pdf/2006.11239"
+    ],
+    "heading_ids": [
+      "从新抽取的随机噪声开始",
+      "一次预测怎样变成往回一步",
+      "先选正向日程再计算其他系数",
+      "反向方差有两种经典固定选择",
+      "把一次生成从头到尾收起来",
+      "选读原参数说明与采样算法完整表述",
+      "正向噪声-beta先选一张随时间变化的表",
+      "信号系数-alpha由-beta-算出不再独立挑选",
+      "另一种常见日程从累计信号设计-cosine",
+      "反向噪声-sigma选的是方差采样乘的是标准差",
+      "生成一张图片"
+    ]
+  },
+  {
+    "slug": "elbo-1",
+    "math_sha256": "65da26d5c3426094afcf3dd76d021f4b85846f2ed808f53597141c76f12e4f07",
+    "math_count": 102,
+    "links": [
+      "https://arxiv.org/html/1312.6114v11#S2.SS1",
+      "https://arxiv.org/html/1312.6114v11#S2.SS2",
+      "https://arxiv.org/abs/1312.6114",
+      "{{< relref \"posts/ae-to-vae\" >}}"
+    ],
+    "heading_ids": [
+      "1-训练生成模型究竟想提高什么",
+      "2-为什么一定要把各种-z-都考虑进去",
+      "3-难点不是运行一次解码器而是算完整个积分",
+      "4-引入-q只是先换一种写法",
+      "5-jensen先取对数再平均会得到什么",
+      "6-下界为什么比原目标好处理",
+      "7-先定义模型的精确后验",
+      "8-elbo-与对数似然到底差多少",
+      "9-固定模型和同时训练模型是两种情况",
+      "小结与自检",
+      "参考资料"
+    ]
+  },
+  {
+    "slug": "elbo-2",
+    "math_sha256": "32e424cdfcab04f21d8184103d72557b105b943a906df7e767a12afc146bed20",
+    "math_count": 111,
+    "links": [
+      "https://arxiv.org/html/1312.6114v11#S3",
+      "https://arxiv.org/html/1312.6114v11#S2.SS2",
+      "https://arxiv.org/abs/1601.00670",
+      "https://arxiv.org/abs/1312.6114",
+      "https://arxiv.org/abs/1601.00670"
+    ],
+    "heading_ids": [
+      "1-同样写成给定-x-后的-z来源却不同",
+      "生成模型先确定联合分布",
+      "编码器提供一个方便处理的近似",
+      "2-elbo-里已经包含了两个网络",
+      "3-重建项为什么能同时训练两个网络",
+      "4-编码器的目标只是让-z-变成高斯吗",
+      "5-两种-kl-怎样同时成立",
+      "6-变分是在优化一个什么对象",
+      "7-为什么最后仍然用普通反向传播",
+      "小结与自检",
+      "参考资料"
+    ]
+  },
+  {
+    "slug": "elbo-3",
+    "math_sha256": "55d4d909d236702fbf3bc0845f8efcd8a251c0b0633539789944d1c6dde2cb55",
+    "math_count": 113,
+    "links": [
+      "https://arxiv.org/html/1312.6114v11#S2.SS3",
+      "https://arxiv.org/html/1312.6114v11#S2.SS3",
+      "https://arxiv.org/html/1312.6114v11#A2",
+      "https://arxiv.org/abs/2006.11239",
+      "{{< relref \"posts/ddpm-derivation\" >}}",
+      "https://arxiv.org/abs/1312.6114",
+      "https://arxiv.org/abs/2006.11239",
+      "{{< relref \"posts/ae-to-vae\" >}}",
+      "{{< relref \"posts/ddpm-derivation\" >}}"
+    ],
+    "heading_ids": [
+      "1-先选定这一次讨论的模型",
+      "2-最大化-elbo先改成最小化负-elbo",
+      "3-编码器输出-logvar怎样得到实际的-z",
+      "4-解码分布决定重建项怎样计算",
+      "5-理论上要对-z-平均每次训练怎么做",
+      "6-kl-为什么可以直接用-μ-和-logvar-算",
+      "7-把每张图片的两项相加再平均-batch",
+      "8-这次得到的数字还一定是一个上界吗",
+      "9-接回-ddpm把潜变量换成整条路径",
+      "10-辅助分布固定为什么下界差距仍会变",
+      "小结三个连接现在闭合了",
+      "参考资料"
+    ]
+  }
+]

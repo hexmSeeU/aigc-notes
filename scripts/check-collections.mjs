@@ -2,11 +2,15 @@ import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 const dir=process.argv[2]||'public';
+const readingBaseline=JSON.parse(fs.readFileSync('tests/fixtures/continuous-reading-baseline.json','utf8'));
 const manifest=JSON.parse(fs.readFileSync('tests/fixtures/collection-manifest.json','utf8'));
 for(const item of manifest){
  const slug=item.target.split('/')[2];
  const html=fs.readFileSync(path.join(dir,'posts',slug,'index.html'),'utf8');
  assert.equal((html.match(/<details\b[^>]*\bclass=(?:"proof"|'proof'|proof(?=[\s>]))/g)||[]).length,item.proofs,slug+' proof count');
+ const ids=[...html.matchAll(/<h[23]\b[^>]*\bid=(?:"([^"]+)"|'([^']+)'|([^\s>]+))/g)].map(m=>m[1]??m[2]??m[3]);
+ for(const id of readingBaseline.find(x=>x.slug===slug).heading_ids)assert.ok(ids.includes(id),slug+' preserved heading '+id);
+ assert.equal(new Set(ids).size,ids.length,slug+' unique heading IDs');
  assert.ok(!html.includes('raw HTML omitted'),slug+' omitted content');
  assert.equal((html.match(/aria-current=(?:"page"|'page'|page(?=[\s>]))/g)||[]).length,1,slug+' current episode');
  assert.ok(html.includes('/collections/'+slug.split('-')[0]+'/'),slug+' collection');
