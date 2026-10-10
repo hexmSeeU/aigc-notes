@@ -81,13 +81,13 @@ test('DDIM and VAE remain available alongside the new releases', async ({page, r
   const titles = [title, '从 AE 到 VAE：让潜变量成为一个分布'];
   for (const path of ['/', '/posts/', '/categories/基础/']) {
     await page.goto(path);
-    await expect(page.locator('.post-entry')).toHaveCount(9);
+    await expect(page.locator('.post-entry')).toHaveCount(10);
     for(const name of titles) await expect(page.locator('.post-entry h2').filter({hasText:name})).toHaveCount(1);
     await expect(page.locator('.post-entry .entry-link[href$="/posts/ddpm-derivation/"]')).toHaveCount(0);
   }
   await page.goto('/archives/');
-  await expect(page.locator('.archive-entry')).toHaveCount(4);
-  await expect(page.locator('.archive-entry').last()).toContainText(title);
+  await expect(page.locator('.archive-entry')).toHaveCount(5);
+  await expect(page.locator('.archive-entry').filter({has:page.locator('a[href$="/posts/ddim-derivation/"]')})).toContainText(title);
   const response = await request.get('/index.xml');
   expect(response.ok()).toBe(true);
   const rss = await response.text();

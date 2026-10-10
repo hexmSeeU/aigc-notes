@@ -1,0 +1,62 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {createHash} from 'node:crypto';
+import {validateArticle} from '../scripts/check-content.mjs';
+const read=path=>{
+ assert.ok(fs.existsSync(path),`Expected ${path}`);
+ const source=fs.readFileSync(path,'utf8'),end=source.indexOf('\n}\n')+2;
+ return {meta:JSON.parse(source.slice(0,end)),body:source.slice(end).trim()};
+};
+test('guidance collection publishes only the requested CG article',()=>{
+ const collection=read('content/collections/guidance/index.md');
+ assert.equal(collection.meta.title,'扩散模型引导：CG 与 CFG');
+ assert.equal(collection.meta.collectionId,'guidance');
+ assert.equal(collection.meta.layout,'collection');
+ assert.equal(collection.meta.hiddenInRss,true);
+ assert.equal(collection.meta.date.slice(0,10),'2026-10-10');
+ assert.equal(collection.meta.archiveOrder,5);
+ const article=read('content/posts/classifier-guidance/index.md');
+ assert.deepEqual(validateArticle(article.meta),[]);
+ assert.equal(article.meta.title,'扩散模型引导（一）：Classifier Guidance');
+ assert.equal(article.meta.slug,'classifier-guidance');
+ assert.equal(article.meta.collection,'guidance');
+ assert.equal(article.meta.episode,1);
+ assert.equal(article.meta.math,true);
+ assert.equal(article.meta.draft,false);
+ assert.equal(article.meta.date.slice(0,10),'2026-10-10');
+ const members=fs.readdirSync('content/posts').map(s=>read(`content/posts/${s}/index.md`)).filter(x=>x.meta.collection==='guidance');
+ assert.equal(members.length,1);
+ assert.doesNotMatch(article.body.replace(/```[\s\S]*?```/g,''),/<details|<summary|proof-open|选读|^# |\]\([^)]*\.md\)/m);
+ assert.doesNotMatch(article.body,/classifier-free-guidance\/|posts\/cfg|TODO|TBD/);
+ assert.equal(collection.meta.prerequisite,'/posts/ddim-derivation');
+ assert.equal(collection.meta.prerequisiteLabel,'前置：DDIM 跳步采样');
+});
+test('CG collection uses its explicit DDIM prerequisite without changing older collections',()=>{
+ const template=fs.readFileSync('layouts/collection.html','utf8');
+ assert.match(template,/with \.Params\.prerequisite/);
+ assert.match(template,/site.GetPage \./);
+ assert.match(template,/prerequisiteLabel/);
+});
+
+test('CG preserves the reviewed full body, all equations, proofs, references and sampling code',()=>{
+ const {body}=read('content/posts/classifier-guidance/index.md');
+ const fixture=JSON.parse(fs.readFileSync('tests/fixtures/guidance-preservation.json','utf8'));
+ const hash=s=>createHash('sha256').update(s).digest('hex');
+ assert.equal(hash(body),fixture.body_sha256,'Every reviewed body byte is preserved');
+ const math=[...body.matchAll(/\$\$([\s\S]*?)\$\$|\\\(([\s\S]*?)\\\)/g)].map(m=>(m[1]??m[2]).trim());
+ assert.equal(hash(JSON.stringify(math)),fixture.math_sha256);
+ assert.equal(math.length,fixture.math_count);
+ assert.equal([...body.matchAll(/\$\$([\s\S]*?)\$\$/g)].length,fixture.display_math);
+ assert.equal([...body.matchAll(/\\\(([\s\S]*?)\\\)/g)].length,fixture.inline_math);
+ assert.deepEqual([...body.matchAll(/\\tag\{(\d+)\}/g)].map(m=>Number(m[1])),Array.from({length:38},(_,i)=>i+1));
+ assert.deepEqual([...body.matchAll(/^#{2,3} (.*)$/gm)].map(m=>m[1]),fixture.headings);
+ const code=body.match(/```python\n([\s\S]*?)\n```/)[1];
+ assert.equal(hash(code),fixture.code_sha256);
+ const checks=body.split('## 11 回头检查这条推导')[1].split('## 参考')[0];
+ const answers=[...checks.matchAll(/^\*\*([^\n]+？)\*\*\n\n([^\n]+)/gm)];
+ assert.deepEqual(answers.map(m=>m[1]),fixture.selfcheck_questions);
+ assert.equal(answers.length,7);
+ for(const [,question,answer] of answers)assert.ok(answer.length>30,question+' has an explanation');
+ assert.doesNotMatch(math.join('\n'),/</,'Math uses HTML-safe TeX comparisons');
+});

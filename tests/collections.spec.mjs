@@ -49,11 +49,11 @@ for(const width of [320,375,768,1440]){
     await page.setViewportSize({width,height:900});
     await page.goto(url(baseURL,'archives/'));
     const entries=page.locator('.archive-entry');
-    await expect(entries).toHaveCount(4);
-    await expect(entries.locator('h3')).toHaveText(['从 AE 到 VAE：让潜变量成为一个分布','ELBO：从似然下界到训练损失','理解 DDPM：原理与推导','DDIM：从边缘分布到跳步采样']);
-    expect(await entries.locator('time').evaluateAll(xs=>xs.map(x=>x.getAttribute('datetime')))).toEqual(['2026-10-08','2026-10-08','2026-10-09','2026-10-09']);
-    expect(await entries.locator('.entry-link').evaluateAll(xs=>xs.map(x=>new URL(x.href).pathname.split('/').filter(Boolean).slice(-2).join('/')))).toEqual(['posts/ae-to-vae','collections/elbo','collections/ddpm','posts/ddim-derivation']);
-    expect(await entries.evaluateAll(xs=>xs.map(x=>x.className))).toEqual(Array(4).fill('archive-entry'));
+    await expect(entries).toHaveCount(5);
+    await expect(entries.locator('h3')).toHaveText(['从 AE 到 VAE：让潜变量成为一个分布','ELBO：从似然下界到训练损失','理解 DDPM：原理与推导','DDIM：从边缘分布到跳步采样','扩散模型引导：CG 与 CFG']);
+    expect(await entries.locator('time').evaluateAll(xs=>xs.map(x=>x.getAttribute('datetime')))).toEqual(['2026-10-08','2026-10-08','2026-10-09','2026-10-09','2026-10-10']);
+    expect(await entries.locator('.entry-link').evaluateAll(xs=>xs.map(x=>new URL(x.href).pathname.split('/').filter(Boolean).slice(-2).join('/')))).toEqual(['posts/ae-to-vae','collections/elbo','collections/ddpm','posts/ddim-derivation','collections/guidance']);
+    expect(await entries.evaluateAll(xs=>xs.map(x=>x.className))).toEqual(Array(5).fill('archive-entry'));
     const styles=await entries.locator('h3').evaluateAll(xs=>xs.map(x=>({font:getComputedStyle(x).fontFamily,size:getComputedStyle(x).fontSize,weight:getComputedStyle(x).fontWeight,color:getComputedStyle(x).color})));
     for(const style of styles)expect(style).toEqual(styles[0]);
     await expect(page.locator('.archive-collections,.archive-standalone,details')).toHaveCount(0);
@@ -99,11 +99,11 @@ test('direct proof anchors reach continuous content and remain usable after repe
   const toc=page.locator('.reading-toc details');await toc.evaluate(el=>el.open=true);
   await toc.locator(`a[href="#${id}"]`).click();await expect(heading).toBeVisible();
 });
-test('home and RSS expose seven releases without duplicate legacy or collection entries',async({page,request,baseURL})=>{
+test('home and RSS expose ten releases without duplicate legacy or collection entries',async({page,request,baseURL})=>{
   await page.goto(baseURL);
   await expect(page.locator('.home-collections')).toHaveCount(0);
   await expect(page.locator('main')).not.toContainText('学习合集');
-  await expect(page.locator('.post-entry')).toHaveCount(9);
+  await expect(page.locator('.post-entry')).toHaveCount(10);
   const rss=await (await request.get(url(baseURL,'index.xml'))).text();
   for(const item of manifest)expect(rss).toContain(`/posts/${item.target.split('/')[2]}/`);
   expect(rss).not.toContain('/posts/ddpm-derivation/');
