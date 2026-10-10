@@ -1,0 +1,118 @@
+[
+  {
+    "slug": "ae-to-vae",
+    "question_count": 3,
+    "questions": [
+      "如果只保留 KL，编码器最容易输出什么？",
+      "如果一次输入 \\(32\\) 张图，为什么 \\(\\mu\\) 不是只有 \\(16\\) 个数？",
+      "生成时，\\(z\\) 又是从哪里来的？"
+    ],
+    "original_source_sha256": "46aa5408a980daf6d653f777c346a52252a6f755985d867eb61ebe7508eac327",
+    "original_meta": {
+      "title": "从 AE 到 VAE：让潜变量成为一个分布",
+      "description": "从一张 28×28 的手写数字出发，理解编码器、重参数化与 KL 损失，串起 VAE 的训练和生成。",
+      "date": "2026-10-08T16:00:00+08:00",
+      "lastmod": "2026-10-08T18:00:20+08:00",
+      "slug": "ae-to-vae",
+      "categories": [
+        "基础"
+      ],
+      "tags": [
+        "VAE",
+        "生成模型"
+      ],
+      "draft": false,
+      "math": true,
+      "summary": "从一张手写数字出发，逐步理解高斯潜变量、重参数化与 KL 损失。附训练与生成示意图、关键公式和张量维度表。",
+      "archiveOrder": 1
+    }
+  },
+  {
+    "slug": "elbo-1",
+    "question_count": 4,
+    "questions": [
+      "积分时固定的是谁，遍历的是谁？为什么一个 \\(z\\) 的条件密度不等于图片似然？",
+      "引入 \\(q\\) 时为什么必须再除以它？这一阶段有没有改变原来的似然？",
+      "为什么“先取 log 再平均”得到的是下界？取负号后方向怎样变化？",
+      "固定生成模型时，调整 \\(q\\) 为什么只能改变下界差距，而不会改变图片似然？"
+    ],
+    "original_source_sha256": "f8b7676c73774645b82520fc935b8289eb04b3eed6f03142e1e57cf0463744f4",
+    "original_meta": {
+      "title": "ELBO（一）：为什么生成模型需要一个似然下界？",
+      "description": "从潜变量积分的困难出发，推到 Jensen 下界与模型后验差距。",
+      "summary": "从潜变量积分的困难出发，推到 Jensen 下界与模型后验差距。",
+      "date": "2026-10-08T14:52:00+08:00",
+      "slug": "elbo-1",
+      "categories": [
+        "基础"
+      ],
+      "tags": [
+        "ELBO",
+        "VAE",
+        "变分推断"
+      ],
+      "draft": false,
+      "math": true,
+      "collection": "elbo",
+      "episode": 1
+    }
+  },
+  {
+    "slug": "elbo-2",
+    "question_count": 2,
+    "questions": [
+      "如果只最小化先验 KL，会不会自动得到有用的编码？",
+      "为什么解释“完整编码器目标等价于后验拟合”时，必须先固定生成模型？"
+    ],
+    "original_source_sha256": "39910f4991fb903eb2b9e9919bea08a5b7011ff9fa02a73c2f461170ae1ce5f4",
+    "original_meta": {
+      "title": "ELBO（二）：VAE 的编码器究竟在学什么？",
+      "description": "把 ELBO 放回编码器和解码器，分清先验 KL、后验 KL 与变分推断。",
+      "summary": "把 ELBO 放回编码器和解码器，分清先验 KL、后验 KL 与变分推断。",
+      "date": "2026-10-08T14:52:00+08:00",
+      "slug": "elbo-2",
+      "categories": [
+        "基础"
+      ],
+      "tags": [
+        "ELBO",
+        "VAE",
+        "变分推断"
+      ],
+      "draft": false,
+      "math": true,
+      "collection": "elbo",
+      "episode": 2
+    }
+  },
+  {
+    "slug": "elbo-3",
+    "question_count": 4,
+    "questions": [
+      "logvar 怎样变成标准差？",
+      "编码器方差与解码方差分别描述谁？",
+      "为什么单次 loss 不必保持理论上界？",
+      "DDPM 中作为潜变量的到底是最终噪声，还是整条路径？"
+    ],
+    "original_source_sha256": "69bca43d99241aa477d952d66dddae93b685abb360dfceac0c225b3c140fceee",
+    "original_meta": {
+      "title": "ELBO（三）：怎样把训练目标算成一个 loss？",
+      "description": "把网络输出、重参数化、重建项和 KL 变成实际 loss，再接回 DDPM。",
+      "summary": "把网络输出、重参数化、重建项和 KL 变成实际 loss，再接回 DDPM。",
+      "date": "2026-10-08T14:52:00+08:00",
+      "slug": "elbo-3",
+      "categories": [
+        "基础"
+      ],
+      "tags": [
+        "ELBO",
+        "VAE",
+        "变分推断"
+      ],
+      "draft": false,
+      "math": true,
+      "collection": "elbo",
+      "episode": 3
+    }
+  }
+]

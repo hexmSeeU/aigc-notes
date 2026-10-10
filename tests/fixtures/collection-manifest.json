@@ -36,7 +36,7 @@
     "source_sha256": "03e24c9af408b16d96abbb2b1909f4b23a8d7b5523972c9aa3f3aeeb84029763",
     "target": "content/posts/elbo-1/index.md",
     "display_math": 27,
-    "inline_math": 75,
+    "inline_math": 91,
     "proofs": 0
   },
   {
@@ -44,7 +44,7 @@
     "source_sha256": "ea71ca80b95eec09024c050c78c0e24e67b347a73a7e19488abd51b02caaca36",
     "target": "content/posts/elbo-2/index.md",
     "display_math": 30,
-    "inline_math": 81,
+    "inline_math": 88,
     "proofs": 0
   },
   {
@@ -52,7 +52,7 @@
     "source_sha256": "4f51d1bcf421f23c2df0c8b47d014d52cce994b1b569b77f5d065731b9bda3f5",
     "target": "content/posts/elbo-3/index.md",
     "display_math": 23,
-    "inline_math": 90,
+    "inline_math": 107,
     "proofs": 0
   }
 ]
