@@ -4,7 +4,7 @@
 {{- $collection := site.GetPage (printf "/collections/%s" $id) }}
 {{- $episodes := (where site.RegularPages "Params.collection" $id).ByParam "episode" }}
 <nav class="collection-nav" aria-label="{{ upper $id }} 合集选集">
-  <div class="collection-nav__header"><a href="{{ $collection.RelPermalink }}">{{ upper $id }} 合集</a><span>第 {{ $page.Params.episode }} / {{ len $episodes }} 篇</span></div>
+  <div class="collection-nav__header"><a href="{{ $collection.RelPermalink }}">{{ $collection.Title }}</a><span>第 {{ $page.Params.episode }} / {{ len $episodes }} 篇</span></div>
   <details class="collection-picker" open>
     <summary>选集 · 按顺序阅读</summary>
     <ol class="episode-list">

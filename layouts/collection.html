@@ -2,7 +2,7 @@
 <article class="collection-page">
   <header class="page-header"><p class="eyebrow">学习合集 · {{ upper .Params.collectionId }}</p><h1>{{ .Title }}</h1><p class="post-description">{{ .Description }}</p></header>
   {{ $episodes := (where site.RegularPages "Params.collection" .Params.collectionId).ByParam "episode" }}
-  <p class="collection-count">共 {{ len $episodes }} 篇 · 每篇可独立打开</p>
+  <p class="collection-count"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006年1月2日" }}</time> · 共 {{ len $episodes }} 篇 · 每篇可独立打开</p>
   <ol class="collection-episodes">
   {{ range $episodes }}
     <li><a class="episode-card" href="{{ .RelPermalink }}"><span class="episode-number">{{ .Params.episode }}</span><div><h2>{{ .Title }}</h2><p>{{ .Description }}</p><span class="episode-read">阅读本篇 →</span></div></a></li>

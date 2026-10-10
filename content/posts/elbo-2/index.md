@@ -2,7 +2,7 @@
   "title": "ELBO（二）：VAE 的编码器究竟在学什么？",
   "description": "把 ELBO 放回编码器和解码器，分清先验 KL、后验 KL 与变分推断。",
   "summary": "把 ELBO 放回编码器和解码器，分清先验 KL、后验 KL 与变分推断。",
-  "date": "2026-10-10T14:52:00+08:00",
+  "date": "2026-10-08T14:52:00+08:00",
   "slug": "elbo-2",
   "categories": [
     "基础"

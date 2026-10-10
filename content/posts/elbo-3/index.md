@@ -2,7 +2,7 @@
   "title": "ELBO（三）：怎样把训练目标算成一个 loss？",
   "description": "把网络输出、重参数化、重建项和 KL 变成实际 loss，再接回 DDPM。",
   "summary": "把网络输出、重参数化、重建项和 KL 变成实际 loss，再接回 DDPM。",
-  "date": "2026-10-10T14:52:00+08:00",
+  "date": "2026-10-08T14:52:00+08:00",
   "slug": "elbo-3",
   "categories": [
     "基础"
