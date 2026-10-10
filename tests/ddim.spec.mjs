@@ -77,22 +77,23 @@ for (const width of [320, 375, 768, 1440]) {
   });
 }
 
-test('DDIM appears first across the article lists and RSS, retaining DDPM and VAE', async ({page, request}) => {
-  const titles = [title, 'DDPM：从似然目标到噪声预测的完整推导', '从 AE 到 VAE：让潜变量成为一个分布'];
+test('DDIM and VAE remain available alongside the new releases', async ({page, request}) => {
+  const titles = [title, '从 AE 到 VAE：让潜变量成为一个分布'];
   for (const path of ['/', '/posts/', '/categories/基础/']) {
     await page.goto(path);
-    await expect(page.locator('.post-entry h2')).toHaveText(titles);
-    await expect(page.locator('.post-entry').first().locator('.entry-link')).toHaveAttribute('href', /\/posts\/ddim-derivation\/$/);
+    await expect(page.locator('.post-entry')).toHaveCount(9);
+    for(const name of titles) await expect(page.locator('.post-entry h2').filter({hasText:name})).toHaveCount(1);
+    await expect(page.locator('.post-entry .entry-link[href$="/posts/ddpm-derivation/"]')).toHaveCount(0);
   }
   await page.goto('/archives/');
-  await expect(page.locator('.archive-entry .entry-link')).toHaveCount(3);
-  await expect(page.locator('.archive-entry').first()).toContainText(title);
+  await expect(page.locator('.archive-standalone .archive-note')).toHaveCount(2);
+  await expect(page.locator('.archive-standalone .archive-note').first()).toContainText(title);
   const response = await request.get('/index.xml');
   expect(response.ok()).toBe(true);
   const rss = await response.text();
   for (const name of titles) expect(rss).toContain(`<title>${name}</title>`);
-  expect(rss.indexOf('/posts/ddim-derivation/')).toBeLessThan(rss.indexOf('/posts/ddpm-derivation/'));
-  expect(rss.indexOf('/posts/ddpm-derivation/')).toBeLessThan(rss.indexOf('/posts/ae-to-vae/'));
+  expect(rss).not.toContain('/posts/ddpm-derivation/');
+  expect(rss.indexOf('/posts/ddim-derivation/')).toBeLessThan(rss.indexOf('/posts/ae-to-vae/'));
 });
 
 for (const width of [375, 1440]) {
@@ -100,17 +101,15 @@ for (const width of [375, 1440]) {
     await page.setViewportSize({width, height: 900});
     await page.goto(route);
     const previous = page.locator('.post-content').getByRole('link', {name: 'DDPM 笔记', exact: true});
-    await expect(previous).toHaveAttribute('href', 'https://hexmseeu.github.io/aigc-notes/posts/ddpm-derivation/');
-    const adjacent = page.locator('.paginav a').filter({hasText: 'DDPM：从似然目标到噪声预测的完整推导'});
-    await expect(adjacent).toHaveCount(1);
-    await adjacent.click();
+    await expect(previous).toHaveAttribute('href', /\/posts\/ddpm-derivation\/$/);
+    await previous.click();
     await expect(page).toHaveURL(/\/posts\/ddpm-derivation\/$/);
     await expect(page.locator('h1')).toHaveText('DDPM：从似然目标到噪声预测的完整推导');
     await page.goBack();
     await expect(page.locator('h1')).toHaveText(title);
     await page.locator('#menu').getByRole('link', {name: '首页', exact: true}).click();
     await expect(page.locator('[data-home-cover]')).toBeVisible();
-    await expect(page.locator('.post-entry').first()).toContainText(title);
+    await expect(page.locator('.post-entry').filter({hasText:title})).toHaveCount(1);
     await page.goBack();
     await expect(page.locator('h1')).toHaveText(title);
     await page.goForward();

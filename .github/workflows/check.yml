@@ -18,6 +18,12 @@ jobs:
           curl -fsSL https://github.com/gohugoio/hugo/releases/download/v0.150.1/hugo_extended_0.150.1_linux-amd64.tar.gz -o /tmp/hugo.tgz
           tar -xzf /tmp/hugo.tgz -C /tmp
           echo /tmp >> "$GITHUB_PATH"
-      - run: hugo --destination /tmp/root-site --baseURL https://example.org/ && node scripts/check-output.mjs /tmp/root-site https://example.org/
-      - run: hugo --destination /tmp/sub-site --baseURL https://example.org/aigc-notes/ && node scripts/check-output.mjs /tmp/sub-site https://example.org/aigc-notes/
-      - run: npx playwright install --with-deps chromium && npm run test:browser
+      - run: hugo --destination /tmp/root-site --baseURL https://example.org/ && node scripts/check-output.mjs /tmp/root-site https://example.org/ && node scripts/check-collections.mjs /tmp/root-site
+      - run: hugo --destination /tmp/sub-site --baseURL https://example.org/aigc-notes/ && node scripts/check-output.mjs /tmp/sub-site https://example.org/aigc-notes/ && node scripts/check-collections.mjs /tmp/sub-site
+      - run: npx playwright install --with-deps chromium && npm run test:browser && npm run test:collections:subpath
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: collection-browser-review
+          path: test-results/
+          retention-days: 1

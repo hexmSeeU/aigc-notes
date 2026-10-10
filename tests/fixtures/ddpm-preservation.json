@@ -1,0 +1,2708 @@
+{
+  "source_url": "https://github.com/hexmSeeU/aigc-notes/blob/main/content/posts/ddpm-derivation/index.md",
+  "source_blob_sha": "f23d87df84d440e5800a0cb965bd458ada479b8a",
+  "source_bytes": 39168,
+  "target_source_sha256": {
+    "01-what-ddpm-does.md": "f45af97f4f84fb668ee276c008f35a461bef3c184280bc4b24909a1d19de06a9",
+    "02-how-ddpm-trains.md": "82081a264839bf901207eddaa8d216590fc3ec4bfb9edccc6eb94cf4dd76955a",
+    "03-why-ddpm-works.md": "699e3bc1cf8a551458c73ccb51bd1d78462247516907f012a5ed0a66c95e521a",
+    "04-how-ddpm-samples.md": "baea0e2ee2a5ece60bcb7bcdf89a2cae553120c206298317331228b58360746c"
+  },
+  "article_count": 4,
+  "scope": "All original body paragraphs, tables, list blocks, displayed equations, examples, algorithms, parameters, and references. Metadata and heading layout are structural and excluded. Only seven explicitly reviewed cross-reference retargetings are allowed.",
+  "original_sections": 17,
+  "original_body_units": 226,
+  "verbatim_units": 221,
+  "cross_reference_only_units": 5,
+  "cross_reference_edits": 7,
+  "displayed_equations_preserved": 82,
+  "missing_units": 0,
+  "missing_displayed_equations": 0,
+  "result": "PASS",
+  "section_mapping": [
+    {
+      "original_section": "阅读路线",
+      "body_units": 4,
+      "verbatim_units": 4,
+      "cross_reference_only_units": 0,
+      "targets": [
+        "03-why-ddpm-works.md"
+      ]
+    },
+    {
+      "original_section": "符号约定",
+      "body_units": 2,
+      "verbatim_units": 2,
+      "cross_reference_only_units": 0,
+      "targets": [
+        "03-why-ddpm-works.md"
+      ]
+    },
+    {
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "body_units": 17,
+      "verbatim_units": 17,
+      "cross_reference_only_units": 0,
+      "targets": [
+        "02-how-ddpm-trains.md"
+      ]
+    },
+    {
+      "original_section": "2 为什么从负对数似然走向路径上界",
+      "body_units": 14,
+      "verbatim_units": 14,
+      "cross_reference_only_units": 0,
+      "targets": [
+        "03-why-ddpm-works.md"
+      ]
+    },
+    {
+      "original_section": "3 如何把正向路径改写成反向条件乘积",
+      "body_units": 15,
+      "verbatim_units": 15,
+      "cross_reference_only_units": 0,
+      "targets": [
+        "03-why-ddpm-works.md"
+      ]
+    },
+    {
+      "original_section": "4 为什么单步 KL 外面留下这个期望",
+      "body_units": 14,
+      "verbatim_units": 14,
+      "cross_reference_only_units": 0,
+      "targets": [
+        "03-why-ddpm-works.md"
+      ]
+    },
+    {
+      "original_section": "5 为什么给定原图的反向后验能够精确求出",
+      "body_units": 13,
+      "verbatim_units": 13,
+      "cross_reference_only_units": 0,
+      "targets": [
+        "03-why-ddpm-works.md"
+      ]
+    },
+    {
+      "original_section": "6 配方读出后验均值和方差",
+      "body_units": 16,
+      "verbatim_units": 16,
+      "cross_reference_only_units": 0,
+      "targets": [
+        "01-what-ddpm-does.md",
+        "03-why-ddpm-works.md"
+      ]
+    },
+    {
+      "original_section": "7 高斯 KL 怎样变成均值平方误差",
+      "body_units": 13,
+      "verbatim_units": 13,
+      "cross_reference_only_units": 0,
+      "targets": [
+        "03-why-ddpm-works.md"
+      ]
+    },
+    {
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "body_units": 17,
+      "verbatim_units": 17,
+      "cross_reference_only_units": 0,
+      "targets": [
+        "03-why-ddpm-works.md"
+      ]
+    },
+    {
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "body_units": 29,
+      "verbatim_units": 29,
+      "cross_reference_only_units": 0,
+      "targets": [
+        "03-why-ddpm-works.md"
+      ]
+    },
+    {
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "body_units": 18,
+      "verbatim_units": 18,
+      "cross_reference_only_units": 0,
+      "targets": [
+        "02-how-ddpm-trains.md",
+        "03-why-ddpm-works.md"
+      ]
+    },
+    {
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "body_units": 16,
+      "verbatim_units": 16,
+      "cross_reference_only_units": 0,
+      "targets": [
+        "03-why-ddpm-works.md"
+      ]
+    },
+    {
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "body_units": 24,
+      "verbatim_units": 21,
+      "cross_reference_only_units": 3,
+      "targets": [
+        "04-how-ddpm-samples.md"
+      ]
+    },
+    {
+      "original_section": "12 训练与采样分别怎样执行",
+      "body_units": 8,
+      "verbatim_units": 6,
+      "cross_reference_only_units": 2,
+      "targets": [
+        "02-how-ddpm-trains.md",
+        "04-how-ddpm-samples.md"
+      ]
+    },
+    {
+      "original_section": "最后把整条推导接起来",
+      "body_units": 2,
+      "verbatim_units": 2,
+      "cross_reference_only_units": 0,
+      "targets": [
+        "03-why-ddpm-works.md"
+      ]
+    },
+    {
+      "original_section": "参考资料",
+      "body_units": 4,
+      "verbatim_units": 4,
+      "cross_reference_only_units": 0,
+      "targets": [
+        "03-why-ddpm-works.md"
+      ]
+    }
+  ],
+  "paragraph_mapping": [
+    {
+      "id": 1,
+      "original_section": "阅读路线",
+      "source_line": 21,
+      "original_text_sha256": "a9ae3cd0bf582f4d29efaf658eb8ae86ee26712d37e19d771478399fe5e043ab",
+      "original_text": "DDPM 想解决的是：怎样让一个从高斯噪声出发的模型，生成符合真实数据分布的图片？推导的起点是图片的负对数似然，终点才是我们熟悉的噪声预测平方误差。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 118,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 2,
+      "original_section": "阅读路线",
+      "source_line": 23,
+      "original_text_sha256": "8fd4f127b659a9d6a99a6141283a4d63cab18346cc422e51190746249473ac09",
+      "original_text": "这份整理把已学内容接成一条完整的链。每一步都回答两个问题：**为什么要做这一步，以及它与前一步是什么关系。**",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 120,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 3,
+      "original_section": "阅读路线",
+      "source_line": 25,
+      "original_text_sha256": "2fe062e51f2d5ecaec1e20605df9a54af43bceb374c748df2d271945ea78ffc2",
+      "original_text": "1. **规定正反向过程。** 正向逐步加噪，反向逐步生成；先弄清每个分布描述什么\n2. **从似然到上界。** 图片密度涉及所有中间路径的积分，借助正向路径和 Jensen 不等式得到可训练的上界\n3. **从整体到局部。** 用贝叶斯公式和连续约分，把上界精确拆成噪声端、反向单步 KL 和重建项\n4. **算出监督答案。** 给定原图与当前状态，反向一步的后验是可解析计算的高斯分布\n5. **从分布到预测误差。** 固定模型方差后，高斯 KL 化为均值平方误差；再重参数化为带权噪声平方误差\n6. **解释训练与生成。** 区分数据平均与单图损失，证明原图只提供监督；最后整理简化目标、训练与采样",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 122,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 4,
+      "original_section": "阅读路线",
+      "source_line": 32,
+      "original_text_sha256": "88ffd431166d509a038026df32c4d50c0fae252d619877faaf5b3216169ade85",
+      "original_text": "**最重要的边界。** Jensen 给出的是不等式；路径分解、后验计算和固定方差下的 KL 改写是精确等式；选择高斯反向模型是建模选择；去掉 timestep 权重得到简化训练目标，是目标的调整。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 129,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 5,
+      "original_section": "符号约定",
+      "source_line": 36,
+      "original_text_sha256": "d8525ed4e7fb3098e2cbbea824f397e63793352c12615f9c278f0ac8d2b27f56",
+      "original_text": "| 符号 | 含义 |\n|---|---|\n| \\(x_0\\)，\\(x_t\\)，\\(T\\) | 原图、第 \\(t\\) 步的带噪状态、总步数；图片视为 \\(d\\) 维向量 |\n| \\(q_{\\mathrm{data}}(x_0)\\) | 真实数据分布；训练时由数据集抽样近似 |\n| \\(q\\)，\\(p_\\theta\\) | 固定的正向加噪过程，带参数 \\(\\theta\\) 的生成模型 |\n| \\(\\beta_t\\)，\\(\\alpha_t\\)，\\(\\overline{\\alpha}_t\\) | 单步噪声方差，\\(\\alpha_t=1-\\beta_t\\)，\\(\\overline{\\alpha}_t=\\prod_{s=1}^{t}\\alpha_s\\) |\n| \\(I\\)，\\(\\epsilon\\)，\\(z\\) | 单位矩阵、直接加噪时的标准噪声、反向采样时新抽的标准噪声 |\n| \\(\\tilde\\mu_t\\)，\\(\\tilde\\beta_t\\) | 已知 \\(x_0,x_t\\) 时的真实后验均值与方差 |\n| \\(\\mu_\\theta\\)，\\(\\sigma_t^2\\) | 模型反向分布的均值与方差；\\(\\sigma_t\\) 是标准差 |",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 133,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 6,
+      "original_section": "符号约定",
+      "source_line": 46,
+      "original_text_sha256": "fa822641c9169220f2881a446982538359e3d981ecd1efea607e3c374e4038cc",
+      "original_text": "**图片维数 d。** \\(d\\) 是一张图片展开后的标量总数：高为 \\(H\\)、宽为 \\(W\\)、通道数为 \\(C\\) 时，\\(d=H\\times W\\times C\\)。例如 \\(32\\times32\\) 的 RGB 图片有 \\(d=32\\times32\\times3=3072\\) 个分量。它不是训练集中的图片数；\\(I\\) 是 \\(d\\times d\\) 的单位矩阵。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 143,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 7,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 50,
+      "original_text_sha256": "7437118d0eda3618c8d885285b589d7d49c0547a8bc954ae41477224fb69bfb9",
+      "original_text": "先选择一组固定的噪声方差 \\(0<\\beta_t<1\\)。正向一步定义为",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 88,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 8,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 52,
+      "original_text_sha256": "55653549c74d04226cec0c1cef212e0d337f24b3d3592161e46e7efb425f5e57",
+      "original_text": "$$q(x_t\\mid x_{t-1})=\\mathcal N\\!\\left(x_t;\\sqrt{\\alpha_t}x_{t-1},\\beta_t I\\right),\\qquad \\alpha_t=1-\\beta_t. \\qquad (1)$$",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 90,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 9,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 54,
+      "original_text_sha256": "b764205d4d99d7315c426eb91f0f98401e6e5407afd929ba2005b83e5dea8ee5",
+      "original_text": "这里 \\(\\mathcal N(x;\\mu,\\Sigma)\\) 表示在 \\(x\\) 处的高斯密度。条件中固定了 \\(x_{t-1}\\)，剩下的随机量是 \\(x_t\\)。等价的抽样写法是",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 92,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 10,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 56,
+      "original_text_sha256": "2e0f1d9075f22e874879455d724c367dc4eccf0d7d747b1d1308d34fd4b1830c",
+      "original_text": "$$x_t=\\sqrt{\\alpha_t}x_{t-1}+\\sqrt{\\beta_t}\\epsilon_t,\\qquad \\epsilon_t\\sim\\mathcal N(0,I).$$",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 94,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 11,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 58,
+      "original_text_sha256": "73f94ab2df5cb00d766baa4a445a6dce00c4587985c6255c1a8ccb9f41e7f76d",
+      "original_text": "\\(\\beta_t I\\) 是协方差，所以乘在标准噪声前的是 \\(\\sqrt{\\beta_t}\\)。各步的 \\(\\epsilon_t\\) 独立。平方根缩放有意让原有信号逐渐衰减，同时注入噪声。",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 96,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 12,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 60,
+      "original_text_sha256": "20c8e2e8df177efe80a4e06983bf7f15228ef87245e3a2fb6503b37aa8efcda8",
+      "original_text": "**先展开两步。** 这能直接看到为什么出现累计乘积：",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 98,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 13,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 62,
+      "original_text_sha256": "ea6dd79519037cb8ea0d4a3f96c14408cbaa29872b676e6ccef85ea08320f444",
+      "original_text": "$$\\begin{aligned}\nx_2&=\\sqrt{\\alpha_2}\\left(\\sqrt{\\alpha_1}x_0+\\sqrt{\\beta_1}\\epsilon_1\\right)+\\sqrt{\\beta_2}\\epsilon_2\\\\\n&=\\sqrt{\\alpha_2\\alpha_1}x_0+\\sqrt{\\alpha_2\\beta_1}\\epsilon_1+\\sqrt{\\beta_2}\\epsilon_2.\n\\end{aligned}$$",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 100,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 14,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 67,
+      "original_text_sha256": "938c51692e700c08ac170249b3e497b70dd76db8a31d6ac8ac47f2e2ef205dd6",
+      "original_text": "后两项是独立高斯的线性组合，均值为零，总方差为",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 105,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 15,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 69,
+      "original_text_sha256": "e4262be534e584eecf8b7b9e8aff1b35711c4507b65894657445b964ce2980a4",
+      "original_text": "$$\\alpha_2\\beta_1+\\beta_2=\\alpha_2(1-\\alpha_1)+(1-\\alpha_2)=1-\\alpha_1\\alpha_2.$$",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 107,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 16,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 71,
+      "original_text_sha256": "91fb16b5f853dc39a49adb9af2ad14b68b43047f59635fe60463fda3d27d0956",
+      "original_text": "一般地，设第 \\(t-1\\) 步条件方差为 \\((1-\\overline{\\alpha}_{t-1})I\\)，则第 \\(t\\) 步方差为",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 109,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 17,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 73,
+      "original_text_sha256": "968cad6e81641d56ed78d60b3f354bce4dd2237ef86a75532e7a671104c4be6b",
+      "original_text": "$$\\alpha_t(1-\\overline{\\alpha}_{t-1})+\\beta_t=1-\\alpha_t\\overline{\\alpha}_{t-1}=1-\\overline{\\alpha}_t.$$",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 111,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 18,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 75,
+      "original_text_sha256": "34bace3320fef46ac2c8fe8df5a34be8289dfda6220dc73493cce327717b1f43",
+      "original_text": "条件均值也递推为 \\(\\sqrt{\\overline{\\alpha}_t}x_0\\)，因此",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 113,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 19,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 77,
+      "original_text_sha256": "45b63a384cd992af3a25710ada9b492c59c86206a38274e35e3b1889a5fde1f3",
+      "original_text": "$$q(x_t\\mid x_0)=\\mathcal N\\!\\left(x_t;\\sqrt{\\overline{\\alpha}_t}x_0,(1-\\overline{\\alpha}_t)I\\right). \\qquad (2)$$",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 115,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 20,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 79,
+      "original_text_sha256": "15885e0b1afcec8ebb75fc41567967476afc3c22b930495f4fdb05e5e7fd01da",
+      "original_text": "于是可以直接抽样：",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 117,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 21,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 81,
+      "original_text_sha256": "7756be7340690fe2023b92f888e1473596a0b42fe411ea4cda2c3e0c5c694e06",
+      "original_text": "$$x_t=\\sqrt{\\overline{\\alpha}_t}x_0+\\sqrt{1-\\overline{\\alpha}_t}\\epsilon,\\qquad \\epsilon\\sim\\mathcal N(0,I). \\qquad (3)$$",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 119,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 22,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 83,
+      "original_text_sha256": "2b3e061de6d3f5bb2db8da761e830a6fe3f476765bf7514e0c71ea5539c0363d",
+      "original_text": "这里的 \\(\\epsilon\\) 是前面多步噪声的合成标准噪声，通常不是最后一步的 \\(\\epsilon_t\\)。式（3）与逐步加噪得到的 \\(x_t\\) **具有相同的条件分布**，并不表示两种抽样会复现同一条随机路径。它的价值是：训练第 \\(t\\) 步时，不必真的先加噪 \\(t\\) 次。",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 121,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 23,
+      "original_section": "1 正向加噪为什么能一步到达任意时刻",
+      "source_line": 85,
+      "original_text_sha256": "43455350dc5211562775cbe7767ccb0813a22e71b89b099c632dbcad7a1e6270",
+      "original_text": "当 \\(\\overline{\\alpha}_T\\) 足够小时，原图信号被大幅压低，\\(q(x_T\\mid x_0)\\) 接近标准高斯；有限步下通常只是接近，并非严格相等。[原论文式（2）（4）](https://arxiv.org/pdf/2006.11239)",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 123,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 24,
+      "original_section": "2 为什么从负对数似然走向路径上界",
+      "source_line": 89,
+      "original_text_sha256": "2d35d70dffc350fe1c7802d44b09c2e11b9270b5d86f504b62280f0679b9d215",
+      "original_text": "生成模型从简单分布 \\(p(x_T)=\\mathcal N(0,I)\\) 出发，依次产生 \\(x_{T-1},\\ldots,x_0\\)。它采用反向马尔可夫链：当前一步只依赖当前状态与步数。因此，整条生成路径的联合密度为",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 153,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 25,
+      "original_section": "2 为什么从负对数似然走向路径上界",
+      "source_line": 91,
+      "original_text_sha256": "d8632d0f9d38a083a83201d5e7dddd0f1029f64ae50d7dff0dcd5720b4c05997",
+      "original_text": "$$p_\\theta(x_{0:T})=p(x_T)\\prod_{t=1}^{T}p_\\theta(x_{t-1}\\mid x_t). \\qquad (4)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 155,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 26,
+      "original_section": "2 为什么从负对数似然走向路径上界",
+      "source_line": 93,
+      "original_text_sha256": "066d0f8085e908f4fadf27b7da6e02f82662129fd3bbc52870427e8085d85d70",
+      "original_text": "这个乘积沿着**同一条路径的时间步**展开，不是在乘不同训练图片的密度。\\(x_{0:T}\\) 是 \\(x_0,\\ldots,x_T\\) 的简写。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 157,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 27,
+      "original_section": "2 为什么从负对数似然走向路径上界",
+      "source_line": 95,
+      "original_text_sha256": "7223b245b9f4dd3abed7cf45b03109fd73a85496425afd1ede89242e380d402f",
+      "original_text": "**原始目标。** 先固定一张真实图片 \\(x_0\\)，希望它在模型下具有较高密度，也就是最小化 \\(-\\log p_\\theta(x_0)\\)。但模型容易计算的是给定所有状态后的路径密度；要得到图片密度，必须把所有可能的中间状态积分掉：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 159,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 28,
+      "original_section": "2 为什么从负对数似然走向路径上界",
+      "source_line": 97,
+      "original_text_sha256": "d1b0b47fa2a37f4c887948a035958ec52f88c50db615811ddf6b034233fda564",
+      "original_text": "$$p_\\theta(x_0)=\\int p_\\theta(x_{0:T})\\,dx_{1:T}. \\qquad (5)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 161,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 29,
+      "original_section": "2 为什么从负对数似然走向路径上界",
+      "source_line": 99,
+      "original_text_sha256": "14730a4243e9a64154d4a766ff57db00a29509c5ce1acfa8b56e60bec5e25296",
+      "original_text": "\\(dx_{1:T}\\) 表示依次对 \\(x_1,\\ldots,x_T\\) 积分。这个高维路径积分通常无法直接算出，因此要寻找可计算的训练目标。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 163,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 30,
+      "original_section": "2 为什么从负对数似然走向路径上界",
+      "source_line": 101,
+      "original_text_sha256": "ef529d7032493c53a5f69b5341d6e7167701ab8cc757ad6799eab389c82ed0b4",
+      "original_text": "**引入会抽样的分布。** 给定 \\(x_0\\)，正向路径分布 \\(q(x_{1:T}\\mid x_0)\\) 已知。乘除同一个密度，把积分改写为期望：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 165,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 31,
+      "original_section": "2 为什么从负对数似然走向路径上界",
+      "source_line": 103,
+      "original_text_sha256": "ea6ca1b565a980b7e1cee784fec685b9b1bcbe2872056becfc51953c9518a1ca",
+      "original_text": "$$\\begin{aligned}\n-\\log p_\\theta(x_0)\n&=-\\log\\int q(x_{1:T}\\mid x_0)\\frac{p_\\theta(x_{0:T})}{q(x_{1:T}\\mid x_0)}\\,dx_{1:T}\\\\\n&=-\\log\\mathbb E_{x_{1:T}\\sim q(x_{1:T}\\mid x_0)}\n\\left[\\frac{p_\\theta(x_{0:T})}{q(x_{1:T}\\mid x_0)}\\right].\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 167,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 32,
+      "original_section": "2 为什么从负对数似然走向路径上界",
+      "source_line": 110,
+      "original_text_sha256": "6d948f66bb391d9d8016475914d4775ade39253a4813d6022c52e5cdf352a059",
+      "original_text": "**应用 Jensen。** 因为 \\(-\\log\\) 是凸函数，“先平均再取负对数”不大于“先取负对数再平均”：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 174,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 33,
+      "original_section": "2 为什么从负对数似然走向路径上界",
+      "source_line": 112,
+      "original_text_sha256": "9a73632adfed1d0f676e3de74185e4bb2021333770c5640f895f057b4df91c9a",
+      "original_text": "$$-\\log p_\\theta(x_0)\\leq\n\\mathbb E_{x_{1:T}\\sim q(x_{1:T}\\mid x_0)}\n\\left[\\log\\frac{q(x_{1:T}\\mid x_0)}{p_\\theta(x_{0:T})}\\right]\n=:L(x_0). \\qquad (6)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 176,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 34,
+      "original_section": "2 为什么从负对数似然走向路径上界",
+      "source_line": 117,
+      "original_text_sha256": "6f4c55c72cf86f061b1301b91912b9fb864f14bdf6c6ade928bea05fabb32c03",
+      "original_text": "此刻只在平均**这一张原图的加噪路径**，并没有平均原图。\\(L(x_0)\\) 是负对数似然的上界；\\(-L(x_0)\\) 才是对数似然的下界，即 ELBO。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 181,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 35,
+      "original_section": "2 为什么从负对数似然走向路径上界",
+      "source_line": 119,
+      "original_text_sha256": "16f1e161cb87bc519b0f1ebf0631e73cad3213cc610e64b4a14c197f66ab9ef7",
+      "original_text": "界的差距也可以精确写成",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 183,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 36,
+      "original_section": "2 为什么从负对数似然走向路径上界",
+      "source_line": 121,
+      "original_text_sha256": "e6e6b20058c28f0c4c6a707d496a0de420e7802243f03dc2b3bd93e0fdf898fa",
+      "original_text": "$$L(x_0)+\\log p_\\theta(x_0)\n=D_{\\mathrm{KL}}\\!\\left(q(x_{1:T}\\mid x_0)\\,\\|\\,p_\\theta(x_{1:T}\\mid x_0)\\right)\\geq0.$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 185,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 37,
+      "original_section": "2 为什么从负对数似然走向路径上界",
+      "source_line": 124,
+      "original_text_sha256": "ae2dec60b598975bc622052bc08b5eb52a9da2e8c55bb0f49593c4efb04c3199",
+      "original_text": "这里的整条路径 KL 描述上界松紧；下一节出现的单步 KL 则是训练目标中的局部项，两者用途不同。[原论文第 2 节及式（3）](https://arxiv.org/pdf/2006.11239)",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 188,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 38,
+      "original_section": "3 如何把正向路径改写成反向条件乘积",
+      "source_line": 128,
+      "original_text_sha256": "2c3727b5b70b05d042dbf19f170d5dcd809fb497505e21832027d5fe267a95db",
+      "original_text": "我们要把式（6）拆成可以逐步比较的项。模型已经沿反向时间分解，因此也把同一个正向路径密度改写成反向条件形式。注意：这只是概率密度的重写，没有把正向抽样过程改掉。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 198,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 39,
+      "original_section": "3 如何把正向路径改写成反向条件乘积",
+      "source_line": 130,
+      "original_text_sha256": "b1057f342954c12722673ccd364322abacf89461fc8be2bed3738fa0de64f213",
+      "original_text": "正向路径按定义为",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 200,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 40,
+      "original_section": "3 如何把正向路径改写成反向条件乘积",
+      "source_line": 132,
+      "original_text_sha256": "ed1cfc4db5bd323aec9a29a9e4c644018014bda5f5e023a8b5cef81b92ca49c0",
+      "original_text": "$$q(x_{1:T}\\mid x_0)=q(x_1\\mid x_0)\\prod_{t=2}^{T}q(x_t\\mid x_{t-1}).$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 202,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 41,
+      "original_section": "3 如何把正向路径改写成反向条件乘积",
+      "source_line": 134,
+      "original_text_sha256": "643c01d6114335121de529d79a919a64015f033ceac5d535ae23c3809f7e9d82",
+      "original_text": "对 \\(t\\geq2\\)，贝叶斯公式与正向马尔可夫性质给出",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 204,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 42,
+      "original_section": "3 如何把正向路径改写成反向条件乘积",
+      "source_line": 136,
+      "original_text_sha256": "72cf53fb06dea0621fa567024757735ae8364861a67e285453b6dc74b5153b9d",
+      "original_text": "$$\\begin{aligned}\nq(x_{t-1}\\mid x_t,x_0)\n&=\\frac{q(x_t\\mid x_{t-1},x_0)q(x_{t-1}\\mid x_0)}{q(x_t\\mid x_0)}\\\\\n&=\\frac{q(x_t\\mid x_{t-1})q(x_{t-1}\\mid x_0)}{q(x_t\\mid x_0)}.\n\\end{aligned} \\qquad (7)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 206,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 43,
+      "original_section": "3 如何把正向路径改写成反向条件乘积",
+      "source_line": 142,
+      "original_text_sha256": "6daecec653f66354671443bf05d3416b8d719ce01815c7f2eaf0fadff6126df0",
+      "original_text": "第二行使用了：已知 \\(x_{t-1}\\) 后，下一步加噪不再需要额外知道 \\(x_0\\)。移项得",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 212,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 44,
+      "original_section": "3 如何把正向路径改写成反向条件乘积",
+      "source_line": 144,
+      "original_text_sha256": "e30a588edca832dc0b87100e8f5529bcda6ab638030e6cacde0dc23832a80300",
+      "original_text": "$$q(x_t\\mid x_{t-1})\n=q(x_{t-1}\\mid x_t,x_0)\\frac{q(x_t\\mid x_0)}{q(x_{t-1}\\mid x_0)}.$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 214,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 45,
+      "original_section": "3 如何把正向路径改写成反向条件乘积",
+      "source_line": 147,
+      "original_text_sha256": "b9e231320efce99646875ce914d59b5e445b475485d786a9b3654c77585e989e",
+      "original_text": "代回整条正向路径：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 217,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 46,
+      "original_section": "3 如何把正向路径改写成反向条件乘积",
+      "source_line": 149,
+      "original_text_sha256": "1f86bf2679e0de4a1f75042aa60b1f2763e5abaab62b7c826644e8f3bce29a3c",
+      "original_text": "$$\\begin{aligned}\nq(x_{1:T}\\mid x_0)\n={}&q(x_1\\mid x_0)\n\\left[\\prod_{t=2}^{T}q(x_{t-1}\\mid x_t,x_0)\\right]\\\\\n&\\cdot\\left[\\prod_{t=2}^{T}\\frac{q(x_t\\mid x_0)}{q(x_{t-1}\\mid x_0)}\\right].\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 219,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 47,
+      "original_section": "3 如何把正向路径改写成反向条件乘积",
+      "source_line": 156,
+      "original_text_sha256": "c4eb5771ce27a807a3e685c3e8bbaff5777b7fd580bbd89c06e1de09b84795e5",
+      "original_text": "后一串分式连续约分：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 226,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 48,
+      "original_section": "3 如何把正向路径改写成反向条件乘积",
+      "source_line": 158,
+      "original_text_sha256": "63643f9a7a23d5d3faaa81b50901c18583fd742a93bc27738ed28f02da86a483",
+      "original_text": "$$\\frac{q(x_2\\mid x_0)}{q(x_1\\mid x_0)}\n\\frac{q(x_3\\mid x_0)}{q(x_2\\mid x_0)}\\cdots\n\\frac{q(x_T\\mid x_0)}{q(x_{T-1}\\mid x_0)}\n=\\frac{q(x_T\\mid x_0)}{q(x_1\\mid x_0)}.$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 228,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 49,
+      "original_section": "3 如何把正向路径改写成反向条件乘积",
+      "source_line": 163,
+      "original_text_sha256": "d726099bf6f5f9eec831f4a419fe062ea577dceb62db5fd64ee5d7b881c1c092",
+      "original_text": "再与最前面的 \\(q(x_1\\mid x_0)\\) 抵消，得到",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 233,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 50,
+      "original_section": "3 如何把正向路径改写成反向条件乘积",
+      "source_line": 165,
+      "original_text_sha256": "b8300174b47f57d32dc43e4e0ef534d710cdacbe0249c17973601066705272c6",
+      "original_text": "$$q(x_{1:T}\\mid x_0)=q(x_T\\mid x_0)\\prod_{t=2}^{T}q(x_{t-1}\\mid x_t,x_0). \\qquad (8)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 235,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 51,
+      "original_section": "3 如何把正向路径改写成反向条件乘积",
+      "source_line": 167,
+      "original_text_sha256": "d4e0f0bda97faf2eb3f77383cd7f4acccefa544cff5ea7b9836db05e6c4b1e43",
+      "original_text": "用式（8）除以式（4），[再取对数](https://arxiv.org/pdf/2006.11239)，三类项精确出现：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 237,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 52,
+      "original_section": "3 如何把正向路径改写成反向条件乘积",
+      "source_line": 169,
+      "original_text_sha256": "6432bc7e7498507702113fc5c462410c1f15041509c8026a0dd35ab3b712e2fc",
+      "original_text": "$$\\begin{aligned}\n\\log\\frac{q(x_{1:T}\\mid x_0)}{p_\\theta(x_{0:T})}\n={}&\\log\\frac{q(x_T\\mid x_0)}{p(x_T)}\\\\\n&+\\sum_{t=2}^{T}\\log\\frac{q(x_{t-1}\\mid x_t,x_0)}{p_\\theta(x_{t-1}\\mid x_t)}\\\\\n&-\\log p_\\theta(x_0\\mid x_1).\n\\end{aligned} \\qquad (9)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 239,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 53,
+      "original_section": "4 为什么单步 KL 外面留下这个期望",
+      "source_line": 178,
+      "original_text_sha256": "2bddc99290b1b64dd3791e00a3f99f69d6dbac1a354d0cfb3889add7db392f48",
+      "original_text": "仍然固定 \\(x_0\\)。式（9）的每一项原本都在整条路径期望里面。如果某个表达式不依赖其他状态，就把那些状态积分掉，只保留它实际依赖的变量。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 248,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 54,
+      "original_section": "4 为什么单步 KL 外面留下这个期望",
+      "source_line": 180,
+      "original_text_sha256": "4df53c74444e48b9255dd1ef4753e3c220bd214d3681df255fea2bac8d99bbef",
+      "original_text": "**噪声端项。** 它只依赖 \\(x_T\\)，所以",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 250,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 55,
+      "original_section": "4 为什么单步 KL 外面留下这个期望",
+      "source_line": 182,
+      "original_text_sha256": "fe89c5dd9366d4ee2680fa64288e7e7544f2465a0546b414dc1fa0611062650b",
+      "original_text": "$$\\mathbb E_{x_{1:T}\\sim q(x_{1:T}\\mid x_0)}\\left[\\log\\frac{q(x_T\\mid x_0)}{p(x_T)}\\right]\n=D_{\\mathrm{KL}}\\!\\left(q(x_T\\mid x_0)\\,\\|\\,p(x_T)\\right).$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 252,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 56,
+      "original_section": "4 为什么单步 KL 外面留下这个期望",
+      "source_line": 185,
+      "original_text_sha256": "643992572da01e7d9eddb905efdf9f9debe380414dee90ff251e8c4e402bd9e8",
+      "original_text": "对 \\(x_T\\) 的平均已包含在 KL 的定义中，外面不需要再加一次。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 255,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 57,
+      "original_section": "4 为什么单步 KL 外面留下这个期望",
+      "source_line": 187,
+      "original_text_sha256": "68a5c145b9f22d9ccd9b82437d2808eab32301e334908f7e56aabeaf118ca42f",
+      "original_text": "**中间项。** 固定某个 \\(t\\geq2\\)，它同时涉及 \\(x_t\\) 和 \\(x_{t-1}\\)。把其他状态积分掉后，留下的联合分布是",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 257,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 58,
+      "original_section": "4 为什么单步 KL 外面留下这个期望",
+      "source_line": 189,
+      "original_text_sha256": "7c1179d5deffe15786a0f9e99a0105d239cef7939bf216870728618e9fc626ca",
+      "original_text": "$$q(x_{t-1},x_t\\mid x_0)=q(x_t\\mid x_0)q(x_{t-1}\\mid x_t,x_0).$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 259,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 59,
+      "original_section": "4 为什么单步 KL 外面留下这个期望",
+      "source_line": 191,
+      "original_text_sha256": "1e6d7062c488e2ffc727522f577b58a8fa3f60f05784c13ad731d65760424e31",
+      "original_text": "所以原来的路径平均恰好变成两层：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 261,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 60,
+      "original_section": "4 为什么单步 KL 外面留下这个期望",
+      "source_line": 193,
+      "original_text_sha256": "688d529bf5beaf2265c6ee5c18a33f6163cdc7087afbd624d2f50b850910d829",
+      "original_text": "$$\\begin{aligned}\n&\\mathbb E_{x_{1:T}\\sim q(x_{1:T}\\mid x_0)}\n\\left[\\log\\frac{q(x_{t-1}\\mid x_t,x_0)}{p_\\theta(x_{t-1}\\mid x_t)}\\right]\\\\\n&=\\mathbb E_{x_t\\sim q(x_t\\mid x_0)}\n\\left[\\mathbb E_{x_{t-1}\\sim q(x_{t-1}\\mid x_t,x_0)}\n\\left[\\log\\frac{q(x_{t-1}\\mid x_t,x_0)}{p_\\theta(x_{t-1}\\mid x_t)}\\right]\\right]\\\\\n&=\\mathbb E_{x_t\\sim q(x_t\\mid x_0)}\n\\left[D_{\\mathrm{KL}}\\!\\left(q(x_{t-1}\\mid x_t,x_0)\\,\\|\\,p_\\theta(x_{t-1}\\mid x_t)\\right)\\right].\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 263,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 61,
+      "original_section": "4 为什么单步 KL 外面留下这个期望",
+      "source_line": 203,
+      "original_text_sha256": "a35116fda9cd7b82dc6e76af9ce9cbd248d476370eaf806efbb70c0e6c9ae1e3",
+      "original_text": "**内层对 \\(x_{t-1}\\) 的平均写进了 KL；外层仍然平均这张原图产生的不同 \\(x_t\\)。** 因而外层下标必须是 \\(q(x_t\\mid x_0)\\)。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 273,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 62,
+      "original_section": "4 为什么单步 KL 外面留下这个期望",
+      "source_line": 205,
+      "original_text_sha256": "00de8a518a863edc244b4f0e8ef5f048322edd7700e013f6dc7be0336ad71faa",
+      "original_text": "**重建项。** 固定原图后，只剩 \\(x_1\\) 随机，故为 \\(\\mathbb E_{x_1\\sim q(x_1\\mid x_0)}[-\\log p_\\theta(x_0\\mid x_1)]\\)。合并后得到",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 275,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 63,
+      "original_section": "4 为什么单步 KL 外面留下这个期望",
+      "source_line": 207,
+      "original_text_sha256": "0bc926959fdda555b40e9f9978f752181b5352ca417ebffa5825af13cdbf5438",
+      "original_text": "$$\\begin{aligned}\nL(x_0)={}&D_{\\mathrm{KL}}\\!\\left(q(x_T\\mid x_0)\\,\\|\\,p(x_T)\\right)\\\\\n&+\\sum_{t=2}^{T}\\mathbb E_{x_t\\sim q(x_t\\mid x_0)}\n\\left[D_{\\mathrm{KL}}\\!\\left(q(x_{t-1}\\mid x_t,x_0)\\,\\|\\,p_\\theta(x_{t-1}\\mid x_t)\\right)\\right]\\\\\n&+\\mathbb E_{x_1\\sim q(x_1\\mid x_0)}[-\\log p_\\theta(x_0\\mid x_1)].\n\\end{aligned} \\qquad (10)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 277,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 64,
+      "original_section": "4 为什么单步 KL 外面留下这个期望",
+      "source_line": 214,
+      "original_text_sha256": "cde8ae9d35ace8e1b44e931e2a57e32db8125a48cb463bc86c83f9a77d01be3d",
+      "original_text": "到这里，从式（6）往后的分解全部是等式。真正训练整个数据集时，才额外在外面平均原图：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 284,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 65,
+      "original_section": "4 为什么单步 KL 外面留下这个期望",
+      "source_line": 216,
+      "original_text_sha256": "5a74495304f553036dbd2bfc5980d2f8caed0b6ba5a0a92808f08c867e219b40",
+      "original_text": "$$\\mathbb E_{x_0\\sim q_{\\mathrm{data}}}[-\\log p_\\theta(x_0)]\n\\leq\\mathbb E_{x_0\\sim q_{\\mathrm{data}}}[L(x_0)]\n=:L_{\\mathrm{VLB}}(\\theta). \\qquad (11)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 286,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 66,
+      "original_section": "4 为什么单步 KL 外面留下这个期望",
+      "source_line": 220,
+      "original_text_sha256": "baf7ada762616682eeece09b7437058e902901ad4033deab30891b47d5ae0742",
+      "original_text": "[原论文式（3）（5）](https://arxiv.org/pdf/2006.11239)",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 290,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 67,
+      "original_section": "5 为什么给定原图的反向后验能够精确求出",
+      "source_line": 224,
+      "original_text_sha256": "fda82658df7f95559864895b21563fb50a13977b17d8fcc756597be5f813e8f1",
+      "original_text": "式（10）的中间项要求比较两个反向分布。先分清它们：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 300,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 68,
+      "original_section": "5 为什么给定原图的反向后验能够精确求出",
+      "source_line": 226,
+      "original_text_sha256": "d404f020ef079276ab19ae98aab2f95ab16930dfd386ae3fea8a96ab38a76764",
+      "original_text": "- \\(q(x_{t-1}\\mid x_t)\\) 是我们希望学到的真实反向条件分布，通常难以直接计算，也不保证严格是高斯\n- \\(q(x_{t-1}\\mid x_t,x_0)\\) 额外知道原图，是训练时能精确计算的参考后验\n- \\(p_\\theta(x_{t-1}\\mid x_t)\\) 是模型拟合的反向分布，模型并不以原图为输入",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 302,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 69,
+      "original_section": "5 为什么给定原图的反向后验能够精确求出",
+      "source_line": 230,
+      "original_text_sha256": "6a27d6cc3ad6e73d8bef706ae2454951e3291b6b59d810739ddec873fd7abd7e",
+      "original_text": "给定不同原图得到的高斯后验混合后，可以成为多峰分布。因此，“给定 \\(x_0\\) 后是高斯”不能推出“不知道 \\(x_0\\) 时仍是高斯”。下面的解析推导始终包含条件 \\(x_0\\)，且只处理 \\(t\\geq2\\)。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 306,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 70,
+      "original_section": "5 为什么给定原图的反向后验能够精确求出",
+      "source_line": 232,
+      "original_text_sha256": "34a9547841d3beda78e0d956b35a90f95a833f17820779a65c2b67fdda21a666",
+      "original_text": "从式（7）的贝叶斯公式开始。对 \\(x_{t-1}\\) 而言，分母 \\(q(x_t\\mid x_0)\\) 是常数，于是",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 308,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 71,
+      "original_section": "5 为什么给定原图的反向后验能够精确求出",
+      "source_line": 234,
+      "original_text_sha256": "afb574c8aba82d6b998df70ac91fa69eb74fb4d77e056794a93f65e3458bb57b",
+      "original_text": "$$q(x_{t-1}\\mid x_t,x_0)\\propto q(x_t\\mid x_{t-1})q(x_{t-1}\\mid x_0).$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 310,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 72,
+      "original_section": "5 为什么给定原图的反向后验能够精确求出",
+      "source_line": 236,
+      "original_text_sha256": "b77de54e679f23b532af8f9a01580c44ecc168252614b9733e8df9c9f35da127",
+      "original_text": "右边两个分布已知：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 312,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 73,
+      "original_section": "5 为什么给定原图的反向后验能够精确求出",
+      "source_line": 238,
+      "original_text_sha256": "7a5329b943679ac18a140dd9136846944aa4e39e0212bc578e3a3e7da33774b3",
+      "original_text": "$$\\begin{aligned}\nq(x_t\\mid x_{t-1})&=\\mathcal N\\!\\left(x_t;\\sqrt{\\alpha_t}x_{t-1},\\beta_t I\\right),\\\\\nq(x_{t-1}\\mid x_0)&=\\mathcal N\\!\\left(x_{t-1};\\sqrt{\\overline{\\alpha}_{t-1}}x_0,(1-\\overline{\\alpha}_{t-1})I\\right).\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 314,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 74,
+      "original_section": "5 为什么给定原图的反向后验能够精确求出",
+      "source_line": 243,
+      "original_text_sha256": "318ffb0b522136808737adc5e42cb905ca97d8881e590365c5f1174fd3300af7",
+      "original_text": "保留含 \\(x_{t-1}\\) 的指数部分：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 319,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 75,
+      "original_section": "5 为什么给定原图的反向后验能够精确求出",
+      "source_line": 245,
+      "original_text_sha256": "caf3cd0ceb245815592ae5e4f7eb3703da82660359dc9d3c3a3bedafe4500f52",
+      "original_text": "$$q(x_{t-1}\\mid x_t,x_0)\\propto\n\\exp\\!\\left[-\\frac12\\left(\n\\frac{\\|x_t-\\sqrt{\\alpha_t}x_{t-1}\\|^2}{\\beta_t}\n+\\frac{\\|x_{t-1}-\\sqrt{\\overline{\\alpha}_{t-1}}x_0\\|^2}{1-\\overline{\\alpha}_{t-1}}\n\\right)\\right].$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 321,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 76,
+      "original_section": "5 为什么给定原图的反向后验能够精确求出",
+      "source_line": 251,
+      "original_text_sha256": "ff516e414d801148d8f6e88bfed1faa293426dce5fe304b67247b21ff8018b17",
+      "original_text": "把平方展开，按 \\(x_{t-1}\\) 的二次项和一次项整理：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 327,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 77,
+      "original_section": "5 为什么给定原图的反向后验能够精确求出",
+      "source_line": 253,
+      "original_text_sha256": "224db4263bb41b299fae45def819deab557ead2d0c75e4537a6380a648d8a3d5",
+      "original_text": "$$\\begin{aligned}\n&\\frac{\\|x_t-\\sqrt{\\alpha_t}x_{t-1}\\|^2}{\\beta_t}\n+\\frac{\\|x_{t-1}-\\sqrt{\\overline{\\alpha}_{t-1}}x_0\\|^2}{1-\\overline{\\alpha}_{t-1}}\\\\\n={}&\\left(\\frac{\\alpha_t}{\\beta_t}+\\frac{1}{1-\\overline{\\alpha}_{t-1}}\\right)\\|x_{t-1}\\|^2\\\\\n&-2\\left(\\frac{\\sqrt{\\alpha_t}}{\\beta_t}x_t+\n\\frac{\\sqrt{\\overline{\\alpha}_{t-1}}}{1-\\overline{\\alpha}_{t-1}}x_0\\right)^{\\!\\top}x_{t-1}\n+\\text{与 }x_{t-1}\\text{ 无关的项}.\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 329,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 78,
+      "original_section": "5 为什么给定原图的反向后验能够精确求出",
+      "source_line": 262,
+      "original_text_sha256": "76e83dece0fd6bc69965b3d7af7faef29b1046b73c69a4172036a25bf8af4ff7",
+      "original_text": "这里没有把变量换成其他字母。目标是把上式配成 \\(\\|x_{t-1}-\\tilde\\mu_t\\|^2/\\tilde\\beta_t\\) 加常数，再直接读出后验均值和方差。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 338,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 79,
+      "original_section": "5 为什么给定原图的反向后验能够精确求出",
+      "source_line": 264,
+      "original_text_sha256": "f59dd2e22293bef6fc1269b67398205e86d3ff84090af0354467b8ee402026eb",
+      "original_text": "“\\(\\propto\\)”只省略了**对正在讨论的变量 \\(x_{t-1}\\) 为常数**的因子，它们仍可依赖已经给定的 \\(x_t,x_0\\)。完成配方后还要恢复归一化，不能把正比直接当成相等。[原论文式（6）（7）](https://arxiv.org/pdf/2006.11239)",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 340,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 80,
+      "original_section": "6 配方读出后验均值和方差",
+      "source_line": 268,
+      "original_text_sha256": "80d554c952b017c549153b3e5df7fc2a2bea850954206f18f9e31ebdfc3c15fb",
+      "original_text": "提取指数中的公共因子 \\(-1/2\\) 后，括号内 \\(\\|x_{t-1}\\|^2\\) 的系数是方差的倒数。沿用上一节的展开式，先化简这个系数：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 344,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 81,
+      "original_section": "6 配方读出后验均值和方差",
+      "source_line": 270,
+      "original_text_sha256": "c55f5222493646196fdf4a0602fa1a06c309862d7f8c9073d7c1f494e23c6dc0",
+      "original_text": "$$\\begin{aligned}\n\\frac1{\\tilde\\beta_t}\n&=\\frac{\\alpha_t}{\\beta_t}+\\frac1{1-\\overline{\\alpha}_{t-1}}\\\\\n&=\\frac{\\alpha_t(1-\\overline{\\alpha}_{t-1})+\\beta_t}\n{\\beta_t(1-\\overline{\\alpha}_{t-1})}\\\\\n&=\\frac{1-\\overline{\\alpha}_t}{\\beta_t(1-\\overline{\\alpha}_{t-1})}.\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 346,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 82,
+      "original_section": "6 配方读出后验均值和方差",
+      "source_line": 278,
+      "original_text_sha256": "1aec126f1fb057676584453f9749f801c7651b1550079c720e96f0de5eeb5aec",
+      "original_text": "最后一步用了 \\(\\alpha_t+\\beta_t=1\\) 及 \\(\\alpha_t\\overline{\\alpha}_{t-1}=\\overline{\\alpha}_t\\)，所以",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 354,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 83,
+      "original_section": "6 配方读出后验均值和方差",
+      "source_line": 280,
+      "original_text_sha256": "deda620676c640aa7e47c38f7896b2238f56ae137ab5822ea2342e64d6989070",
+      "original_text": "$$\\tilde\\beta_t=\\frac{1-\\overline{\\alpha}_{t-1}}{1-\\overline{\\alpha}_t}\\beta_t. \\qquad (12)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 356,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 84,
+      "original_section": "6 配方读出后验均值和方差",
+      "source_line": 282,
+      "original_text_sha256": "2caca90c41ea5142aca19506306db140ff71aaf428509892656a286c5dc08eb4",
+      "original_text": "再比较一次项。因为",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 358,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 85,
+      "original_section": "6 配方读出后验均值和方差",
+      "source_line": 284,
+      "original_text_sha256": "9039f1f3c66523c5b6ecfb8b871d9374b5e498ce06d270a8f9bdf3d2e5b752df",
+      "original_text": "$$\\frac{\\|x_{t-1}-\\tilde\\mu_t\\|^2}{\\tilde\\beta_t}\n=\\frac{\\|x_{t-1}\\|^2}{\\tilde\\beta_t}\n-2\\left(\\frac{\\tilde\\mu_t}{\\tilde\\beta_t}\\right)^{\\!\\top}x_{t-1}\n+\\frac{\\|\\tilde\\mu_t\\|^2}{\\tilde\\beta_t},$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 360,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 86,
+      "original_section": "6 配方读出后验均值和方差",
+      "source_line": 289,
+      "original_text_sha256": "a96811774ad797f0113df8cd4df51f8e7c454b8e947d8d07eaf4232fe8261628",
+      "original_text": "应有",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 365,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 87,
+      "original_section": "6 配方读出后验均值和方差",
+      "source_line": 291,
+      "original_text_sha256": "1f87441660f75072045747ef568608383de8ad652f5c288fdaf0fa462ca17e0e",
+      "original_text": "$$\\frac{\\tilde\\mu_t}{\\tilde\\beta_t}\n=\\frac{\\sqrt{\\alpha_t}}{\\beta_t}x_t+\n\\frac{\\sqrt{\\overline{\\alpha}_{t-1}}}{1-\\overline{\\alpha}_{t-1}}x_0.$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 367,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 88,
+      "original_section": "6 配方读出后验均值和方差",
+      "source_line": 295,
+      "original_text_sha256": "b88b38ff44fbd7d63065be212270607dac4838f69604f6b6c26e292b24257257",
+      "original_text": "乘上式（12）后，分别约掉两项中的公共因子：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 371,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 89,
+      "original_section": "6 配方读出后验均值和方差",
+      "source_line": 297,
+      "original_text_sha256": "83c848d2514a0ad3e98d9c0a4aec1466846c9550901e5411f34533176b506be2",
+      "original_text": "$$\\tilde\\mu_t(x_t,x_0)\n=\\frac{\\sqrt{\\overline{\\alpha}_{t-1}}\\beta_t}{1-\\overline{\\alpha}_t}x_0\n+\\frac{\\sqrt{\\alpha_t}(1-\\overline{\\alpha}_{t-1})}{1-\\overline{\\alpha}_t}x_t. \\qquad (13)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 373,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 90,
+      "original_section": "6 配方读出后验均值和方差",
+      "source_line": 301,
+      "original_text_sha256": "2a06fde04aaa8f92525d71a7cc5bcd9a843d16ff7fe42ddc835718d034a53c22",
+      "original_text": "因此后验的形状已经确定。恢复高斯归一化常数，完整密度为",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 377,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 91,
+      "original_section": "6 配方读出后验均值和方差",
+      "source_line": 303,
+      "original_text_sha256": "a9b1b6e0ccbd9e57e20f929589da6da97580e78c9dfce5a1ce88738f92424acc",
+      "original_text": "$$q(x_{t-1}\\mid x_t,x_0)\n=\\frac1{(2\\pi\\tilde\\beta_t)^{d/2}}\n\\exp\\!\\left[-\\frac{\\|x_{t-1}-\\tilde\\mu_t(x_t,x_0)\\|^2}{2\\tilde\\beta_t}\\right].$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 379,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 92,
+      "original_section": "6 配方读出后验均值和方差",
+      "source_line": 307,
+      "original_text_sha256": "0ab93f1e505ccb1aa6683dcb34be0396ef2ea05953f61721fd64fe0057ff3100",
+      "original_text": "也就是",
+      "target_file": "01-what-ddpm-does.md",
+      "target_line": 18,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 93,
+      "original_section": "6 配方读出后验均值和方差",
+      "source_line": 309,
+      "original_text_sha256": "596bda3ae06b58fffe16f70e95cac8dd5119e13bfc01fff3128bf469877ac0f0",
+      "original_text": "$$q(x_{t-1}\\mid x_t,x_0)=\\mathcal N\\!\\left(x_{t-1};\\tilde\\mu_t(x_t,x_0),\\tilde\\beta_t I\\right). \\qquad (14)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 385,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 94,
+      "original_section": "6 配方读出后验均值和方差",
+      "source_line": 311,
+      "original_text_sha256": "55946d5d34304aaa954e3f1abdd314abe45160232ed3b3f85ef723eb0126ed66",
+      "original_text": "**系数的含义。** \\(\\tilde\\mu_t\\) 同时利用原图 \\(x_0\\) 与当前状态 \\(x_t\\)，给出上一步状态的条件均值；\\(\\tilde\\beta_t\\) 表示已知这两者后仍剩下的不确定性。它是后验方差，通常不同于正向一步的噪声方差 \\(\\beta_t\\)。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 387,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 95,
+      "original_section": "6 配方读出后验均值和方差",
+      "source_line": 313,
+      "original_text_sha256": "5b5096a0264f35344c32ac7c99fa542060fdf87163e6f40950d0b9d59322905d",
+      "original_text": "到这里没有学习任何参数，式（12）至（14）全由已固定的加噪规则解析推导而来。它们的用途是为反向模型提供可计算的训练监督。[原论文式（6）（7）](https://arxiv.org/pdf/2006.11239)与[博客 DDPM 推导](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 389,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 96,
+      "original_section": "7 高斯 KL 怎样变成均值平方误差",
+      "source_line": 317,
+      "original_text_sha256": "fddc3ce8d5f639af0a8daedf92997002aa83cf59f3fd68121d2b33abeda664e0",
+      "original_text": "现在规定模型的反向一步为",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 399,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 97,
+      "original_section": "7 高斯 KL 怎样变成均值平方误差",
+      "source_line": 319,
+      "original_text_sha256": "f33254dc970dcbafe93ebb44356c5368e183948ed6d26429b39796143164aa03",
+      "original_text": "$$p_\\theta(x_{t-1}\\mid x_t)=\\mathcal N\\!\\left(x_{t-1};\\mu_\\theta(x_t,t),\\sigma_t^2I\\right). \\qquad (15)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 401,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 98,
+      "original_section": "7 高斯 KL 怎样变成均值平方误差",
+      "source_line": 321,
+      "original_text_sha256": "07024ab9ac0ed611d11bbaa244791d4d30c406392da4412ed5a1f0025d6c3430",
+      "original_text": "这是**模型族的选择**，并不说明真实的 \\(q(x_{t-1}\\mid x_t)\\) 必然高斯。接下来采用固定的、与 \\(\\theta\\) 无关的 \\(\\sigma_t^2>0\\)，只学习均值；原论文讨论了 \\(t\\geq2\\) 时取 \\(\\beta_t\\) 或 \\(\\tilde\\beta_t\\) 的设置。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 403,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 99,
+      "original_section": "7 高斯 KL 怎样变成均值平方误差",
+      "source_line": 323,
+      "original_text_sha256": "b7b86150d9b81d8605707757ae0386b8b767f4967b16bec7bbcfbbadce64ecc3",
+      "original_text": "固定 \\(x_0,x_t,t\\)，按 KL 定义展开式（14）与式（15）：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 405,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 100,
+      "original_section": "7 高斯 KL 怎样变成均值平方误差",
+      "source_line": 325,
+      "original_text_sha256": "1e6e34fbe1366bc8af1e4700f4b1b24b011df17a4807cc437e27096c1a8d2fdc",
+      "original_text": "$$\\begin{aligned}\nD_{\\mathrm{KL}}(q\\|p_\\theta)\n={}&\\frac d2\\log\\frac{\\sigma_t^2}{\\tilde\\beta_t}\n-\\frac1{2\\tilde\\beta_t}\\mathbb E_{x_{t-1}\\sim q(x_{t-1}\\mid x_t,x_0)}\\|x_{t-1}-\\tilde\\mu_t\\|^2\\\\\n&+\\frac1{2\\sigma_t^2}\\mathbb E_{x_{t-1}\\sim q(x_{t-1}\\mid x_t,x_0)}\\|x_{t-1}-\\mu_\\theta\\|^2.\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 407,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 101,
+      "original_section": "7 高斯 KL 怎样变成均值平方误差",
+      "source_line": 332,
+      "original_text_sha256": "bc1d794f83944b3e34f3163d33eac230d6ee346b0a9d2f4b77d469a41e7378e3",
+      "original_text": "上面的期望始终固定 \\(x_t,x_0\\)，只平均后验中的 \\(x_{t-1}\\)。这个高斯每一维的方差都是 \\(\\tilde\\beta_t\\)，所以",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 414,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 102,
+      "original_section": "7 高斯 KL 怎样变成均值平方误差",
+      "source_line": 334,
+      "original_text_sha256": "f64198516b0f0edf29a3157ab09f446903496156d7b173fdaa607c3e3f1aeb13",
+      "original_text": "$$\\mathbb E_{x_{t-1}\\sim q(x_{t-1}\\mid x_t,x_0)}\\|x_{t-1}-\\tilde\\mu_t\\|^2=d\\tilde\\beta_t.$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 416,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 103,
+      "original_section": "7 高斯 KL 怎样变成均值平方误差",
+      "source_line": 336,
+      "original_text_sha256": "7aea04c432d6b5310437a3ac844f581d21a3f011d6b749437b53d533e682f40f",
+      "original_text": "对最后一项，在平方里加减真实均值：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 418,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 104,
+      "original_section": "7 高斯 KL 怎样变成均值平方误差",
+      "source_line": 338,
+      "original_text_sha256": "7fdb71a2e6bc3829246c23b781f1c335f44dc32e0f1f9be93d48ef8fe58729f6",
+      "original_text": "$$\\begin{aligned}\n\\mathbb E_{x_{t-1}\\sim q(x_{t-1}\\mid x_t,x_0)}\\|x_{t-1}-\\mu_\\theta\\|^2\n={}&\\mathbb E_{x_{t-1}\\sim q(x_{t-1}\\mid x_t,x_0)}\\|(x_{t-1}-\\tilde\\mu_t)+(\\tilde\\mu_t-\\mu_\\theta)\\|^2\\\\\n={}&d\\tilde\\beta_t+\\|\\tilde\\mu_t-\\mu_\\theta\\|^2.\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 420,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 105,
+      "original_section": "7 高斯 KL 怎样变成均值平方误差",
+      "source_line": 344,
+      "original_text_sha256": "f96ff4366f9f0ae94c0b5a94649e0b67485deea3846fa9d75b14ebf1becccd82",
+      "original_text": "交叉项为零，因为 \\(\\mathbb E_{x_{t-1}\\sim q(x_{t-1}\\mid x_t,x_0)}[x_{t-1}-\\tilde\\mu_t]=0\\)。代回得到完整结果：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 426,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 106,
+      "original_section": "7 高斯 KL 怎样变成均值平方误差",
+      "source_line": 346,
+      "original_text_sha256": "a9f2d86574ed7e0a45610a8936561249c3958c67c721117c07c7bcbde2f8318e",
+      "original_text": "$$\\begin{aligned}\nD_{\\mathrm{KL}}(q\\|p_\\theta)\n={}&\\frac1{2\\sigma_t^2}\\|\\tilde\\mu_t-\\mu_\\theta\\|^2\\\\\n&+\\frac d2\\left(\\frac{\\tilde\\beta_t}{\\sigma_t^2}-1+\n\\log\\frac{\\sigma_t^2}{\\tilde\\beta_t}\\right).\n\\end{aligned} \\qquad (16)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 428,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 107,
+      "original_section": "7 高斯 KL 怎样变成均值平方误差",
+      "source_line": 353,
+      "original_text_sha256": "84fba20a5443daa9b66fcf1ebc1e30726896ab94449334cf533a5244bc9288f9",
+      "original_text": "第二行只由固定方差决定，不依赖 \\(\\theta\\)。因此，优化这一项 KL 等价于优化第一行的**带权均值平方误差**。若 \\(\\sigma_t^2=\\tilde\\beta_t\\)，第二行恰好为零；若取别的固定方差，它仍然不能凭空从数值等式里消失，只能在优化时忽略。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 435,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 108,
+      "original_section": "7 高斯 KL 怎样变成均值平方误差",
+      "source_line": 355,
+      "original_text_sha256": "d32a2b5a5d8984b3e8a66019d4f72a2a51d763b727c1aa0e714a6a1d0027f67e",
+      "original_text": "这个等价关系依赖“方差固定”的前提。若方差也由网络学习，就不能把所有方差项当成与参数无关的常数。[原论文第 3.2 节及式（8）](https://arxiv.org/pdf/2006.11239)",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 437,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 109,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 359,
+      "original_text_sha256": "0eefea390150fde0cc88e9b93b24763cbe0f944a52f27f13979c1e3170d1d007",
+      "original_text": "真实后验均值式（13）含有 \\(x_0\\)。训练时知道 \\(x_0\\)，但生成时不知道。我们把它改写为能由网络预测的量。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 441,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 110,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 361,
+      "original_text_sha256": "8d421db021986e9244811a05bbefc12c8bcd6c5ab28f45e91104bfa3cdc890f1",
+      "original_text": "从直接加噪式（3）解出原图：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 443,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 111,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 363,
+      "original_text_sha256": "3c25e4e5045b1985c2c266e2663cbf4434f9fb97ed19b12668b2f1b643f9c0d2",
+      "original_text": "$$x_0=\\frac{x_t-\\sqrt{1-\\overline{\\alpha}_t}\\epsilon}{\\sqrt{\\overline{\\alpha}_t}}.$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 445,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 112,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 365,
+      "original_text_sha256": "75edbe9d14a248244bb8d9479216140a0c123a0b71f1f5db5e123e2ce4f35c5b",
+      "original_text": "代入式（13）：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 447,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 113,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 367,
+      "original_text_sha256": "096e47a8c82e9f0fe52246070fc4ae53e6e6cad213751e04c7d8a0b5d900a1e3",
+      "original_text": "$$\\begin{aligned}\n\\tilde\\mu_t\n={}&\\frac{\\sqrt{\\overline{\\alpha}_{t-1}}\\beta_t}{1-\\overline{\\alpha}_t}\n\\frac{x_t-\\sqrt{1-\\overline{\\alpha}_t}\\epsilon}{\\sqrt{\\overline{\\alpha}_t}}\\\\\n&+\\frac{\\sqrt{\\alpha_t}(1-\\overline{\\alpha}_{t-1})}{1-\\overline{\\alpha}_t}x_t.\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 449,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 114,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 374,
+      "original_text_sha256": "749b63ce0a488490f59ceadf04abb3e3ec41a5a801755ab7810cfb3d2e8b11dd",
+      "original_text": "利用 \\(\\overline{\\alpha}_t=\\alpha_t\\overline{\\alpha}_{t-1}\\)，第一项中的平方根比值变为 \\(1/\\sqrt{\\alpha_t}\\)。两个 \\(x_t\\) 系数相加：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 456,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 115,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 376,
+      "original_text_sha256": "316f5d53482f475b02a63d04aaaca277f4dbb00d24d32782eb1725c79fe45051",
+      "original_text": "$$\\begin{aligned}\n&\\frac{\\beta_t}{\\sqrt{\\alpha_t}(1-\\overline{\\alpha}_t)}\n+\\frac{\\sqrt{\\alpha_t}(1-\\overline{\\alpha}_{t-1})}{1-\\overline{\\alpha}_t}\\\\\n&=\\frac{\\beta_t+\\alpha_t(1-\\overline{\\alpha}_{t-1})}{\\sqrt{\\alpha_t}(1-\\overline{\\alpha}_t)}\n=\\frac1{\\sqrt{\\alpha_t}}.\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 458,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 116,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 383,
+      "original_text_sha256": "cecf948f146ae71da37f23ef28f99dc3402d3b528f5f46c597da1d4f95b2b65a",
+      "original_text": "噪声系数则化为 \\(-\\beta_t/[\\sqrt{\\alpha_t}\\sqrt{1-\\overline{\\alpha}_t}]\\)，因此",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 465,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 117,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 385,
+      "original_text_sha256": "ef53a1840ace726771c0bc749571354ac5df82795d73d18dcdda8c8143b60b45",
+      "original_text": "$$\\tilde\\mu_t(x_t,x_0)\n=\\frac1{\\sqrt{\\alpha_t}}\n\\left(x_t-\\frac{\\beta_t}{\\sqrt{1-\\overline{\\alpha}_t}}\\epsilon\\right). \\qquad (17)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 467,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 118,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 389,
+      "original_text_sha256": "414fa59e86155a8fd73b18314b52f24d4c90d500f618bb493893120d32b98ba3",
+      "original_text": "**定义网络接口。** 让同一个网络输入 \\(x_t,t\\)，输出与图片同形状的噪声估计 \\(\\epsilon_\\theta(x_t,t)\\)；再把模型均值定义为",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 471,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 119,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 391,
+      "original_text_sha256": "b12925303e2f5221bc41799aefd8fd248cf058195efc625f29cdeb9975dc3aa7",
+      "original_text": "$$\\mu_\\theta(x_t,t)\n=\\frac1{\\sqrt{\\alpha_t}}\n\\left(x_t-\\frac{\\beta_t}{\\sqrt{1-\\overline{\\alpha}_t}}\\epsilon_\\theta(x_t,t)\\right). \\qquad (18)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 473,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 120,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 395,
+      "original_text_sha256": "91211050073a8d89a179b6e220a85bf7905b28446489138cf22ecad47b880f78",
+      "original_text": "这是均值的重参数化。并不是生成时能拿到真实 \\(\\epsilon\\)，而是用网络预测值构造反向均值。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 477,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 121,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 397,
+      "original_text_sha256": "fd897e2c5670b08d668578926922852ff5acdbb54bff09b784c3ae017ce9a721",
+      "original_text": "相减并平方：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 479,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 122,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 399,
+      "original_text_sha256": "09ca52fd7dfe45e7b93a7fd98c38491abd9ca0a8da37aac4089af6730494b869",
+      "original_text": "$$\\|\\tilde\\mu_t-\\mu_\\theta\\|^2\n=\\frac{\\beta_t^2}{\\alpha_t(1-\\overline{\\alpha}_t)}\n\\|\\epsilon-\\epsilon_\\theta(x_t,t)\\|^2.$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 481,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 123,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 403,
+      "original_text_sha256": "d29aa07d3e22f5fd3794f3fcc12af4028f7b6a39d029a4060faecbedfc243b2c",
+      "original_text": "代回高斯 KL，得到",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 485,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 124,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 405,
+      "original_text_sha256": "0c00be78137bd65f5e94e9a7d276c2507082518def238576d28a2be615560149",
+      "original_text": "$$D_{\\mathrm{KL}}(q\\|p_\\theta)\n=\\frac{\\beta_t^2}{2\\sigma_t^2\\alpha_t(1-\\overline{\\alpha}_t)}\n\\|\\epsilon-\\epsilon_\\theta(x_t,t)\\|^2+\\text{与 }\\theta\\text{ 无关的项}. \\qquad (19)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 487,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 125,
+      "original_section": "8 为什么预测噪声就能确定反向均值",
+      "source_line": 409,
+      "original_text_sha256": "1a427f78080546558eb0fddf92dd0cc5d3bca111459abc489497a41072d4c708",
+      "original_text": "因此，噪声预测误差来自整体似然上界中的局部 KL，并不是另加的无关任务。训练标签 \\(\\epsilon\\) 是我们自己抽取的，天然已知。平方误差使网络学习给定当前输入后的平均噪声估计，而不是识别某次唯一的历史噪声。[原论文式（11）（12）](https://arxiv.org/pdf/2006.11239)",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 491,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 126,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 413,
+      "original_text_sha256": "34b9ffc8acc8750332a15226da44f8591427ac3f69af617a0c1a8569b82e7d80",
+      "original_text": "要证明的本质是：**对原图与加噪结果平均后的参考后验 KL，与拟合真实反向条件分布的 KL，只差一个不依赖模型参数的量。** 差常数的是两个损失目标，不是两个概率密度。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 501,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 127,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 415,
+      "original_text_sha256": "a96e777d0e1b8beea94afa2e4a6c597a52b9a493533372ba1ce7311b90203088",
+      "original_text": "固定某个 \\(t\\geq2\\)，并固定数据分布与正向加噪规则。以下统一用密度和积分书写；对于离散的数据集，外层关于原图的积分对应求和。先给单图损失加上数据平均，定义",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 503,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 128,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 417,
+      "original_text_sha256": "24d90df9f84d29ea63c5508f25347d03a6dddfa326ec00668116c028b1946ca9",
+      "original_text": "$$\\begin{aligned}\nJ_t(\\theta)\n=\\mathbb E_{x_0\\sim q_{\\mathrm{data}}}\n\\mathbb E_{x_t\\sim q(x_t\\mid x_0)}\n\\Big[D_{\\mathrm{KL}}\\!\\left(q(x_{t-1}\\mid x_t,x_0)\\,\\|\\,p_\\theta(x_{t-1}\\mid x_t)\\right)\\Big].\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 505,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 129,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 424,
+      "original_text_sha256": "09ea5e88203f64467370d467461c4d67ea555687e49d786525ad3def78721a6a",
+      "original_text": "内层平均同一原图的加噪结果，外层平均不同原图。按照 KL 的定义，把它内部对 \\(x_{t-1}\\) 的期望也明确写出来：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 512,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 130,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 426,
+      "original_text_sha256": "50b3a8d1baa91cb436d06f4abdc67783ed33598cb4a25cffc6c08fad7be31412",
+      "original_text": "$$\\begin{aligned}\nJ_t(\\theta)\n={}&\\mathbb E_{x_0\\sim q_{\\mathrm{data}}}\n\\mathbb E_{x_t\\sim q(x_t\\mid x_0)}\n\\Bigg[\\mathbb E_{x_{t-1}\\sim q(x_{t-1}\\mid x_t,x_0)}\\\\\n&\\qquad\\qquad\\left[\\log q(x_{t-1}\\mid x_t,x_0)\n-\\log p_\\theta(x_{t-1}\\mid x_t)\\right]\\Bigg].\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 514,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 131,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 435,
+      "original_text_sha256": "ddd935d6f7fb962bf341a108ce0389c1c228925a92f51e8e7b8f2bbe0df77f7c",
+      "original_text": "这三层平均展开为积分，就是",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 523,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 132,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 437,
+      "original_text_sha256": "edb4ec3b8fea5a14ee9c0eb1fe328e13c0bbfec02b50df9935f64a798060beaa",
+      "original_text": "$$\\begin{aligned}\nJ_t(\\theta)=\\iiint &q_{\\mathrm{data}}(x_0)q(x_t\\mid x_0)q(x_{t-1}\\mid x_t,x_0)\\\\\n&\\cdot\\left[\\log q(x_{t-1}\\mid x_t,x_0)\n-\\log p_\\theta(x_{t-1}\\mid x_t)\\right]\n\\,dx_{t-1}\\,dx_t\\,dx_0.\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 525,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 133,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 444,
+      "original_text_sha256": "79c2c4275ab4e6f7560cda86239932d62066bdde5e42423ae1ef6809f0512ac8",
+      "original_text": "这里的三个密度相乘，正好形成同一个联合分布：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 532,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 134,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 446,
+      "original_text_sha256": "e35fea37945a2621cca5f51644b37a5831563f763f6686b57cf2315affa83785",
+      "original_text": "$$q_{\\mathrm{data}}(x_0)q(x_t\\mid x_0)q(x_{t-1}\\mid x_t,x_0)\n=q(x_0,x_t,x_{t-1}).$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 534,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 135,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 449,
+      "original_text_sha256": "2589c230d808444d645759c3862e5db68d09a82a23b9b8768c27a608b33e4589",
+      "original_text": "先把不含参数的部分完整定义出来：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 537,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 136,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 451,
+      "original_text_sha256": "fb99262205b39ae02622dbc97ba57c1ed7e963abc9e9fa0375146f686ce030b1",
+      "original_text": "$$C_{1,t}=\\iiint q(x_0,x_t,x_{t-1})\n\\log q(x_{t-1}\\mid x_t,x_0)\\,dx_{t-1}\\,dx_t\\,dx_0.$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 539,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 137,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 454,
+      "original_text_sha256": "67ec6206d20dffbd7202c11ead20edee95550f69606043ffe9b51ebc80cb5531",
+      "original_text": "\\(C_{1,t}\\) 是上面**整个三重积分**，不是其中单独一个 \\(\\log q\\)。它不依赖 \\(\\theta\\)，是因为 \\(q_{\\mathrm{data}}\\) 与正向加噪规则已经固定。把它从式子中分出后，所有与模型参数有关的内容集中在",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 542,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 138,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 456,
+      "original_text_sha256": "4f3bb062c9c7c66de1b9082dec094ccc2553810ebe1fc69e534382b3f2703456",
+      "original_text": "$$J_t(\\theta)=C_{1,t}-\\iiint q(x_0,x_t,x_{t-1})\n\\log p_\\theta(x_{t-1}\\mid x_t)\\,dx_{t-1}\\,dx_t\\,dx_0.$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 544,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 139,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 459,
+      "original_text_sha256": "632a0813d8bf93e38173b2b515fc0b8004c7aea6a375959b2df6bff246089e0d",
+      "original_text": "接下来只需把这个模型项中的 \\(x_0\\) 边缘化，整个转换的关键就发生在这一步。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 547,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 140,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 463,
+      "original_text_sha256": "3e2befdaff2b4331edcef6cc178429c935d2c02345f83c5c65a33aac86c9a709",
+      "original_text": "模型的 \\(\\log p_\\theta(x_{t-1}\\mid x_t)\\) 不以 \\(x_0\\) 为自变量，因此可以交换积分次序，把关于 \\(x_0\\) 的积分放进括号：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 551,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 141,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 465,
+      "original_text_sha256": "7e6aaca90302d2b61cbb3deafacf3e630816301d51d9707aa7c131485615e7da",
+      "original_text": "$$\\begin{aligned}\nJ_t(\\theta)=C_{1,t}-\\iint\n\\left[\\int q(x_0,x_t,x_{t-1})\\,dx_0\\right]\n\\log p_\\theta(x_{t-1}\\mid x_t)\\,dx_{t-1}\\,dx_t.\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 553,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 142,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 471,
+      "original_text_sha256": "a33de65db463c72ceff7173eff74bcd550281e9f2bbc6868d58a66fd9d39e81c",
+      "original_text": "括号里就是边缘化的定义，随后再做一次联合分布分解：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 559,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 143,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 473,
+      "original_text_sha256": "139df3c53a18079c348e1b6af9b91355622951ff8582c21a7f01b382b4526d02",
+      "original_text": "$$\\int q(x_0,x_t,x_{t-1})\\,dx_0\n=q(x_t,x_{t-1})\n=q(x_t)q(x_{t-1}\\mid x_t).$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 561,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 144,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 477,
+      "original_text_sha256": "101a2bdfc750bbd7788f185e01408124eefd6c26308efc91e7867e452b1aef06",
+      "original_text": "因此，原目标变成",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 565,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 145,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 479,
+      "original_text_sha256": "484e402743152f8882976ade52b8f41b63373c5bfed73fd8f7e9ed905138339c",
+      "original_text": "$$\\begin{aligned}\nJ_t(\\theta)=C_{1,t}\n-\\iint q(x_t)q(x_{t-1}\\mid x_t)\n\\log p_\\theta(x_{t-1}\\mid x_t)\\,dx_{t-1}\\,dx_t.\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 567,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 146,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 485,
+      "original_text_sha256": "d63590c9ff1ec0077cf3cedcc511a3f0813d345cdae09b33307ecc56b610f2c3",
+      "original_text": "也可以把剩下的两层平均完整写回期望：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 573,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 147,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 487,
+      "original_text_sha256": "5f766d61e5b0bab956e82cf8484b799a8ed002b6c1178a9e00c2854f61b7223b",
+      "original_text": "$$J_t(\\theta)=C_{1,t}\n-\\mathbb E_{x_t\\sim q(x_t)}\n\\left[\\mathbb E_{x_{t-1}\\sim q(x_{t-1}\\mid x_t)}\n[\\log p_\\theta(x_{t-1}\\mid x_t)]\\right].$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 575,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 148,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 492,
+      "original_text_sha256": "f74a6ccdff97d1503f1265345e6bbfd993e77a72a8f0704e22c7e9b343dce5a9",
+      "original_text": "现在另写一个目标：直接让模型拟合真实反向条件分布，记为",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 580,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 149,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 494,
+      "original_text_sha256": "734e028882152db9e1acdda62c5e3874cac08cff717041f687252a56261698c9",
+      "original_text": "$$K_t(\\theta)=\\mathbb E_{x_t\\sim q(x_t)}\n\\Big[D_{\\mathrm{KL}}\\!\\left(q(x_{t-1}\\mid x_t)\\,\\|\\,p_\\theta(x_{t-1}\\mid x_t)\\right)\\Big].$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 582,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 150,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 497,
+      "original_text_sha256": "4187a5792f1e9d3bb411a2d74d5ed1abf8e488821cbedf0ce6c2f0222d0ee46e",
+      "original_text": "把这个 KL 展开，并定义它的不含参数部分：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 585,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 151,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 499,
+      "original_text_sha256": "c5387874396c8c1af993555bc1c08ad9bc30c7d11c9e65b06f8ef235977844c7",
+      "original_text": "$$\\begin{aligned}\nC_{2,t}&=\\iint q(x_t)q(x_{t-1}\\mid x_t)\n\\log q(x_{t-1}\\mid x_t)\\,dx_{t-1}\\,dx_t,\\\\\nK_t(\\theta)&=C_{2,t}-\\iint q(x_t)q(x_{t-1}\\mid x_t)\n\\log p_\\theta(x_{t-1}\\mid x_t)\\,dx_{t-1}\\,dx_t.\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 587,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 152,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 506,
+      "original_text_sha256": "180ee4cfb2ff6f4a536da3f48c6c2dd975321169f7bfb71c1036aa59b1d212a2",
+      "original_text": "现在可以逐项比较：\\(J_t\\) 与 \\(K_t\\) 的模型项完全相同，唯一差别是两个不含参数的项。因此",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 594,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 153,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 508,
+      "original_text_sha256": "dd7af522d06c46ea1f79816a057f6aa49ba7267a0501b8d878876dfa194ca9ca",
+      "original_text": "$$J_t(\\theta)=K_t(\\theta)+C_t,\\qquad C_t=C_{1,t}-C_{2,t}. \\qquad (20)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 596,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 154,
+      "original_section": "9 训练知道原图 为什么模型仍只需要带噪输入",
+      "source_line": 510,
+      "original_text_sha256": "654a842d4235a14da3628cce25d7a497fd634f2e49f1a23af76a7efdc9e6e9bf",
+      "original_text": "这里没有假设模型已经训练成功，也没有假设真实反向条件是高斯。恒等式来自对同一联合分布的展开、边缘化与重新分解。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 598,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 155,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 514,
+      "original_text_sha256": "a4cbfbf49c5000cf55146ce55a6c4995ebe5bf490998b74b59a6e49a452f6adc",
+      "original_text": "把式（20）中的两个目标完整展开，得到",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 602,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 156,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 516,
+      "original_text_sha256": "a25eadc072c0dfa0cb9bfcc9603a1c743f15177a77f4889bc78a90b23fe7ca70",
+      "original_text": "$$\\begin{aligned}\n&\\mathbb E_{x_0\\sim q_{\\mathrm{data}}}\\mathbb E_{x_t\\sim q(x_t\\mid x_0)}\n\\Big[D_{\\mathrm{KL}}\\!\\left(q(x_{t-1}\\mid x_t,x_0)\\,\\|\\,p_\\theta(x_{t-1}\\mid x_t)\\right)\\Big]\\\\\n&=\\mathbb E_{x_t\\sim q(x_t)}\n\\Big[D_{\\mathrm{KL}}\\!\\left(q(x_{t-1}\\mid x_t)\\,\\|\\,p_\\theta(x_{t-1}\\mid x_t)\\right)\\Big]+C_t.\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 604,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 157,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 523,
+      "original_text_sha256": "ee7207c6bff858f0e6045487164a64b05c849637bb9c802bc1af2705e0c44f82",
+      "original_text": "为了看清 \\(C_t\\)，先把 \\(C_{2,t}\\) 也写回同一个三重积分。利用上一节的边缘化等式，",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 611,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 158,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 525,
+      "original_text_sha256": "3a1aa1925b7bcae60bff0694f7a93dfc416e03a6f983f7f449b8be430eb6efb9",
+      "original_text": "$$\\begin{aligned}\nC_{2,t}\n&=\\iint\\left[\\int q(x_0,x_t,x_{t-1})\\,dx_0\\right]\n\\log q(x_{t-1}\\mid x_t)\\,dx_{t-1}\\,dx_t\\\\\n&=\\iiint q(x_0,x_t,x_{t-1})\\log q(x_{t-1}\\mid x_t)\n\\,dx_{t-1}\\,dx_t\\,dx_0.\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 613,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 159,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 533,
+      "original_text_sha256": "f5f1c8c9f3ad78cf409aa9c8539086b17dabac3435f91d05cca88af260e72044",
+      "original_text": "所以相减时只需合并两个对数，得到",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 621,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 160,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 535,
+      "original_text_sha256": "6b6d7e6dacde6add2014e407bd0acadc5352cbeef9170ccca4d92eb871971ed4",
+      "original_text": "$$C_t=\\iiint q(x_0,x_t,x_{t-1})\n\\log\\frac{q(x_{t-1}\\mid x_t,x_0)}{q(x_{t-1}\\mid x_t)}\n\\,dx_{t-1}\\,dx_t\\,dx_0.$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 623,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 161,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 539,
+      "original_text_sha256": "e2a36bcd2a9b4fc45d10ee5819043df9534ea3c7ab062d0e5a466316e22e03a3",
+      "original_text": "再把联合密度重新分成三个条件因子，把内层对 \\(x_{t-1}\\) 的积分辨认为 KL：",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 627,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 162,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 541,
+      "original_text_sha256": "f2ac33d8f2c405e41b30f78d1deaffc985a00a5453aaf0f0571cf33c311d39c8",
+      "original_text": "$$\\begin{aligned}\nC_t=\\iint &q_{\\mathrm{data}}(x_0)q(x_t\\mid x_0)\\\\\n&\\cdot\\left[\\int q(x_{t-1}\\mid x_t,x_0)\n\\log\\frac{q(x_{t-1}\\mid x_t,x_0)}{q(x_{t-1}\\mid x_t)}\\,dx_{t-1}\\right]\\,dx_t\\,dx_0.\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 629,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 163,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 547,
+      "original_text_sha256": "a07bd3196be556cf1da60a815f550697856ad03b04707a4f3a592d70c7de682e",
+      "original_text": "因此",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 113,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 164,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 549,
+      "original_text_sha256": "f7ca0829a29c0c53344796b251c8c57a228979b3cb83b4472ed2508639ccc761",
+      "original_text": "$$\\begin{aligned}\nC_t=\\mathbb E_{x_0\\sim q_{\\mathrm{data}}}\n\\mathbb E_{x_t\\sim q(x_t\\mid x_0)}\n\\Big[D_{\\mathrm{KL}}\\!\\left(q(x_{t-1}\\mid x_t,x_0)\\,\\|\\,q(x_{t-1}\\mid x_t)\\right)\\Big]\\geq0.\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 637,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 165,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 557,
+      "original_text_sha256": "7397aa34d87ec3aeec486b06afccf2ad513d7b2dbbf82c1df8256f0d83a35038",
+      "original_text": "这些表达式都只含 \\(q\\)。在数据与加噪规则固定时，\\(C_t\\) 与 \\(\\theta\\) 无关，所以**在相同模型族中，优化 \\(J_t\\) 与优化 \\(K_t\\) 等价**。这证明训练时利用原图构造参考后验是合理的。它不保证一个受限的高斯模型能精确表示真实反向分布，也不保证从当前带噪输入唯一还原某一张历史原图或那次噪声。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 645,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 166,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 559,
+      "original_text_sha256": "447a2b0069e7a61381412e422aa737b054fea40681ee5ac01b8aafbf7ef3f402",
+      "original_text": "**边缘化掉的是 \\(x_0\\)，仍然保留条件 \\(x_t\\)。** 最终拟合的是 \\(q(x_{t-1}\\mid x_t)\\)，不是无条件的 \\(q(x_{t-1})\\)。真实反向分布可写成",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 647,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 167,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 561,
+      "original_text_sha256": "cef797584eb90a3a97366b96bad7d2d270cbcea0e7da0c96fc710162d0e9744f",
+      "original_text": "$$q(x_{t-1}\\mid x_t)\n=\\int q(x_{t-1}\\mid x_t,x_0)q(x_0\\mid x_t)\\,dx_0.$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 649,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 168,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 564,
+      "original_text_sha256": "f81cce6dcd608d2c2d7806fdbacc28b38ab6b60bb09117b10a55b92c78cefc54",
+      "original_text": "它可能是许多高斯后验的混合。训练无需显式求出这个混合密度；使用已知原图提供的参考后验来平均训练，就已在优化同一项含参数的部分。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 652,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 169,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 566,
+      "original_text_sha256": "bf865de149ba470efae1801ea7cf62a2f13732cbd5411c21aaa6f1237f4d624a",
+      "original_text": "不能在单图 \\(L(x_0)\\) 里凭空加入对 \\(q(x_0\\mid x_t)\\) 的平均。必须先进行数据平均，再利用",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 654,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 170,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 568,
+      "original_text_sha256": "52e85b7596db17fdf89c4a7a58e175d98bb9d31015c62113419b95300d02b4e6",
+      "original_text": "$$q_{\\mathrm{data}}(x_0)q(x_t\\mid x_0)=q(x_t)q(x_0\\mid x_t)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 656,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 171,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 570,
+      "original_text_sha256": "0d610f852b0c5513369f11ef1f9844ac7fa5f4f0eb4abed26ba46e99b9eb2d1e",
+      "original_text": "交换平均次序。否则就把“原图固定”与“原图随机”混成了一个问题。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 658,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 172,
+      "original_section": "10 这个常数等价结论究竟说明什么",
+      "source_line": 572,
+      "original_text_sha256": "9d9843794c84f26e722f17bc8d0bca9062fe6c3c00e3a6b3e827a0d03d8e7e84",
+      "original_text": "**模型接口始终不变。** 原图 \\(x_0\\) 用来构造 \\(x_t\\) 与监督标签；网络始终只看到 \\(x_t,t\\)。生成时沿用相同接口。因此并不存在训练时把原图喂给网络、生成时再撤掉原图的步骤。本节证明限于 \\(t\\geq2\\)，连续变量下的退化端点 \\(t=1\\) 要单独处理。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 660,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 173,
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "source_line": 576,
+      "original_text_sha256": "e4703ad8208ba342d833b55579a9e1b3c5179db18cb5fba72969ab408bb9fa36",
+      "original_text": "式（19）对 \\(t\\geq2\\) 给出了 timestep 权重",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 670,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 174,
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "source_line": 578,
+      "original_text_sha256": "fe66de032d94924a006bbf4827466ab7560bf1f9b8b85dba75b938f7350edf0c",
+      "original_text": "$$w_t=\\frac{\\beta_t^2}{2\\sigma_t^2\\alpha_t(1-\\overline{\\alpha}_t)}.$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 672,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 175,
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "source_line": 580,
+      "original_text_sha256": "598430e081cc1cb5ceb3ef1ac6e6027da3a487d23854a2d93323c2c2289cbe04",
+      "original_text": "因此，原始上界中间部分的含参数项是",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 674,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 176,
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "source_line": 582,
+      "original_text_sha256": "451328a0ab843982c8b8b8674445905ac4127c2ce594e567986f3a6e5dbc0d52",
+      "original_text": "$$\\sum_{t=2}^{T}\\mathbb E_{x_0\\sim q_{\\mathrm{data}}}\n\\mathbb E_{\\epsilon\\sim\\mathcal N(0,I)}\n[w_t\\|\\epsilon-\\epsilon_\\theta(x_t,t)\\|^2].$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 676,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 177,
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "source_line": 586,
+      "original_text_sha256": "f2fe77c40e79b4371a73245c35a953f36dd5868f92847d797f85c17ae14bfe03",
+      "original_text": "其中 \\(x_t\\) 由式（3）构造。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 680,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 178,
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "source_line": 588,
+      "original_text_sha256": "0843fd0aebe88c56ddec0d127ddbad14a52b8b60f3e4a84fb9ffb5961f8c7314",
+      "original_text": "**噪声端。** 当正向日程和先验固定时，\\(D_{\\mathrm{KL}}(q(x_T\\mid x_0)\\|p(x_T))\\) 不含 \\(\\theta\\)，可以在优化参数时忽略。它仍是似然上界的一部分，不等于数值上消失。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 682,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 179,
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "source_line": 590,
+      "original_text_sha256": "e7c1458d256e1ec99b76430340d21563e8cb19468b3b1b122e588ebba604fb8e",
+      "original_text": "**重建端。** 由约定 \\(\\overline{\\alpha}_0=1\\)，式（12）形式上给出 \\(\\tilde\\beta_1=0\\)。知道原图后，\\(x_0\\) 本来就是已固定的值；不能套用要求正方差的高斯 KL。正确项一直是",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 684,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 180,
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "source_line": 592,
+      "original_text_sha256": "667320e17f62709bd34beea0dce6e2e0cce14db7da525101d9b317d1935d633e",
+      "original_text": "$$L_0(x_0)=\\mathbb E_{x_1\\sim q(x_1\\mid x_0)}[-\\log p_\\theta(x_0\\mid x_1)].$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 686,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 181,
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "source_line": 594,
+      "original_text_sha256": "05cdfc20dcd66830785cd74b69a76cbe3ba4d18f6b0961cec01de89ec969aa80",
+      "original_text": "若在连续高斯解码器下取固定正方差 \\(\\sigma_1^2\\)，则负对数密度是 \\(\\|x_0-\\mu_\\theta(x_1,1)\\|^2/(2\\sigma_1^2)\\) 加常数。又因为 \\(1-\\overline{\\alpha}_1=\\beta_1\\)，",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 688,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 182,
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "source_line": 596,
+      "original_text_sha256": "a45f16958eded19b7c0104a83d4d48b73be4084377ffd0bbb16ee8fe7d1c8fdc",
+      "original_text": "$$\\begin{aligned}\n\\mu_\\theta(x_1,1)&=\\frac1{\\sqrt{\\alpha_1}}\n\\left(x_1-\\sqrt{\\beta_1}\\epsilon_\\theta(x_1,1)\\right),\\\\\n\\|x_0-\\mu_\\theta(x_1,1)\\|^2\n&=\\frac{\\beta_1}{\\alpha_1}\\|\\epsilon-\\epsilon_\\theta(x_1,1)\\|^2.\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 690,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 183,
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "source_line": 603,
+      "original_text_sha256": "f960d0d2a196cd6cae320ce9c1479cc5862241cd395ec4d1aa739b4326e2330c",
+      "original_text": "固定 \\(x_0\\)，把加噪平均也写回去，就得到",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 697,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 184,
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "source_line": 605,
+      "original_text_sha256": "87664b234990d984e1e0197fbe4391a4ce16f6fa3562616a0552845f95a2cf65",
+      "original_text": "$$\\begin{aligned}\nL_0(x_0)\n={}&\\mathbb E_{\\epsilon\\sim\\mathcal N(0,I)}\\Bigg[\n\\frac{\\beta_1}{2\\sigma_1^2\\alpha_1}\\\\\n&\\quad\\cdot\\left\\|\\epsilon-\\epsilon_\\theta\\!\\left(\n\\sqrt{\\alpha_1}x_0+\\sqrt{\\beta_1}\\epsilon,1\\right)\\right\\|^2\\Bigg]\n+\\frac d2\\log(2\\pi\\sigma_1^2).\n\\end{aligned}$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 699,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 185,
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "source_line": 614,
+      "original_text_sha256": "7f07ed931537ad0990e2b31de6ed60cdc92df11977d970952326f8eb5e6588a0",
+      "original_text": "因此，在这个连续设定下，单图重建损失精确等于带权噪声平方误差的平均加常数；若讨论整个数据集，还要对 \\(x_0\\sim q_{\\mathrm{data}}\\) 再平均。原论文实际用像素区间上的离散化高斯解码器；把它统一写为 \\(t=1\\) 的噪声平方误差时还涉及近似，不能宣称是原始离散重建似然的精确等式。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 708,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 186,
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "source_line": 618,
+      "original_text_sha256": "780ab8a07968c58538cb98e26d7145b9bd8d24fbb6d871d77d9d008bcc08a6e3",
+      "original_text": "原论文再去掉不同 timestep 的权重，得到",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 712,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 187,
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "source_line": 620,
+      "original_text_sha256": "899b8ed4e8cfa16d0f4c7c6e695c25adb87897a803707ff4f4a3bca03468d12a",
+      "original_text": "$$L_{\\mathrm{simple}}(\\theta)=\n\\mathbb E_{\\substack{x_0\\sim q_{\\mathrm{data}},\\ t\\sim\\mathrm{Uniform}\\{1,\\ldots,T\\}\\\\\n\\epsilon\\sim\\mathcal N(0,I)}}\n\\left[\\left\\|\\epsilon-\\epsilon_\\theta\\!\\left(\n\\sqrt{\\overline{\\alpha}_t}x_0+\\sqrt{1-\\overline{\\alpha}_t}\\epsilon,t\\right)\\right\\|^2\\right]. \\qquad (21)$$",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 714,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 188,
+      "original_section": "11 简化噪声损失与原始上界差在哪里",
+      "source_line": 626,
+      "original_text_sha256": "1fc9d561678f90074be5a246ff2298b42e3961dac76f47b1e9c7f6bcd1acc846",
+      "original_text": "去权重改变了各噪声程度的相对训练重点，是**重新加权后的目标**，不是简单删去与 \\(\\theta\\) 无关的常数。\\(L_{\\mathrm{simple}}\\) 不能直接当作原始负对数似然的上界，也不与原始 ELBO 严格等价。[原论文第 3.3–3.4 节及式（13）（14）](https://arxiv.org/pdf/2006.11239)",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 720,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 189,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 630,
+      "original_text_sha256": "e57a7586187a84be47dc1e5615fab34b080f015cf6ce7d4688e084af953bbe2c",
+      "original_text": "前面的推导说明了这些量怎样进入公式。实际使用时，顺序是：**先选正向噪声日程，再算出信号系数，最后选择反向方差。** 它们不是三组互不相关的参数。",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 99,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 190,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 634,
+      "original_text_sha256": "eea1f5233380a9241f0ab1ccb92d895e0a4d8e4649c3b4a2f57ad4f570a38120",
+      "original_text": "原始 DDPM 的常见起点是 \\(T=1000\\)，让每一步的噪声方差从 \\(10^{-4}\\) 线性增大到 \\(0.02\\)：",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 103,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 191,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 636,
+      "original_text_sha256": "2d4cc953e7236785c338ca09b499d6f5871d4d05a306aeae89d8f9d126e0f4c8",
+      "original_text": "$$\\beta_t=\\beta_{\\min}+\\frac{t-1}{T-1}(\\beta_{\\max}-\\beta_{\\min}),\\qquad t=1,\\ldots,T,$$",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 105,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 192,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 638,
+      "original_text_sha256": "a9a7ae4d5c03d0463349c47b50e01ffca02b19afd9703f27786fb548df975d23",
+      "original_text": "其中 \\(\\beta_{\\min}=10^{-4}\\)、\\(\\beta_{\\max}=0.02\\)。因此第一步 \\(\\beta_1=0.0001\\)，最后一步 \\(\\beta_{1000}=0.02\\)。训练前算好整张表，此后不随网络参数更新；“固定”指对训练固定，不是每个时间步取相同的值。这是原论文在像素缩放到 \\([-1,1]\\)、总步数为 1000 时使用的设置。[原论文第 4 节](https://arxiv.org/pdf/2006.11239)",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 107,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 193,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 640,
+      "original_text_sha256": "57f955b1a6fc30bf7ecdda6ba49ed6f83964ed7468e04b5a0cc08be9b5e6bce3",
+      "original_text": "如果改变总步数，不能只照抄两个端点就假定总加噪效果不变，因为累计乘积也会改变。应一起检查最终的 \\(\\overline{\\alpha}_T\\) 是否足够小，以及训练和采样使用的日程是否一致。",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 109,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 194,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 644,
+      "original_text_sha256": "a038b52135954d694561008fee9bcbfc0a2e279bdf23c0282f8257a902ef9983",
+      "original_text": "$$\\alpha_t=1-\\beta_t,\\qquad\n\\overline{\\alpha}_t=\\prod_{s=1}^{t}\\alpha_s,\\qquad\n\\overline{\\alpha}_0=1.$$",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 113,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 195,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 648,
+      "original_text_sha256": "68a1eae4559539a3aff44f6495ce4fec95fa08e16dd2a12cee1d808a00c7de3c",
+      "original_text": "例如上述线性日程给出 \\(\\alpha_1=0.9999\\)、\\(\\alpha_{1000}=0.98\\)；而 \\(\\overline{\\alpha}_{1000}\\approx4.04\\times10^{-5}\\)，是全部 1000 个信号系数的乘积。**单步的 alpha 接近 1，不代表走完所有步以后还保留很多原图信号。**",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 117,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 196,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 650,
+      "original_text_sha256": "dea1d488f8ba00f63b6edd1b0e3eace25a8f488d224744731f432e379e0a60a3",
+      "original_text": "实现时先对 beta 表逐项做 \\(1-\\beta_t\\)，再做累计乘积即可。正向单步式（1）使用 \\(\\sqrt{\\alpha_t}\\)，直接构造任意时刻的式（3）使用 \\(\\sqrt{\\overline{\\alpha}_t}\\)，不要混用。",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 119,
+      "match_type": "cross_reference_retargeting_only",
+      "allowed_changes": [
+        {
+          "old": "正向单步式（1）",
+          "new": "第二篇选读的正向单步式（1）",
+          "count": 1
+        },
+        {
+          "old": "直接构造任意时刻的式（3）",
+          "new": "第二篇选读中直接构造任意时刻的式（3）",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": 197,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 654,
+      "original_text_sha256": "016bf43351808b4d44d0e774eb7da7527f52f8990d6104f7caf608f239b44a61",
+      "original_text": "Improved DDPM 使用余弦日程。它先指定一条累计信号的目标曲线：",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 123,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 198,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 656,
+      "original_text_sha256": "03147353629532624d258be6c279defd2ba4e19c925007b799f3427b778f5e92",
+      "original_text": "$$f(t)=\\cos^2\\!\\left(\\frac{t/T+s}{1+s}\\frac{\\pi}{2}\\right),\\qquad\n\\overline{\\alpha}^{*}_t=\\frac{f(t)}{f(0)},\\qquad s=0.008.$$",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 125,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 199,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 659,
+      "original_text_sha256": "2d0660e29cd2b0c084306c21f12472e56c2b65f2328673896fa1306e82fadaf0",
+      "original_text": "再由相邻时刻的比值反推出单步噪声方差，并给它设置上限：",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 128,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 200,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 661,
+      "original_text_sha256": "20c5e0079b2b3967aa1b449db27d94ee8a312d6a9733bd5583ae434d8604a1b7",
+      "original_text": "$$\\beta_t=\\min\\!\\left(1-\\frac{\\overline{\\alpha}^{*}_t}{\\overline{\\alpha}^{*}_{t-1}},\\ 0.999\\right).$$",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 130,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 201,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 663,
+      "original_text_sha256": "b14ccf19f4e29ae0b15e2d20abe79878790b7b71134f9b0b7c0fada473e1cd29",
+      "original_text": "星号表示“设计的目标曲线”。归一化保证 \\(\\overline{\\alpha}^{*}_0=1\\)；上限避免最后一步出现 \\(\\beta_t=1\\)、\\(\\alpha_t=0\\)。**截断后，实际使用的 \\(\\overline{\\alpha}_t\\) 仍要从最终 beta 表按累计乘积重算**，不能把目标曲线的末端零值直接当成实际乘积。余弦设计与线性 beta 都是可选的日程，并非互相推导出来的同一组数值。[Improved DDPM 第 3.2 节](https://proceedings.mlr.press/v139/nichol21a/nichol21a.pdf)，[官方日程实现](https://github.com/openai/improved-diffusion/blob/main/improved_diffusion/gaussian_diffusion.py)",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 132,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 202,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 667,
+      "original_text_sha256": "be182aca9619f7f22d2d0ca7e06cf93f2098e588a5b0638fdd8e74fddbc69380",
+      "original_text": "在本文的固定方差模型中，\\(t\\geq2\\) 时有两种经典选择：",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 136,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 203,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 669,
+      "original_text_sha256": "381d4144b78a0132e61ac064f908257afef2cbc05ffadde90732acde7f8d9fdf",
+      "original_text": "**选择一：使用正向单步方差。**",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 138,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 204,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 671,
+      "original_text_sha256": "1753897dd2c97c628ff470126116035a010e30b02c6294bed805bd5e2c9f9baa",
+      "original_text": "$$\\sigma_t^2=\\beta_t,\\qquad \\sigma_t=\\sqrt{\\beta_t}.$$",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 63,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 205,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 673,
+      "original_text_sha256": "e23095e3605f62f1c03480eccfbcce6aed0dc34a0812af377581d491e15d1a49",
+      "original_text": "**选择二：使用参考后验方差。**",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 142,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 206,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 675,
+      "original_text_sha256": "55e71bb5c61698412191cc468f1b89f91ac901170fe2193684accf005d572ffc",
+      "original_text": "$$\\begin{aligned}\n\\sigma_t^2&=\\tilde\\beta_t=\\frac{1-\\overline{\\alpha}_{t-1}}{1-\\overline{\\alpha}_t}\\beta_t,\\\\\n\\sigma_t&=\\sqrt{\\tilde\\beta_t}.\n\\end{aligned}$$",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 144,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 207,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 680,
+      "original_text_sha256": "cd1aec5053230e35734887f47356e5bfc677cd8e656e7cf7650634680b66a01f",
+      "original_text": "第二种里的 \\(\\tilde\\beta_t\\) 是式（12）推导出的量，无须另外调参。第一种和第二种都是反向模型的方差选择；选择其中一种后，按时间步固定下来。由于累计信号随步数下降，\\(t\\geq2\\) 时有 \\(0<\\tilde\\beta_t<\\beta_t\\)，所以两种选择注入的随机噪声大小不同。[原论文第 3.2 节](https://arxiv.org/pdf/2006.11239)",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 149,
+      "match_type": "cross_reference_retargeting_only",
+      "allowed_changes": [
+        {
+          "old": "式（12）推导出的量",
+          "new": "第三篇选读 C 的式（12）推导出的量",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": 208,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 682,
+      "original_text_sha256": "141238957e73089c35cbf30af1b63c6483287aa5aff9ae04f43ce1a3ff8fd1ca",
+      "original_text": "**一个只用于手算的两步例子。** 假设 \\(\\beta_1=0.1\\)、\\(\\beta_2=0.2\\)，则 \\(\\alpha_1=0.9\\)、\\(\\alpha_2=0.8\\)、\\(\\overline{\\alpha}_2=0.72\\)，因此",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 151,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 209,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 684,
+      "original_text_sha256": "51a47d5faf632ccfc441ae423129a6714df11e23ed370966986b582ad3a2a483",
+      "original_text": "$$\\tilde\\beta_2=\\frac{1-0.9}{1-0.72}\\times0.2\\approx0.07143.$$",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 75,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 210,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 686,
+      "original_text_sha256": "3640faec91a4913b892be5a7d2204ea7ed1d38af0550a3be920cbd70423c41a4",
+      "original_text": "若选 \\(\\sigma_2^2=\\beta_2\\)，采样乘的是 \\(\\sigma_2=\\sqrt{0.2}\\approx0.4472\\)；若选 \\(\\sigma_2^2=\\tilde\\beta_2\\)，则乘 \\(\\sigma_2\\approx0.2673\\)。这组两步数值仅用于区分各符号，不是推荐的完整训练日程。",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 155,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 211,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 688,
+      "original_text_sha256": "eebd1cd0ee8b2758e31cb5cc4fe20df584ad3a74ae22218ac55def7b58a05a4b",
+      "original_text": "**最后一步单独看。** \\(\\tilde\\beta_1=0\\) 是已知原图时后验退化的结果，不能把零方差直接代入普通高斯密度或第 7 节的 KL 公式。训练中的重建项按第 11 节处理；原始 DDPM 的采样算法则在 \\(t=1\\) 设 \\(z=0\\)，输出反向均值。",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 157,
+      "match_type": "cross_reference_retargeting_only",
+      "allowed_changes": [
+        {
+          "old": "第 7 节的 KL 公式",
+          "new": "第三篇选读 D 的高斯 KL 公式",
+          "count": 1
+        },
+        {
+          "old": "第 11 节处理",
+          "new": "第三篇选读 F 处理",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": 212,
+      "original_section": "参数速查：beta、alpha 与 sigma 怎样赋值",
+      "source_line": 690,
+      "original_text_sha256": "c15d6620d50789c56ca9b674f26d88527847efd25e8b53d8901a03a8c8fc3a6a",
+      "original_text": "后续工作也会让网络学习反向方差，例如 Improved DDPM 的 learned variance。此时方差依赖网络参数，本文“固定方差后，把其余部分当作常数”的化简不能原样照搬；纯噪声均方误差也不能单独训练方差输出。本篇先掌握上面两种固定选择即可。[Improved DDPM 第 3.1 节](https://proceedings.mlr.press/v139/nichol21a/nichol21a.pdf)",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 159,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 213,
+      "original_section": "12 训练与采样分别怎样执行",
+      "source_line": 696,
+      "original_text_sha256": "16cceca80382f9c070f886b357ade10691bac3b038c33bea03c91344ed185504",
+      "original_text": "1. 从数据集抽取原图 \\(x_0\\)，均匀随机抽取 \\(t\\in\\{1,\\ldots,T\\}\\)，再抽取 \\(\\epsilon\\sim\\mathcal N(0,I)\\)\n2. 直接构造 \\(x_t=\\sqrt{\\overline{\\alpha}_t}x_0+\\sqrt{1-\\overline{\\alpha}_t}\\epsilon\\)\n3. 调用网络 \\(\\epsilon_\\theta(x_t,t)\\)，计算 \\(\\|\\epsilon-\\epsilon_\\theta(x_t,t)\\|^2\\)\n4. 对网络参数 \\(\\theta\\) 反向传播并更新；实际通常对一批样本求平均",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 136,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 214,
+      "original_section": "12 训练与采样分别怎样执行",
+      "source_line": 701,
+      "original_text_sha256": "14f4555726f74abbbdea624b894cad7ae02ad8447f9caea69512fa1031abec61",
+      "original_text": "为什么随机一步就够？若 \\(\\ell_t(\\theta)\\) 是固定 timestep、已平均原图和噪声后的损失，则",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 141,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 215,
+      "original_section": "12 训练与采样分别怎样执行",
+      "source_line": 703,
+      "original_text_sha256": "28a2a9bc37b0f2fd4823e1734ecedcf4d7d69f030ef11673c87d72e193f30503",
+      "original_text": "$$\\mathbb E_{t\\sim\\mathrm{Uniform}\\{1,\\ldots,T\\}}[\\ell_t(\\theta)]\n=\\frac1T\\sum_{t=1}^{T}\\ell_t(\\theta).$$",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 143,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 216,
+      "original_section": "12 训练与采样分别怎样执行",
+      "source_line": 706,
+      "original_text_sha256": "d3bfe09757e8f002ab563ab9e2f9da13e9870bcbb9ec50fa4eb2e07410ef9c90",
+      "original_text": "因此，随机 timestep 是对**已经选定的平均目标**进行无偏抽样估计。它和第 11 节的“去掉权重”是两个不同操作。训练只需直接构造选中时刻的 \\(x_t\\)，不必生成完整路径，也不必真的抽出 \\(x_{t-1}\\)。[原论文算法 1](https://arxiv.org/pdf/2006.11239)",
+      "target_file": "02-how-ddpm-trains.md",
+      "target_line": 146,
+      "match_type": "cross_reference_retargeting_only",
+      "allowed_changes": [
+        {
+          "old": "第 11 节的",
+          "new": "第三篇选读 F 中的",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": 217,
+      "original_section": "12 训练与采样分别怎样执行",
+      "source_line": 710,
+      "original_text_sha256": "5640e20501ee92f6820d9c27c3354a34c2b705df3967b5c7c4013fb7bc64e060",
+      "original_text": "1. 固定训练好的参数，抽取初始状态 \\(x_T\\sim\\mathcal N(0,I)\\)\n2. 从 \\(t=T\\) 到 \\(1\\) 依次调用同一个网络，计算 \\(\\epsilon_\\theta(x_t,t)\\) 与式（18）的反向均值\n3. 当 \\(t>1\\)，独立抽取新的 \\(z\\sim\\mathcal N(0,I)\\)；最后 \\(t=1\\) 时取 \\(z=0\\)\n4. 按下面的公式得到 \\(x_{t-1}\\)，然后继续下一步，最终输出 \\(x_0\\)",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 168,
+      "match_type": "cross_reference_retargeting_only",
+      "allowed_changes": [
+        {
+          "old": "式（18）的反向均值",
+          "new": "第三篇选读 D 中式（18）的反向均值",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": 218,
+      "original_section": "12 训练与采样分别怎样执行",
+      "source_line": 715,
+      "original_text_sha256": "1a9fcfe147dca2ceda277674f1b9f13cfa765d4273f6673519b82394800ade1e",
+      "original_text": "$$x_{t-1}=\\frac1{\\sqrt{\\alpha_t}}\n\\left(x_t-\\frac{\\beta_t}{\\sqrt{1-\\overline{\\alpha}_t}}\\epsilon_\\theta(x_t,t)\\right)+\\sigma_t z. \\qquad (22)$$",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 173,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 219,
+      "original_section": "12 训练与采样分别怎样执行",
+      "source_line": 718,
+      "original_text_sha256": "84f3759d5e2c4689a9e1d47b78577f86bac89026a62144d7c31fd1b09bdb4382",
+      "original_text": "\\(\\epsilon_\\theta\\) 是网络的预测，用来确定往回一步的均值；\\(z\\) 是这一反向步骤新抽的随机噪声，用来从模型分布中抽样。两者不是同一份噪声。采样时乘的是标准差 \\(\\sigma_t\\)，不是方差 \\(\\sigma_t^2\\)。原论文算法 2 在最后一步不再加 \\(z\\)，最终输出 \\(x_0=\\mu_\\theta(x_1,1)\\)；这是其采样输出规则，并不是再从像素离散化解码分布中另抽一次。",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 176,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 220,
+      "original_section": "12 训练与采样分别怎样执行",
+      "source_line": 720,
+      "original_text_sha256": "8fe66b1b634d56e5fbc61b0e9813e6bcae51521532d19341ab57c91887261499",
+      "original_text": "原始 DDPM 生成时要沿相邻状态一步步走回去，因为没有已知原图可以直接构造中间状态。训练随机抽一个时间步，并不意味着生成时也能只做随机一步。[原论文算法 2](https://arxiv.org/pdf/2006.11239)",
+      "target_file": "04-how-ddpm-samples.md",
+      "target_line": 178,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 221,
+      "original_section": "最后把整条推导接起来",
+      "source_line": 724,
+      "original_text_sha256": "73b0f71f56c39d533b257668c170d3ed10d050d994a5d9e84309d3264765e2ed",
+      "original_text": "**图片似然难直接计算 → 用 Jensen 构造路径上界 → 精确拆成反向单步匹配 → 解析求出给定原图的后验 → 固定方差的高斯 KL 变成均值误差 → 均值重参数化为噪声预测 → 选择简化目标训练 → 从噪声逐步采样。**",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 728,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 222,
+      "original_section": "最后把整条推导接起来",
+      "source_line": 726,
+      "original_text_sha256": "f981b6a18e373a7b737d9724a08f06dd28d323f042a3c6ce39ae6fa7debc6a89",
+      "original_text": "其中，原图一直只用于构造监督；数据平均使这些监督对应到真实反向条件的拟合。DDIM、score、SDE 和引导生成不属于这条核心推导，此处不展开。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 730,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 223,
+      "original_section": "参考资料",
+      "source_line": 730,
+      "original_text_sha256": "5868b0ac7032a29272f0a698c2acc3257916d4ebc1ddea941f265e1e0db19119",
+      "original_text": "[1] Ho, Jain, Abbeel. [Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2006.11239), 2020. 重点对照式（1）至（14）、算法 1–2、附录 A。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 736,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 224,
+      "original_section": "参考资料",
+      "source_line": 732,
+      "original_text_sha256": "6807f30e37d0a0d66572ce013a2f1f18c86791b4cc5c5fde559b48b2c9ec0931",
+      "original_text": "[2] Lilian Weng. [What are Diffusion Models?](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/), 2021. 本文仅使用 DDPM 基础相关部分。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 738,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 225,
+      "original_section": "参考资料",
+      "source_line": 734,
+      "original_text_sha256": "89f683a4467895f33d4c28587884e41e0f3dd0fad6b5ce8ef6e61b7e7d64fd4e",
+      "original_text": "[3] Nichol, Dhariwal. [Improved Denoising Diffusion Probabilistic Models](https://proceedings.mlr.press/v139/nichol21a.html), 2021. 第 3.1–3.2 节：学习反向方差与余弦噪声日程。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 740,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    },
+    {
+      "id": 226,
+      "original_section": "参考资料",
+      "source_line": 736,
+      "original_text_sha256": "38b66d1a467e572e2a38020726275b13354f7ac4dc5577386b82f6e559c1fbfe",
+      "original_text": "[4] OpenAI. [improved-diffusion 官方实现](https://github.com/openai/improved-diffusion/blob/main/improved_diffusion/gaussian_diffusion.py). 对照日程构造和方差选项。",
+      "target_file": "03-why-ddpm-works.md",
+      "target_line": 742,
+      "match_type": "verbatim_ignoring_whitespace",
+      "allowed_changes": []
+    }
+  ]
+}

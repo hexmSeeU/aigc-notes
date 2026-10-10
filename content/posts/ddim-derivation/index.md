@@ -368,4 +368,4 @@ return x                                 # 最后 s = 0 时输出 x0_hat
 
 - Jiaming Song、Chenlin Meng、Stefano Ermon，Denoising Diffusion Implicit Models。核心公式对照第 3.1、3.2、4.1、4.2 节及附录 B、C.1、D.3。[论文网页](https://arxiv.org/html/2010.02502v4) / [PDF](https://arxiv.org/pdf/2010.02502)
 - Lilian Weng，What are Diffusion Models?。用于与 DDPM 符号及采样直觉衔接；\(\eta\) 约定差异见第 6 节。[博客](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)
-- 前篇《DDPM 从似然到噪声预测》。用于复习后验方差与噪声参数化均值。[DDPM 笔记](https://hexmseeu.github.io/aigc-notes/posts/ddpm-derivation/)
+- 前篇《DDPM 从似然到噪声预测》。用于复习后验方差与噪声参数化均值。[DDPM 笔记]({{< relref "posts/ddpm-derivation" >}})

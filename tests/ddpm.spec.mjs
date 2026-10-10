@@ -79,17 +79,13 @@ for (const width of [375, 1440]) {
   });
 }
 
-test('DDPM remains on the homepage and in RSS before VAE', async ({page, request}) => {
+test('legacy DDPM keeps a usable collection link without a duplicate release', async ({page, request}) => {
+  await page.goto(route);
+  await expect(page.locator('.legacy-notice a')).toHaveAttribute('href', /\/collections\/ddpm\/$/);
   await page.goto('/');
-  const entry = page.locator('.post-entry').filter({hasText: title});
-  await expect(entry).toHaveCount(1);
-  await expect(entry.locator('.entry-link')).toHaveAttribute('href', /\/posts\/ddpm-derivation\/$/);
-  await expect(page.locator('.post-entry').filter({hasText: '从 AE 到 VAE：让潜变量成为一个分布'})).toHaveCount(1);
-  const response = await request.get('/index.xml');
-  expect(response.ok()).toBe(true);
-  const rss = await response.text();
-  expect(rss).toContain(`<title>${title}</title>`);
-  expect(rss).toContain('/posts/ddpm-derivation/');
+  await expect(page.locator('.post-entry').filter({hasText: title})).toHaveCount(0);
+  const rss = await (await request.get('/index.xml')).text();
+  expect(rss).not.toContain('/posts/ddpm-derivation/');
+  expect(rss).toContain('/posts/ddpm-1/');
   expect(rss).toContain('/posts/ae-to-vae/');
-  expect(rss.indexOf('/posts/ddpm-derivation/')).toBeLessThan(rss.indexOf('/posts/ae-to-vae/'));
 });

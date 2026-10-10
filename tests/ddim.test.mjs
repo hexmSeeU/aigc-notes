@@ -59,5 +59,5 @@ test('DDIM keeps the concise eight-section version and its approved sampling cod
   assert.ok(code);
   assert.equal(createHash('sha256').update(code).digest('hex'),
     '93239f2c7d7e8e0060716df11eaf2556fea312f30cfdebfecacd18ab625ed3a1');
-  assert.match(body, /\[DDPM 笔记\]\(https:\/\/hexmseeu.github.io\/aigc-notes\/posts\/ddpm-derivation\/\)/);
+  assert.ok(body.includes('[DDPM 笔记]({{< relref "posts/ddpm-derivation" >}})'));
 });

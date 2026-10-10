@@ -1,0 +1,22 @@
+/* Ordered learning collections share the blog's paper, ink and teal palette. */
+.eyebrow{font-size:12px;letter-spacing:2px;color:#0f766e;margin-bottom:14px}
+.collection-nav,.legacy-notice{border:1px solid var(--border);border-radius:12px;background:#f2f5f0;margin:0 0 32px;padding:20px}
+.collection-nav__header{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px;font-size:14px;color:var(--secondary)}
+.collection-nav__header>a{font-weight:700;color:#0f766e}.collection-picker>summary{cursor:pointer;color:var(--secondary);font-size:13px;padding:4px 0 12px}
+.episode-list,.collection-episodes{list-style:none;padding:0;margin:0}.episode-list li{margin:0}
+.episode-list a{display:flex;gap:12px;align-items:flex-start;padding:12px 10px;min-height:48px;border-radius:8px;font-size:14px;line-height:1.65;overflow-wrap:anywhere}
+.episode-list a:hover{background:#e7eee6}.episode-list .is-current>a{background:#e0eae1;color:#075d55;font-weight:650}
+.episode-number{display:inline-flex;align-items:center;justify-content:center;flex:0 0 26px;height:26px;border:1px solid #c8d8cc;border-radius:50%;font-size:12px;color:#0f766e;font-family:system-ui,sans-serif}
+.legacy-notice{font-size:14px;line-height:1.9}.legacy-notice a{display:block;color:#0f766e;text-decoration:underline;text-underline-offset:3px}.legacy-notice span{display:block;color:var(--secondary);font-size:12px}
+.collection-count{font-size:13px;color:var(--secondary)}.collection-episodes{margin:24px 0 36px}.collection-episodes li{border-bottom:1px solid var(--border)}
+.episode-card{display:flex;gap:20px;padding:26px 0}.episode-card>div{min-width:0}.episode-card>.episode-number{margin-top:4px;flex-basis:32px;height:32px}
+.episode-card h2{font-size:23px;line-height:1.6;overflow-wrap:anywhere}.episode-card p{font-size:15px;line-height:1.85;color:var(--secondary);margin:12px 0}.episode-read{font-size:13px;color:#0f766e}
+.collection-footer{display:flex;flex-wrap:wrap;gap:16px 24px;justify-content:space-between;font-size:14px;color:#0f766e}.collection-footer a{padding:10px 0}
+.collection-prev-next{gap:20px}.collection-prev-next a{min-width:0;overflow-wrap:anywhere}.collection-prev-next .next:only-child{margin-left:auto}
+.archive-collections>h2,.archive-standalone>h2{font-size:19px;margin:32px 0 20px}.archive-collection{border:1px solid var(--border);border-radius:12px;margin:18px 0;padding:20px;background:#f2f5f0}
+.archive-collection>summary{cursor:pointer;font-weight:650;font-size:20px;line-height:1.6}.archive-collection>summary .collection-count{font-weight:400;margin-left:12px;white-space:nowrap}
+.archive-collection>p{font-size:14px;color:var(--secondary);line-height:1.8;margin:18px 0 8px}.collection-index-link{display:inline-block;min-height:44px;padding:8px 0;font-size:13px;color:#0f766e}
+.archive-note{display:flex;justify-content:space-between;gap:20px;align-items:baseline;border-bottom:1px solid var(--border);padding:22px 0;font-size:16px;line-height:1.7}.archive-note a{overflow-wrap:anywhere}.archive-note time{flex-shrink:0;font-size:12px;color:var(--secondary)}.archive-legacy{font-size:12px;line-height:1.9;color:var(--secondary);margin-top:30px}.archive-legacy a{color:#0f766e}
+.home-collections{display:flex;align-items:center;flex-wrap:wrap;gap:12px 22px;border-bottom:1px solid var(--border);padding:16px 0 22px;font-size:14px}.home-collections>span{font-size:12px;color:var(--secondary)}.home-collections a{color:#0f766e;padding:8px 0}
+.post-content details.proof{min-width:0;border:1px solid var(--border);border-radius:10px;background:#f6f7f3;margin:24px 0;padding:0 18px;overflow-wrap:anywhere}.post-content details.proof>summary{font-family:system-ui,'PingFang SC',sans-serif;font-size:16px;font-weight:650;line-height:1.7;cursor:pointer;color:#0f766e;padding:18px 0}.post-content details.proof[open]>summary{border-bottom:1px solid var(--border);margin-bottom:22px}.post-content details.proof h3{margin-top:28px}.post-content details.proof>:last-child{margin-bottom:22px}
+@media(max-width:600px){.collection-nav,.archive-collection{padding:16px 12px}.episode-list a{padding:11px 4px;font-size:13px}.episode-card{gap:12px}.episode-card h2{font-size:20px}.archive-collection>summary{font-size:18px}.archive-note{display:block}.archive-note time{display:block;margin-top:8px}.post-content details.proof{padding:0 12px}.collection-prev-next{flex-direction:column}.collection-prev-next a{width:100%;max-width:none}.collection-prev-next .next{margin-left:0;text-align:left}}
