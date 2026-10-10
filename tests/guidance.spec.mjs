@@ -20,10 +20,16 @@ for(const width of [320,375,768,1440]){
   await expect(content.locator('mjx-merror,[data-mjx-error]')).toHaveCount(0);
   await expect(content).not.toContainText('$$');
   await expect(content).not.toContainText('\\(');
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  const geometry=await page.evaluate(()=>({
+   width:innerWidth,pageWidth:document.documentElement.scrollWidth,
+   overflowing:[...document.querySelectorAll('.post-content>*,.post-content mjx-container,.collection-nav,.post-title')].map(el=>{
+    const rect=el.getBoundingClientRect();return {tag:el.tagName,display:el.getAttribute('display'),text:el.textContent.slice(0,100),left:rect.left,right:rect.right,width:rect.width,minWidth:getComputedStyle(el).minWidth,overflow:getComputedStyle(el).overflowX,style:el.getAttribute('style')};
+   }).filter(x=>x.left<0||x.right>innerWidth+1)
+  }));
+  expect(geometry.pageWidth,JSON.stringify(geometry)).toBeLessThanOrEqual(width);
   expect(await content.locator('mjx-container').evaluateAll(xs=>xs.every(x=>x.getClientRects().length>0&&!x.closest('details')))).toBe(true);
-  const boxes=await content.locator('mjx-container[display="true"]').evaluateAll(xs=>xs.map(x=>({left:x.getBoundingClientRect().left,right:x.getBoundingClientRect().right,overflow:getComputedStyle(x).overflowX})));
-  for(const box of boxes){expect(box.left).toBeGreaterThanOrEqual(0);expect(box.right).toBeLessThanOrEqual(width);expect(box.overflow).toBe('auto');}
+  const boxes=await content.locator('mjx-container[display="true"]').evaluateAll(xs=>xs.map(x=>({left:x.getBoundingClientRect().left,right:x.getBoundingClientRect().right,minWidth:getComputedStyle(x).minWidth,overflow:getComputedStyle(x).overflowX})));
+  for(const box of boxes){expect(box.left).toBeGreaterThanOrEqual(0);expect(box.right).toBeLessThanOrEqual(width);expect(box.overflow).toBe('auto');expect(box.minWidth).toBe('0px');}
   if(width<768){
    const scrolled=await content.locator('mjx-container[display="true"]').evaluateAll(xs=>{
     const wide=xs.find(x=>x.scrollWidth>x.clientWidth+1);

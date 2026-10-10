@@ -60,3 +60,8 @@ test('CG preserves the reviewed full body, all equations, proofs, references and
  for(const [,question,answer] of answers)assert.ok(answer.length>30,question+' has an explanation');
  assert.doesNotMatch(math.join('\n'),/</,'Math uses HTML-safe TeX comparisons');
 });
+
+test('numbered MathJax equations can shrink their outer scroll box on phones',()=>{
+ const css=fs.readFileSync('assets/css/extended/reading.css','utf8');
+ assert.match(css,/\.post-content mjx-container\[display=true\]\{min-width:0!important\}/);
+});
