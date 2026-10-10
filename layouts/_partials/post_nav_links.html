@@ -1,0 +1,30 @@
+{{- if .Params.collection }}
+{{- $page := . }}
+{{- $episodes := (where site.RegularPages "Params.collection" .Params.collection).ByParam "episode" }}
+<nav class="paginav collection-prev-next" aria-label="合集中上一篇和下一篇">
+{{- range $episodes }}
+{{- if eq (int .Params.episode) (sub (int $page.Params.episode) 1) }}<a class="prev" rel="prev" href="{{ .RelPermalink }}"><span class="title">← 上一篇</span><span>{{ .Title }}</span></a>{{ end }}
+{{- if eq (int .Params.episode) (add (int $page.Params.episode) 1) }}<a class="next" rel="next" href="{{ .RelPermalink }}"><span class="title">下一篇 →</span><span>{{ .Title }}</span></a>{{ end }}
+{{- end }}
+</nav>
+{{- else }}
+{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- $pages = where $pages "Params.hiddenInLists" "!=" true }}
+{{- if and (gt (len $pages) 1) (in $pages . ) }}
+<nav class="paginav">
+  {{- with $pages.Next . }}
+  <a class="prev" href="{{ .Permalink }}">
+    <span class="title">« {{ i18n "prev_page" }}</span>
+    <span>{{- .Name -}}</span>
+  </a>
+  {{- end }}
+  {{- with $pages.Prev . }}
+  <a class="next" href="{{ .Permalink }}">
+    <span class="title">{{ i18n "next_page" }} »</span>
+    <span>{{- .Name -}}</span>
+  </a>
+  {{- end }}
+</nav>
+{{- end }}
+
+{{- end }}

@@ -1,0 +1,58 @@
+[
+  {
+    "source": "01-what-ddpm-does.md",
+    "source_sha256": "f45af97f4f84fb668ee276c008f35a461bef3c184280bc4b24909a1d19de06a9",
+    "target": "content/posts/ddpm-1/index.md",
+    "display_math": 0,
+    "inline_math": 0,
+    "proofs": 0
+  },
+  {
+    "source": "02-how-ddpm-trains.md",
+    "source_sha256": "82081a264839bf901207eddaa8d216590fc3ec4bfb9edccc6eb94cf4dd76955a",
+    "target": "content/posts/ddpm-2/index.md",
+    "display_math": 13,
+    "inline_math": 59,
+    "proofs": 2
+  },
+  {
+    "source": "03-why-ddpm-works.md",
+    "source_sha256": "699e3bc1cf8a551458c73ccb51bd1d78462247516907f012a5ed0a66c95e521a",
+    "target": "content/posts/ddpm-3/index.md",
+    "display_math": 74,
+    "inline_math": 183,
+    "proofs": 8
+  },
+  {
+    "source": "04-how-ddpm-samples.md",
+    "source_sha256": "baea0e2ee2a5ece60bcb7bcdf89a2cae553120c206298317331228b58360746c",
+    "target": "content/posts/ddpm-4/index.md",
+    "display_math": 17,
+    "inline_math": 78,
+    "proofs": 2
+  },
+  {
+    "source": "01-why-elbo.md",
+    "source_sha256": "03e24c9af408b16d96abbb2b1909f4b23a8d7b5523972c9aa3f3aeeb84029763",
+    "target": "content/posts/elbo-1/index.md",
+    "display_math": 27,
+    "inline_math": 75,
+    "proofs": 0
+  },
+  {
+    "source": "02-vae-two-kls.md",
+    "source_sha256": "ea71ca80b95eec09024c050c78c0e24e67b347a73a7e19488abd51b02caaca36",
+    "target": "content/posts/elbo-2/index.md",
+    "display_math": 30,
+    "inline_math": 81,
+    "proofs": 0
+  },
+  {
+    "source": "03-elbo-to-loss.md",
+    "source_sha256": "4f51d1bcf421f23c2df0c8b47d014d52cce994b1b569b77f5d065731b9bda3f5",
+    "target": "content/posts/elbo-3/index.md",
+    "display_math": 23,
+    "inline_math": 90,
+    "proofs": 1
+  }
+]

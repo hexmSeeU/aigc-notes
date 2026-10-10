@@ -1,0 +1,21 @@
+{{- with .Params.collection }}
+{{- $id := . }}
+{{- $page := $ }}
+{{- $collection := site.GetPage (printf "/collections/%s" $id) }}
+{{- $episodes := (where site.RegularPages "Params.collection" $id).ByParam "episode" }}
+<nav class="collection-nav" aria-label="{{ upper $id }} 合集选集">
+  <div class="collection-nav__header"><a href="{{ $collection.RelPermalink }}">{{ upper $id }} 合集</a><span>第 {{ $page.Params.episode }} / {{ len $episodes }} 篇</span></div>
+  <details class="collection-picker" open>
+    <summary>选集 · 按顺序阅读</summary>
+    <ol class="episode-list">
+    {{- range $episodes }}
+      <li{{ if eq .RelPermalink $page.RelPermalink }} class="is-current"{{ end }}><a href="{{ .RelPermalink }}"{{ if eq .RelPermalink $page.RelPermalink }} aria-current="page"{{ end }}><span class="episode-number">{{ .Params.episode }}</span><span>{{ .Title }}</span></a></li>
+    {{- end }}
+    </ol>
+  </details>
+</nav>
+{{- end }}
+{{- with .Params.legacyCollection }}
+{{- $collection := site.GetPage (printf "/collections/%s" .) }}
+<aside class="legacy-notice">这篇完整笔记已整理为四篇独立文章。<a href="{{ $collection.RelPermalink }}">进入 DDPM 合集，按顺序阅读 →</a><span>此页保留原文及原有章节链接，方便回查。</span></aside>
+{{- end }}

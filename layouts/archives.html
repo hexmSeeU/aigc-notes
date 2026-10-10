@@ -1,0 +1,21 @@
+{{ define "main" }}
+<header class="page-header"><h1>{{ .Title }}</h1><p class="post-description">按合集顺序阅读，也可以直接打开一篇笔记。</p></header>
+<section class="archive-collections" aria-labelledby="collections-heading">
+<h2 id="collections-heading">学习合集</h2>
+{{ range (where site.RegularPages "Section" "collections").ByWeight }}
+  {{ $episodes := (where site.RegularPages "Params.collection" .Params.collectionId).ByParam "episode" }}
+  <details class="archive-collection" open>
+    <summary><span>{{ .Title }}</span><span class="collection-count">{{ len $episodes }} 篇</span></summary>
+    <p>{{ .Description }}</p><a class="collection-index-link" href="{{ .RelPermalink }}">打开合集 →</a>
+    <ol class="episode-list">{{ range $episodes }}<li><a href="{{ .RelPermalink }}"><span class="episode-number">{{ .Params.episode }}</span><span>{{ .Title }}</span></a></li>{{ end }}</ol>
+  </details>
+{{ end }}
+</section>
+<section class="archive-standalone" aria-labelledby="standalone-heading"><h2 id="standalone-heading">独立笔记</h2>
+{{ $posts := where site.RegularPages "Section" "posts" }}
+{{ range $posts.ByDate.Reverse }}{{ if and (not .Params.collection) (not .Params.legacyCollection) }}
+<article class="archive-note"><a href="{{ .RelPermalink }}">{{ .Title }}</a><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time></article>
+{{ end }}{{ end }}
+</section>
+{{ with site.GetPage "/posts/ddpm-derivation" }}<p class="archive-legacy"><a href="{{ .RelPermalink }}">DDPM 原完整笔记</a> · 保留旧链接，供回查使用</p>{{ end }}
+{{ end }}

@@ -1,0 +1,13 @@
+{{ define "main" }}
+<article class="collection-page">
+  <header class="page-header"><p class="eyebrow">学习合集 · {{ upper .Params.collectionId }}</p><h1>{{ .Title }}</h1><p class="post-description">{{ .Description }}</p></header>
+  {{ $episodes := (where site.RegularPages "Params.collection" .Params.collectionId).ByParam "episode" }}
+  <p class="collection-count">共 {{ len $episodes }} 篇 · 每篇可独立打开</p>
+  <ol class="collection-episodes">
+  {{ range $episodes }}
+    <li><a class="episode-card" href="{{ .RelPermalink }}"><span class="episode-number">{{ .Params.episode }}</span><div><h2>{{ .Title }}</h2><p>{{ .Description }}</p><span class="episode-read">阅读本篇 →</span></div></a></li>
+  {{ end }}
+  </ol>
+  <nav class="collection-footer" aria-label="合集相关链接"><a href="{{ "archives/" | relURL }}">← 返回归档</a>{{ if eq .Params.collectionId "ddpm" }}{{ with site.GetPage "/posts/ddpm-derivation" }}<a href="{{ .RelPermalink }}">查看原完整笔记</a>{{ end }}{{ else }}{{ with site.GetPage "/posts/ae-to-vae" }}<a href="{{ .RelPermalink }}">前置：从 AE 到 VAE</a>{{ end }}{{ end }}</nav>
+</article>
+{{ end }}

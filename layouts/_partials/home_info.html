@@ -23,3 +23,8 @@
 </section>
 <script defer src="{{ "js/home-cover.js" | relURL }}"></script>
 {{- end -}}
+
+<nav class="home-collections" aria-label="学习合集">
+<span>学习合集</span>
+{{ range (where site.RegularPages "Section" "collections").ByWeight }}<a href="{{ .RelPermalink }}">{{ upper .Params.collectionId }} · {{ len (where site.RegularPages "Params.collection" .Params.collectionId) }} 篇 →</a>{{ end }}
+</nav>
