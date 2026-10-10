@@ -35,16 +35,16 @@
     "source": "01-why-elbo.md",
     "source_sha256": "03e24c9af408b16d96abbb2b1909f4b23a8d7b5523972c9aa3f3aeeb84029763",
     "target": "content/posts/elbo-1/index.md",
-    "display_math": 27,
-    "inline_math": 91,
+    "display_math": 31,
+    "inline_math": 87,
     "proofs": 0
   },
   {
     "source": "02-vae-two-kls.md",
     "source_sha256": "ea71ca80b95eec09024c050c78c0e24e67b347a73a7e19488abd51b02caaca36",
     "target": "content/posts/elbo-2/index.md",
-    "display_math": 30,
-    "inline_math": 88,
+    "display_math": 31,
+    "inline_math": 87,
     "proofs": 0
   },
   {
