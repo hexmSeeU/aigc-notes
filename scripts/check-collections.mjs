@@ -1,7 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
+import {checkHomeOrder} from './check-home-order.mjs';
 const dir=process.argv[2]||'public';
+checkHomeOrder(dir);
+console.log('Paginated home order checks passed');
 const readingBaseline=JSON.parse(fs.readFileSync('tests/fixtures/continuous-reading-baseline.json','utf8'));
 const manifest=JSON.parse(fs.readFileSync('tests/fixtures/collection-manifest.json','utf8'));
 for(const item of manifest){

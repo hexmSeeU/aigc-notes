@@ -1,0 +1,17 @@
+{{- /* Newest publication day first; reorder only a collection's slots within that day. */ -}}
+{{- $ordered := slice -}}
+{{- range .GroupByDate "2006-01-02" "desc" -}}
+  {{- $day := .Pages -}}
+  {{- $positions := newScratch -}}
+  {{- range $day -}}
+    {{- $page := . -}}
+    {{- with .Params.collection -}}
+      {{- $position := $positions.Get . | default 0 -}}
+      {{- $episodes := (where $day "Params.collection" .).ByParam "episode" -}}
+      {{- $page = index $episodes $position -}}
+      {{- $positions.Set . (add $position 1) -}}
+    {{- end -}}
+    {{- $ordered = $ordered | append $page -}}
+  {{- end -}}
+{{- end -}}
+{{- return $ordered -}}
