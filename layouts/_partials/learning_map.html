@@ -1,0 +1,57 @@
+<nav class="learning-map" aria-labelledby="learning-map-title" aria-describedby="learning-map-description">
+  <header class="learning-map__header">
+    <div>
+      <p class="learning-map__eyebrow">A PATH THROUGH THE NOTES</p>
+      <h2 id="learning-map-title" class="learning-map__title" lang="en">Learning map<svg viewBox="0 0 240 12" aria-hidden="true" focusable="false"><path d="M3 8C58 1 144 2 236 6M36 11C105 5 161 5 210 8"/></svg></h2>
+    </div>
+    <p id="learning-map-description" class="learning-map__description">从压缩与重建，到可控生成<br>沿着笔记，走一遍学习的来路</p>
+  </header>
+
+  <ol class="learning-map__route">
+    <li class="learning-map__stop learning-map__stop--representation">
+      <span class="learning-map__annotation" lang="en" aria-hidden="true">start here</span>
+      <a class="learning-map__link" href="{{ "posts/ae-to-vae/" | relURL }}">
+        <span class="learning-map__number">01</span>
+        <h3 class="learning-map__topic">AE <span class="learning-map__inline-arrow" aria-hidden="true">→</span><span class="learning-map__sr-only">到</span> VAE</h3>
+        <p>从重建走向生成</p>
+      </a>
+      <svg class="learning-map__connector" viewBox="0 0 110 70" aria-hidden="true" focusable="false"><path d="M5 56C28 58 48 12 100 14m-10-6 12 6-10 8"/></svg>
+    </li>
+    <li class="learning-map__stop learning-map__stop--objective">
+      <span class="learning-map__annotation" lang="en" aria-hidden="true">make it learn</span>
+      <a class="learning-map__link" href="{{ "collections/elbo/" | relURL }}">
+        <span class="learning-map__number">02</span>
+        <h3 class="learning-map__topic">ELBO</h3>
+        <p>理解 VAE 的训练目标</p>
+      </a>
+      <svg class="learning-map__connector" viewBox="0 0 110 70" aria-hidden="true" focusable="false"><path d="M5 14C41 5 53 55 101 54m-10-7 12 7-11 7"/></svg>
+    </li>
+    <li class="learning-map__stop learning-map__stop--diffusion">
+      <span class="learning-map__annotation" lang="en" aria-hidden="true">add noise</span>
+      <a class="learning-map__link" href="{{ "collections/ddpm/" | relURL }}">
+        <span class="learning-map__number">03</span>
+        <h3 class="learning-map__topic">DDPM<svg viewBox="0 0 154 64" aria-hidden="true" focusable="false"><path d="M141 17C120-1 15 0 8 29S138 67 146 34C151 19 132 8 113 7"/></svg></h3>
+        <p>学会逐步去噪</p>
+      </a>
+      <svg class="learning-map__connector" viewBox="0 0 110 70" aria-hidden="true" focusable="false"><path d="M5 54C44 61 48 11 101 15m-10-7 12 7-11 7"/></svg>
+    </li>
+    <li class="learning-map__stop learning-map__stop--sampling">
+      <span class="learning-map__annotation" lang="en" aria-hidden="true">fewer steps</span>
+      <a class="learning-map__link" href="{{ "posts/ddim-derivation/" | relURL }}">
+        <span class="learning-map__number">04</span>
+        <h3 class="learning-map__topic">DDIM</h3>
+        <p>复用模型，更少步采样</p>
+      </a>
+      <svg class="learning-map__connector" viewBox="0 0 110 70" aria-hidden="true" focusable="false"><path d="M5 17C45 8 55 42 100 40m-10-7 12 7-11 7"/></svg>
+    </li>
+    <li class="learning-map__stop learning-map__stop--guidance">
+      <span class="learning-map__annotation" lang="en" aria-hidden="true">take control</span>
+      <a class="learning-map__link" href="{{ "collections/guidance/" | relURL }}">
+        <span class="learning-map__number">05</span>
+        <h3 class="learning-map__topic">CG / CFG</h3>
+        <p>让生成有方向</p>
+      </a>
+    </li>
+  </ol>
+  <p class="learning-map__note"><span aria-hidden="true">↳</span> 一条推荐阅读路线，也可以从感兴趣的一站开始</p>
+</nav>
