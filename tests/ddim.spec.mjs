@@ -84,6 +84,14 @@ test('DDIM and VAE remain available alongside the new releases', async ({page, r
     await expect(page.locator('.post-entry')).toHaveCount(10);
     for(const name of titles) await expect(page.locator('.post-entry h2').filter({hasText:name})).toHaveCount(1);
     await expect(page.locator('.post-entry .entry-link[href$="/posts/ddpm-derivation/"]')).toHaveCount(0);
+    const links=await page.locator('.post-entry .entry-link').evaluateAll(xs=>xs.map(x=>x.href));
+    await page.locator('.pagination .next').click();
+    await expect(page.locator('.post-entry')).toHaveCount(1);
+    links.push(...await page.locator('.post-entry .entry-link').evaluateAll(xs=>xs.map(x=>x.href)));
+    expect(new Set(links).size).toBe(11);
+    await expect(page.locator('.post-entry .entry-link[href$="/posts/ddpm-derivation/"]')).toHaveCount(0);
+    await page.locator('.pagination .prev').click();
+    await expect(page.locator('.post-entry')).toHaveCount(10);
   }
   await page.goto('/archives/');
   await expect(page.locator('.archive-entry')).toHaveCount(5);
