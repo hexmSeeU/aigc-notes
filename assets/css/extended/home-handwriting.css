@@ -1,0 +1,24 @@
+/* Handwritten lettering only; the existing hero layout and motion are unchanged. */
+@font-face {
+  font-family: "Caveat Hero";
+  src: url("../../fonts/caveat-hero.woff") format("woff");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  unicode-range: U+0020-007E;
+}
+
+@font-face {
+  font-family: "Long Cang Hero";
+  src: url("../../fonts/long-cang-hero.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+2E80-9FFF, U+FF00-FFEF;
+}
+
+.home-cover,
+.home-cover .home-cover__toggle {
+  font-family: "Caveat Hero", "Long Cang Hero", "Kaiti SC", KaiTi, "Segoe Print", cursive;
+  font-synthesis: none;
+}
