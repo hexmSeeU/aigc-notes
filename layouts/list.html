@@ -46,6 +46,9 @@
 {{- end }}
 
 {{- $pages = where $pages "Params.hiddenInLists" "!=" true }}
+{{- if .IsHome }}
+{{- $pages = partial "home_order.html" $pages }}
+{{- end }}
 {{- $paginator := .Paginate $pages }}
 
 {{- if and .IsHome site.Params.homeInfoParams (eq $paginator.PageNumber 1) }}
