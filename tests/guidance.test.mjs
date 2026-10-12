@@ -94,7 +94,7 @@ test('CFG preserves the independently reviewed body, all equations, proofs, refe
  assert.deepEqual([...body.matchAll(/\\tag\{(\d+)\}/g)].map(m=>Number(m[1])),Array.from({length:53},(_,i)=>i+1));
  assert.deepEqual([...body.matchAll(/^#{2,3} (.*)$/gm)].map(m=>m[1]),fixture.headings);
  const checks=body.split('## 11. 自检与答案')[1].split('## 12.')[0];
- const answers=[...checks.matchAll(/^### \d+\. ([^\n]+)\n\n([^\n]+)/gm)];
+ const answers=[...checks.matchAll(/^### \d+\. ([^\n]+)\n\n([\s\S]*?)(?=^### |$(?![\s\S]))/gm)];
  assert.deepEqual(answers.map(m=>m[1]),fixture.selfcheck_questions);
  assert.equal(answers.length,10);
  for(const [,question,answer] of answers)assert.ok(answer.length>30,question+' has an explanation');

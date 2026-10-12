@@ -1,10 +1,10 @@
 {
-  "reviewed_source_sha256": "1c16123194124b454f9809bd0e23a41d0cb669f6cae473fd66d31407c5a55d6c",
-  "body_sha256": "abb7d4f7204d50b808f5f8a1824ef38f8621da1649ae423c761a296a7b223342",
+  "reviewed_source_sha256": "84d79da5eadeccf443ea4f15ca2660ecdc72da8ad117a6db2e9ffed146ad1d50",
+  "body_sha256": "0ff940180f55d8543db166574f732e8f1d100f64bfabb2641dea9b76551f93ad",
   "math_sha256": "2d22202ac012c7de83ea24651971add0c9f7960c48c5ff6b2ae52724bc2feb04",
   "math_count": 220,
-  "display_math": 53,
-  "inline_math": 167,
+  "display_math": 54,
+  "inline_math": 166,
   "headings": [
     "1. 已经有条件生成，为什么还需要 guidance？",
     "2. 先统一符号与讨论对象",

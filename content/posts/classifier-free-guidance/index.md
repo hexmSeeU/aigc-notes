@@ -732,7 +732,13 @@ $$
 
 ### 2. 为什么两个 Score 可以代替分类器方向？
 
-固定 \(t,y\) 后，贝叶斯公式给出 \(\log q_t(x_t\mid y)=\log q_t(x_t)+\log q_t(y\mid x_t)-\log q(y)\)。对 \(x_t\) 求梯度，先验项消失，移项得到 \(\nabla_{x_t}\log q_t(y\mid x_t)=s_{\mathrm c}^*-s_{\mathrm u}^*\)。真实 Score 满足精确恒等式，网络只能估计它。
+固定 \(t,y\) 后，贝叶斯公式给出：
+
+$$
+\log q_t(x_t\mid y)=\log q_t(x_t)+\log q_t(y\mid x_t)-\log q(y)
+$$
+
+对 \(x_t\) 求梯度，先验项消失，移项得到 \(\nabla_{x_t}\log q_t(y\mid x_t)=s_{\mathrm c}^*-s_{\mathrm u}^*\)。真实 Score 满足精确恒等式，网络只能估计它。
 
 ### 3. 丢弃标签后，训练答案是什么？“无条件”是否意味着没有训练目标？
 
