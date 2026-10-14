@@ -318,6 +318,12 @@ $$
 
 需要保留边界：路径分解是负 ELBO 的精确改写；在固定方差等设定下可继续化成带权误差；去掉时间步权重得到常见的简化噪声 MSE，是训练目标的调整，不能直接把它称作原始负 ELBO。
 
+## 参考资料
+
+- Kingma, D. P. & Welling, M. [Auto-Encoding Variational Bayes](https://arxiv.org/abs/1312.6114)：§2.3–2.4、§3、附录 B
+- Ho, J., Jain, A. & Abbeel, P. [Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2006.11239)：§2 的变分界，§3 的参数化与简化训练目标
+- 已有文章：[从 AE 到 VAE]({{< relref "posts/ae-to-vae" >}})、[DDPM：从似然目标到噪声预测的完整推导]({{< relref "posts/ddpm-derivation" >}})
+
 ## 小结：三个连接现在闭合了
 
 这组笔记解决的是三个问题：
@@ -336,9 +342,3 @@ VAE 与 DDPM 共享这个框架。一个用可学习编码器给出近似分布�
 2. **两种方差描述不同的条件分布。** 编码器方差 \(\sigma_\phi^2(x)\) 描述给定图片后潜变量 \(z\) 的波动，属于 \(q_\phi(z\mid x)\)；解码方差 \(\tau^2\) 描述给定 \(z\) 后图片 \(x\) 围绕重建均值的波动，属于 \(p_\theta(x\mid z)\)。本文前者由编码器输出，后者固定，不能互换。
 3. **理论上界要求精确期望和完整常数。** 理论上有 \(-\log p_\theta(x)\leq-\operatorname{ELBO}(x)\)；实际单次 loss 用有限抽样估计期望，并且本文还省略了固定加法常数。抽样值会波动，省略常数又改变了数值，因此单次 loss 不必仍是上界。固定加法常数不影响梯度，不等于它不影响数值上的界。
 4. **DDPM 的潜变量是整条中间路径。** 对观测图片 \(x_0\)，需要边缘化的是 \(x_{1:T}=(x_1,\ldots,x_T)\)，不只是最终噪声 \(x_T\)。\(p(x_T)\) 是生成路径的起点先验，而变分分布 \(q(x_{1:T}\mid x_0)\) 覆盖所有中间状态；图片似然要把这些未观测状态一起积分掉。
-
-## 参考资料
-
-- Kingma, D. P. & Welling, M. [Auto-Encoding Variational Bayes](https://arxiv.org/abs/1312.6114)：§2.3–2.4、§3、附录 B
-- Ho, J., Jain, A. & Abbeel, P. [Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2006.11239)：§2 的变分界，§3 的参数化与简化训练目标
-- 已有文章：[从 AE 到 VAE]({{< relref "posts/ae-to-vae" >}})、[DDPM：从似然目标到噪声预测的完整推导]({{< relref "posts/ddpm-derivation" >}})

@@ -732,14 +732,6 @@ $$L_{\mathrm{simple}}(\theta)=
 
 
 
-## 把完整推导接起来
-
-**图片似然难直接计算 → 用 Jensen 构造路径上界 → 精确拆成反向单步匹配 → 解析求出给定原图的后验 → 固定方差的高斯 KL 变成均值误差 → 均值重参数化为噪声预测 → 选择简化目标训练 → 从噪声逐步采样。**
-
-其中，原图一直只用于构造监督；数据平均使这些监督对应到真实反向条件的拟合。DDIM、score、SDE 和引导生成不属于这条核心推导，此处不展开。
-
-
-
 ## 完整参考资料
 
 [1] Ho, Jain, Abbeel. [Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2006.11239), 2020. 重点对照式（1）至（14）、算法 1–2、附录 A。
@@ -749,3 +741,9 @@ $$L_{\mathrm{simple}}(\theta)=
 [3] Nichol, Dhariwal. [Improved Denoising Diffusion Probabilistic Models](https://proceedings.mlr.press/v139/nichol21a.html), 2021. 第 3.1–3.2 节：学习反向方差与余弦噪声日程。
 
 [4] OpenAI. [improved-diffusion 官方实现](https://github.com/openai/improved-diffusion/blob/main/improved_diffusion/gaussian_diffusion.py). 对照日程构造和方差选项。
+
+## 把完整推导接起来
+
+**图片似然难直接计算 → 用 Jensen 构造路径上界 → 精确拆成反向单步匹配 → 解析求出给定原图的后验 → 固定方差的高斯 KL 变成均值误差 → 均值重参数化为噪声预测 → 选择简化目标训练 → 从噪声逐步采样。**
+
+其中，原图一直只用于构造监督；数据平均使这些监督对应到真实反向条件的拟合。DDIM、score、SDE 和引导生成不属于这条核心推导，此处不展开。

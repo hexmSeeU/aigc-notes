@@ -1,7 +1,7 @@
 {
-  "reviewed_source_sha256": "e58d687e70035f9e2fceb7285d4eba8ce24fe70111ac021509d405ef1420db1a",
-  "body_sha256": "a2b622e067dfb24f3e8b03caf9cd5934be11f5e5f723bdce234ee1395dd54f32",
-  "math_sha256": "968f4e9911787f1097debe63865dee20ddaad54b0a5f342f2d5cabab0a6d3401",
+  "reviewed_source_sha256": "f08f2c8c963d96b2be975ee7f544598afdd9282a2c34dc4c02c115c71b82a745",
+  "body_sha256": "ec531bbc6c79ab31dcf3533483d90a298fa02391406cafbbe16d839dc18c27e6",
+  "math_sha256": "843e0ff0fc1fcfd1189c1384a2c6397624ac5d2ab40b7e6bbad4e5bfe7faaec2",
   "math_count": 232,
   "display_math": 75,
   "inline_math": 157,
@@ -36,8 +36,8 @@
     "从无条件模型出发",
     "基模型已经接收类别时",
     "10 DDPM 的均值修正与本文的噪声修正",
-    "11 回头检查这条推导",
-    "参考"
+    "参考",
+    "11 回头检查这条推导"
   ],
   "code_sha256": "f225702f023845b7ff4d234fce1c016a831ced6c13d0cc78cb9e60eef76861cf",
   "selfcheck_questions": [

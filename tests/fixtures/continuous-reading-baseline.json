@@ -4,11 +4,11 @@
     "math_sha256": "fedce8a8831ed8848c9256fb38a3a6ffca6c36f165b64570ef96a25ef75bd2b5",
     "math_count": 21,
     "links": [
-      "{{< relref \"posts/ddpm-2\" >}}",
-      "https://arxiv.org/pdf/2006.11239",
       "{{< relref \"posts/ae-to-vae\" >}}",
       "https://arxiv.org/abs/2006.11239",
-      "{{< relref \"posts/ddim-1\" >}}"
+      "{{< relref \"posts/ddim-1\" >}}",
+      "{{< relref \"posts/ddpm-2\" >}}",
+      "https://arxiv.org/pdf/2006.11239"
     ],
     "heading_ids": [
       "为什么先把好好的图片弄坏",
@@ -22,11 +22,11 @@
     "math_count": 72,
     "links": [
       "{{< relref \"posts/ddpm-1\" >}}",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://arxiv.org/pdf/2006.11239",
+      "https://arxiv.org/pdf/2006.11239",
       "{{< relref \"posts/ddpm-3\" >}}",
-      "{{< relref \"posts/ddpm-4\" >}}",
-      "https://arxiv.org/pdf/2006.11239",
-      "https://arxiv.org/pdf/2006.11239",
-      "https://arxiv.org/pdf/2006.11239"
+      "{{< relref \"posts/ddpm-4\" >}}"
     ],
     "heading_ids": [
       "先做一道自己知道答案的题",
@@ -88,7 +88,7 @@
   },
   {
     "slug": "ddpm-4",
-    "math_sha256": "83730c97993ae6ad4745e6eb689d2f0f3d2c955cbd1c7c28ec854ea79bad0860",
+    "math_sha256": "ca65e260572869f022ee424830cac79f0196d88bde045fa1b63c4625e9c73156",
     "math_count": 95,
     "links": [
       "{{< relref \"posts/ddpm-2\" >}}",

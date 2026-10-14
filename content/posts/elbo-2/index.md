@@ -331,6 +331,13 @@ $$
 
 实际 VAE 使用同一个编码器服务整个数据集，并通过有限训练优化平均目标，不能据此保证每张图片都达到单独优化时的最好近似。这不影响上面的目标恒等式，只是要区分理论目标和实际达到的结果。
 
+下一篇把期望、KL 和网络输出逐个变成数，得到可以交给反向传播的 loss，再用同一个框架接回 DDPM。
+
+## 参考资料
+
+- Kingma, D. P. & Welling, M. [Auto-Encoding Variational Bayes](https://arxiv.org/abs/1312.6114)：§2.2–2.4、§3
+- Blei, D. M., Kucukelbir, A. & McAuliffe, J. D. [Variational Inference: A Review for Statisticians](https://arxiv.org/abs/1601.00670)：变分分布族与 ELBO
+
 ## 小结与自检
 
 - 编码器输出的是近似后验 \(q_\phi(z\mid x)\)，解码器定义的是 \(p_\theta(x\mid z)\)
@@ -349,10 +356,3 @@ $$
    $$D_{\mathrm{KL}}(q_\phi(z\mid x)\|p_\theta(z\mid x))-\log p_\theta(x)$$
 
    固定先验和 \(\theta\) 后，第二项不随编码器参数 \(\phi\) 改变，因此最小化完整损失等价于减小后验 KL。若同时更新 \(\theta\)，恒等式仍成立，但似然和目标后验也会移动，不能把联合训练解释成只拟合一个固定后验。
-
-下一篇把期望、KL 和网络输出逐个变成数，得到可以交给反向传播的 loss，再用同一个框架接回 DDPM。
-
-## 参考资料
-
-- Kingma, D. P. & Welling, M. [Auto-Encoding Variational Bayes](https://arxiv.org/abs/1312.6114)：§2.2–2.4、§3
-- Blei, D. M., Kucukelbir, A. & McAuliffe, J. D. [Variational Inference: A Review for Statisticians](https://arxiv.org/abs/1601.00670)：变分分布族与 ELBO

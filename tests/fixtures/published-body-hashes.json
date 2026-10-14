@@ -1,12 +1,12 @@
 {
-  "content/posts/ae-to-vae/index.md": "6ad5abcfd888366a0d76deaccaced6befad961f7ac8a37c421c1256b02f0775b",
-  "content/posts/ddpm-3/index.md": "761335840847cf1877ecb03aca3f09bb4b508a3558b7c4abf95607d6153fc8bc",
-  "content/posts/ddim-derivation/index.md": "0d3c9df75cb0d58a66632c04b03807380da5ad06284674b195c03359b3744d73",
-  "content/posts/elbo-1/index.md": "6c2d81736498ce4387c741ff8a4b169826e45f6fea4d4861984aef63d0286ef0",
-  "content/posts/ddpm-derivation/index.md": "b94f125f16cd14a76dad1b37e26e03d6107007e06f3a7f08c1b69607d24c41c9",
-  "content/posts/elbo-2/index.md": "93abeadd2264bba0f13404bd47edfbc9601b85b949175cfa8301ef6d64b11775",
-  "content/posts/ddpm-4/index.md": "d2c547be1af195396175541bc2fe7f2cea404555c1bf9d3e8682298703d2b95b",
-  "content/posts/ddpm-1/index.md": "dcdd91948b45b38804309d0299dc703b63388dae30a8cab6c046139690e21e18",
-  "content/posts/ddpm-2/index.md": "499b15243a318a564bc0dc96d0d064f61b8495556816eef272e46ed6cd7fa38a",
-  "content/posts/elbo-3/index.md": "de04078f4854e0051487c6bb82e7d002345fb4972b0632d574969393f53ed412"
+  "content/posts/ae-to-vae/index.md": "da4b006081c225d87e6aa6827f1dedef6f8925885d5d4586f659a9ad0c5f07a0",
+  "content/posts/ddpm-3/index.md": "e4bc3b3b79881f109ec178468e2a283e404912b113ab69b8fd0bd2d6f24cc126",
+  "content/posts/ddim-derivation/index.md": "8dec05a467eecd04a26656ea5bdd41e3985ea9af7eabe9fa364fb4bfca36234d",
+  "content/posts/elbo-1/index.md": "e7ed1e1114af758f095168c32f31bd6850e775d1a2bf4533dbf401269bd6377d",
+  "content/posts/ddpm-derivation/index.md": "f66822e56ed8ec8cb60ecf45f58a4051e5cf17900b4aad828c33a7bcb40fcff8",
+  "content/posts/elbo-2/index.md": "81f1a94b5662c8828e6774cb2c1bfcb1406bcdacf365aa61d0e367ff2b6b8719",
+  "content/posts/ddpm-4/index.md": "07ac1f0adc77dac0a197f0a0d5c31d8940cd5e5f5865066166577a339e68459a",
+  "content/posts/ddpm-1/index.md": "9bdf1de6b61be8b8ddf042528ff053db7177dee89508197cc644ca3225d46956",
+  "content/posts/ddpm-2/index.md": "095b1e1e32a467989e4afca352a5625b114f320486a5751524cb1e23c81cfba0",
+  "content/posts/elbo-3/index.md": "491044919909915d94356c281e55b548d0203831a754a0c3d9e2abd4a402d4e3"
 }

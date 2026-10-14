@@ -724,7 +724,33 @@ $$
 
 如果自己做对照实验，应固定模型、目标类别、采样器、采样时间序列以及同一份初始噪声，只改变 \(\gamma\)，例如对照无条件、普通条件和更强引导。本文的数值例子用于解释公式，没有把未运行的实验当成结果。
 
-## 11. 自检与答案
+## 参考资料
+
+1. Jonathan Ho, Tim Salimans. [Classifier-Free Diffusion Guidance](https://arxiv.org/abs/2207.12598). 重点见 §3、算法 1–2、§4–5
+2. Prafulla Dhariwal, Alex Nichol. [Diffusion Models Beat GANs on Image Synthesis](https://arxiv.org/abs/2105.05233). Classifier Guidance 的原始工作
+3. Jiaming Song, Chenlin Meng, Stefano Ermon. [Denoising Diffusion Implicit Models](https://arxiv.org/abs/2010.02502). 本文确定性采样更新的依据
+4. Arwen Bradley, Preetum Nakkiran. [Classifier-Free Guidance is a Predictor-Corrector](https://arxiv.org/abs/2408.09000). 用于校准固定时间重加权与最终采样分布的区别
+5. Hugging Face Diffusers. [Stable Diffusion pipeline](https://github.com/huggingface/diffusers/blob/main/src/diffusers/pipelines/stable_diffusion/pipeline_stable_diffusion.py). 条件与空条件预测的 batch 实现示例
+
+## 11. 小结与自检 {#11-自检与答案}
+
+### 把方法串起来 {#12-把方法串起来}
+
+训练时，独立随机隐藏一部分样本的条件，使同一个网络既学习 \(\mathbb E_{\epsilon}[\epsilon\mid x_t,t,y]\)，也学习 \(\mathbb E_{\epsilon}[\epsilon\mid x_t,t]\)。这两种噪声预测分别对应条件与无条件 Score 的估计。
+
+采样时，对当前输入计算两种预测，用它们的差加强条件方向：
+
+$$
+\boxed{
+\hat\epsilon_{\mathrm{CFG}}
+=\epsilon_{\mathrm u}+\gamma(\epsilon_{\mathrm c}-\epsilon_{\mathrm u})
+=(1+w)\epsilon_{\mathrm c}-w\epsilon_{\mathrm u},
+\qquad \gamma=1+w
+}.
+\tag{53}
+$$
+
+再将这份预测交给 DDIM 等采样器。CFG 不需要单独的分类器，但仍依赖训练得到的条件与无条件预测，并付出每步两种预测的成本。尺度控制生成偏好，调高它要同时考虑条件特征、覆盖范围和图像质量。
 
 ### 1. 普通条件模型已经输入了类别，CFG 还在增加什么？
 
@@ -771,29 +797,3 @@ $$
 ### 10. 固定时刻的重加权关系，能保证最终采样也符合相同形式吗？
 
 不能。固定时间上的密度恒等式，不保证这些重新加权的密度组成与原前向加噪过程一致的边缘分布族。网络近似和有限步数之外，采样过程本身也有需要区分的理论边界。
-
-## 12. 把方法串起来
-
-训练时，独立随机隐藏一部分样本的条件，使同一个网络既学习 \(\mathbb E_{\epsilon}[\epsilon\mid x_t,t,y]\)，也学习 \(\mathbb E_{\epsilon}[\epsilon\mid x_t,t]\)。这两种噪声预测分别对应条件与无条件 Score 的估计。
-
-采样时，对当前输入计算两种预测，用它们的差加强条件方向：
-
-$$
-\boxed{
-\hat\epsilon_{\mathrm{CFG}}
-=\epsilon_{\mathrm u}+\gamma(\epsilon_{\mathrm c}-\epsilon_{\mathrm u})
-=(1+w)\epsilon_{\mathrm c}-w\epsilon_{\mathrm u},
-\qquad \gamma=1+w
-}.
-\tag{53}
-$$
-
-再将这份预测交给 DDIM 等采样器。CFG 不需要单独的分类器，但仍依赖训练得到的条件与无条件预测，并付出每步两种预测的成本。尺度控制生成偏好，调高它要同时考虑条件特征、覆盖范围和图像质量。
-
-## 参考资料
-
-1. Jonathan Ho, Tim Salimans. [Classifier-Free Diffusion Guidance](https://arxiv.org/abs/2207.12598). 重点见 §3、算法 1–2、§4–5
-2. Prafulla Dhariwal, Alex Nichol. [Diffusion Models Beat GANs on Image Synthesis](https://arxiv.org/abs/2105.05233). Classifier Guidance 的原始工作
-3. Jiaming Song, Chenlin Meng, Stefano Ermon. [Denoising Diffusion Implicit Models](https://arxiv.org/abs/2010.02502). 本文确定性采样更新的依据
-4. Arwen Bradley, Preetum Nakkiran. [Classifier-Free Guidance is a Predictor-Corrector](https://arxiv.org/abs/2408.09000). 用于校准固定时间重加权与最终采样分布的区别
-5. Hugging Face Diffusers. [Stable Diffusion pipeline](https://github.com/huggingface/diffusers/blob/main/src/diffusers/pipelines/stable_diffusion/pipeline_stable_diffusion.py). 条件与空条件预测的 batch 实现示例

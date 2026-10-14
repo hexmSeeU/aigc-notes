@@ -934,6 +934,14 @@ $$
 
 这说明两条路线各有自己的离散更新规则。本文的完整推导走到 Score 与 DDIM；式（37）用于辨认另一种常见实现，不能代替其局部近似的证明。官方代码也分别实现了 `condition_mean` 与 `condition_score`。[两种引导方式的官方实现](https://github.com/openai/guided-diffusion/blob/main/guided_diffusion/gaussian_diffusion.py)
 
+## 参考
+
+- Prafulla Dhariwal、Alex Nichol，**Diffusion Models Beat GANs on Image Synthesis**。本文 CG 的主要来源：第 4 节、算法 1–2；无条件与条件基模型及强度讨论见第 4.3 节。[论文](https://arxiv.org/html/2105.05233v4)
+- Jonathan Ho、Ajay Jain、Pieter Abbeel，**Denoising Diffusion Probabilistic Models**。用于核对正向加噪、噪声预测训练和 DDPM 均值参数化。[论文](https://arxiv.org/html/2006.11239v2)
+- Jiaming Song、Chenlin Meng、Stefano Ermon，**Denoising Diffusion Implicit Models**。用于核对确定性更新与跳步；论文中的累计信号系数 \(\alpha_t\) 对应本文 \(\bar\alpha_t\)。[论文](https://arxiv.org/html/2010.02502v4)
+- OpenAI，**guided-diffusion**。分类器的带噪训练、对输入求梯度，以及均值修正和 Score 修正的实现对照。[官方代码](https://github.com/openai/guided-diffusion)
+- Lilian Weng，**What are Diffusion Models?**。用于整理整体阅读路线；本文的数学关系从前向加噪、贝叶斯公式与 MSE 展开推导，并对照上面的一手论文与代码。[博客](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)
+
 ## 11 回头检查这条推导
 
 **为什么分类器要接收时间 \(t\)？**
@@ -965,11 +973,3 @@ $$
 要看基模型。如果从无条件模型出发，\(\gamma=0\) 保留无条件预测；如果从条件模型出发，\(w=0\) 保留普通条件预测。
 
 至此，CG 的训练与使用接在了一起：用带噪图片和标签训练分类器，生成时固定模型参数，从目标类别的输入梯度构造引导后的 Score，再换回噪声预测交给采样器。这个连接让已有的去噪能力能够利用条件信息，同时保留了模型近似与具体采样规则的边界。
-
-## 参考
-
-- Prafulla Dhariwal、Alex Nichol，**Diffusion Models Beat GANs on Image Synthesis**。本文 CG 的主要来源：第 4 节、算法 1–2；无条件与条件基模型及强度讨论见第 4.3 节。[论文](https://arxiv.org/html/2105.05233v4)
-- Jonathan Ho、Ajay Jain、Pieter Abbeel，**Denoising Diffusion Probabilistic Models**。用于核对正向加噪、噪声预测训练和 DDPM 均值参数化。[论文](https://arxiv.org/html/2006.11239v2)
-- Jiaming Song、Chenlin Meng、Stefano Ermon，**Denoising Diffusion Implicit Models**。用于核对确定性更新与跳步；论文中的累计信号系数 \(\alpha_t\) 对应本文 \(\bar\alpha_t\)。[论文](https://arxiv.org/html/2010.02502v4)
-- OpenAI，**guided-diffusion**。分类器的带噪训练、对输入求梯度，以及均值修正和 Score 修正的实现对照。[官方代码](https://github.com/openai/guided-diffusion)
-- Lilian Weng，**What are Diffusion Models?**。用于整理整体阅读路线；本文的数学关系从前向加噪、贝叶斯公式与 MSE 展开推导，并对照上面的一手论文与代码。[博客](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)

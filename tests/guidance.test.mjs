@@ -56,7 +56,7 @@ test('CG preserves the reviewed full body, all equations, proofs, references and
  const {body}=read('content/posts/classifier-guidance/index.md');
  const fixture=JSON.parse(fs.readFileSync('tests/fixtures/guidance-preservation.json','utf8'));
  const hash=s=>createHash('sha256').update(s).digest('hex');
- assert.equal(hash(body),fixture.body_sha256,'Every reviewed body byte is preserved');
+ assert.equal(hash(body),fixture.body_sha256,'The reordered body matches its reviewed snapshot');
  const math=[...body.matchAll(/\$\$([\s\S]*?)\$\$|\\\(([\s\S]*?)\\\)/g)].map(m=>(m[1]??m[2]).trim());
  assert.equal(hash(JSON.stringify(math)),fixture.math_sha256);
  assert.equal(math.length,fixture.math_count);
@@ -84,7 +84,7 @@ test('CFG preserves the independently reviewed body, all equations, proofs, refe
  const {body}=read('content/posts/classifier-free-guidance/index.md');
  const fixture=JSON.parse(fs.readFileSync('tests/fixtures/cfg-preservation.json','utf8'));
  const hash=s=>createHash('sha256').update(s).digest('hex');
- assert.equal(hash(source.slice(source.indexOf('\n}\n')+4)),fixture.reviewed_source_sha256,'The reviewed body is imported byte-for-byte');
+ assert.equal(hash(source.slice(source.indexOf('\n}\n')+4)),fixture.reviewed_source_sha256,'The reordered body matches its reviewed snapshot');
  assert.equal(hash(body),fixture.body_sha256);
  const math=[...body.matchAll(/\$\$([\s\S]*?)\$\$|\\\(([\s\S]*?)\\\)/g)].map(m=>(m[1]??m[2]).trim());
  assert.equal(hash(JSON.stringify(math)),fixture.math_sha256);
@@ -93,7 +93,7 @@ test('CFG preserves the independently reviewed body, all equations, proofs, refe
  assert.equal([...body.matchAll(/\\\(([\s\S]*?)\\\)/g)].length,fixture.inline_math);
  assert.deepEqual([...body.matchAll(/\\tag\{(\d+)\}/g)].map(m=>Number(m[1])),Array.from({length:53},(_,i)=>i+1));
  assert.deepEqual([...body.matchAll(/^#{2,3} (.*)$/gm)].map(m=>m[1]),fixture.headings);
- const checks=body.split('## 11. 自检与答案')[1].split('## 12.')[0];
+ const checks=body.split('## 11. 小结与自检')[1];
  const answers=[...checks.matchAll(/^### \d+\. ([^\n]+)\n\n([\s\S]*?)(?=^### |$(?![\s\S]))/gm)];
  assert.deepEqual(answers.map(m=>m[1]),fixture.selfcheck_questions);
  assert.equal(answers.length,10);
