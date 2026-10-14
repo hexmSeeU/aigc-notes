@@ -5,11 +5,11 @@ const title = 'DDIM：从边缘分布到跳步采样';
 const route = '/posts/ddim-derivation/';
 
 for (const width of [320, 375, 768, 1440]) {
-  test(`DDIM renders every equation without page overflow at ${width}px`, async ({page}) => {
+  test(`DDIM renders every equation without page overflow at ${width}px`, async ({page, baseURL}) => {
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.setViewportSize({width, height: 900});
-    await page.goto(route);
+    await page.goto(new URL(route.replace(/^\//, ''), baseURL).href);
     await expect(page.locator('h1')).toHaveText(title);
     const content = page.locator('.post-content');
     await expect(content).toHaveCSS('font-size', '18px');
@@ -80,9 +80,9 @@ for (const width of [320, 375, 768, 1440]) {
 
 
 for (const width of [375, 1440]) for (let i=1; i<=5; i++) {
- test(`DDIM episode ${i} renders math and navigation at ${width}px`,async({page})=>{
+ test(`DDIM episode ${i} renders math and navigation at ${width}px`,async({page,baseURL})=>{
   await page.setViewportSize({width,height:900});
-  await page.goto(`/posts/ddim-${i}/`);
+  await page.goto(new URL(`posts/ddim-${i}/`,baseURL).href);
   const source=fs.readFileSync(`content/posts/ddim-${i}/index.md`,'utf8');
   const expected=[...source.matchAll(/\$\$([\s\S]*?)\$\$|\\\(([\s\S]*?)\\\)/g)].map(m=>(m[1]??m[2]).trim());
   await expect(page.locator('.post-content mjx-container')).toHaveCount(expected.length);
