@@ -14,13 +14,14 @@ test('DDPM collection has the requested revised title',()=>{
  assert.equal(read('content/collections/ddpm/index.md').meta.title,'理解 DDPM：原理与推导');
 });
 test('same-day archive ties follow AE, ELBO, DDPM, DDIM without changing original dates',()=>{
- const paths=['posts/ae-to-vae','collections/elbo','collections/ddpm','posts/ddim-derivation'];
+ const paths=['posts/ae-to-vae','collections/elbo','collections/ddpm','collections/ddim'];
  assert.deepEqual(paths.map(p=>read(`content/${p}/index.md`).meta.archiveOrder),[1,2,3,4]);
  assert.equal(read('content/posts/ae-to-vae/index.md').meta.date,'2026-10-08T16:00:00+08:00');
  assert.equal(read('content/posts/ddim-derivation/index.md').meta.date,'2026-10-09T18:17:00+08:00');
 });
-test('published article bodies match the reviewed presentation-only revision',()=>{
+test('published article bodies match the reviewed content revision',()=>{
  const hashes=JSON.parse(fs.readFileSync('tests/fixtures/published-body-hashes.json','utf8'));
  assert.equal(Object.keys(hashes).length,10);
  for(const [p,hash] of Object.entries(hashes))assert.equal(createHash('sha256').update(withoutReferenceAnswers(read(p).body)).digest('hex'),hash,p);
 });
+
