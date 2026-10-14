@@ -49,7 +49,7 @@ for(const width of [320,375,768,1440]){
    expect(scrolled).toBeGreaterThan(0);
   }
   const ids=await content.locator('h2,h3').evaluateAll(xs=>xs.map(x=>x.id));
-  await expect(page.locator('.reading-toc a')).toHaveText([...source.matchAll(/^#{2,3} (.*)$/gm)].map(m=>m[1]));
+  await expect(page.locator('.reading-toc a')).toHaveText([...source.matchAll(/^#{2,3} (.*)$/gm)].map(m=>m[1].replace(/\s*\{#[^}]+\}$/, '')));
   expect(new Set(ids).size).toBe(ids.length);
   expect(await page.locator('.reading-toc a').evaluateAll(xs=>xs.map(x=>decodeURIComponent(x.hash.slice(1))))).toEqual(ids);
   const toc=page.locator('.reading-toc details');await toc.evaluate(el=>el.open=true);

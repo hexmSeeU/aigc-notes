@@ -25,7 +25,8 @@
       "math": true,
       "summary": "从一张手写数字出发，逐步理解高斯潜变量、重参数化与 KL 损失。附训练与生成示意图、关键公式和张量维度表。",
       "archiveOrder": 1
-    }
+    },
+    "reordered_source_without_answers_sha256": "0c0c010141ffb4b9f5521cff2fef32c9c608836c5dd727621a82d6e566af14af"
   },
   {
     "slug": "elbo-1",
@@ -55,7 +56,8 @@
       "math": true,
       "collection": "elbo",
       "episode": 1
-    }
+    },
+    "reordered_source_without_answers_sha256": "b5d5dd7690dbd8ded55bd2dc021c5080e0e986b91f61666da3a2aec6b58a31a6"
   },
   {
     "slug": "elbo-2",
@@ -83,7 +85,8 @@
       "math": true,
       "collection": "elbo",
       "episode": 2
-    }
+    },
+    "reordered_source_without_answers_sha256": "1c1bfaf0499fdee22c8ebec1c08485bc3be1a98ee235a743b8cc892b31ed8586"
   },
   {
     "slug": "elbo-3",
@@ -113,6 +116,7 @@
       "math": true,
       "collection": "elbo",
       "episode": 3
-    }
+    },
+    "reordered_source_without_answers_sha256": "5916b93224b98fdd0c7f354d1f56e9e56637ea78cccecc385881ceff1c5499d3"
   }
 ]

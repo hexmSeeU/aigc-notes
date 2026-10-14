@@ -15,10 +15,10 @@ test('all 13 existing self-check questions have directly readable numbered answe
   assert.doesNotMatch(answers,/选读|proof-open|<details|<summary/);
  }
 });
-test('adding reference answers leaves every original source byte and all publication metadata intact',()=>{
+test('closing chapters retain the reviewed non-answer content and original publication metadata',()=>{
  for(const item of fixture){
   const source=fs.readFileSync(`content/posts/${item.slug}/index.md`,'utf8');
-  assert.equal(createHash('sha256').update(withoutReferenceAnswers(source)).digest('hex'),item.original_source_sha256,item.slug);
+  assert.equal(createHash('sha256').update(withoutReferenceAnswers(source)).digest('hex'),item.reordered_source_without_answers_sha256,item.slug);
   assert.deepEqual(JSON.parse(source.slice(0,source.indexOf('\n}\n')+2)),item.original_meta,item.slug);
  }
 });

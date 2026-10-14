@@ -597,6 +597,8 @@ return x  # 最后 s = 0 时输出 x0_hat
 
 [官方 generalized_steps](https://github.com/ermongroup/ddim/blob/main/functions/denoising.py)使用当前站与目标站的累计系数；其 \(-1\) 哨兵对应累计系数 \(1\)，数学上就是这里的干净端点 \(0\)。
 
+参考：[DDIM 原论文第 4.2 节与附录 C.1、D.3](https://arxiv.org/html/2010.02502v4)。
+
 ### 8 自检
 
 1. 跳到 \(s\) 时，网络输入当前 \(t\) 还是目标 \(s\)？
@@ -608,5 +610,3 @@ return x  # 最后 s = 0 时输出 x0_hat
 1. 输入当前 \(x_t,t\)，目标 \(s\) 只进入这一跳的系数；到达后才调用 \(x_s,s\)。
 2. 不是。每一跳重新预测，同一份预测只在这一跳中复用。
 3. 不是。所选子序列上的更新省去了中间网络调用，通常改变结果。
-
-参考：[DDIM 原论文第 4.2 节与附录 C.1、D.3](https://arxiv.org/html/2010.02502v4)。

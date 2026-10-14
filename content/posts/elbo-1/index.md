@@ -298,6 +298,13 @@ $$
 
 还有一个后面会反复用到的区别：这里的差距 KL 比较的是辅助分布与模型后验。VAE 常见损失里的 KL 比较的却是编码器分布与先验。它们不是同一项，下一篇会把两者接起来。
 
+下一篇会把这些分布放回 VAE 的网络里，回答“ELBO 到底怎样训练编码器和解码器”。
+
+## 参考资料
+
+- Kingma, D. P. & Welling, M. [Auto-Encoding Variational Bayes](https://arxiv.org/abs/1312.6114)：§2.1 的问题设定，§2.2 的变分下界
+- 前置笔记：[从 AE 到 VAE：让潜变量成为一个分布]({{< relref "posts/ae-to-vae" >}})
+
 ## 小结与自检
 
 这篇只有一个主线：潜变量使似然包含难算积分；辅助分布把积分改写成期望；Jensen 给出下界；后验 KL 则精确描述下界的差距。
@@ -329,10 +336,3 @@ $$
    $$\log p_\theta(x)=\operatorname{ELBO}(x)+D_{\mathrm{KL}}(q(z\mid x)\|p_\theta(z\mid x))$$
 
    可知，调整 \(q\) 只会改变 ELBO 与后验 KL 之间的分配；减小差距会抬高下界，不会改变这张图片的真实似然。
-
-下一篇会把这些分布放回 VAE 的网络里，回答“ELBO 到底怎样训练编码器和解码器”。
-
-## 参考资料
-
-- Kingma, D. P. & Welling, M. [Auto-Encoding Variational Bayes](https://arxiv.org/abs/1312.6114)：§2.1 的问题设定，§2.2 的变分下界
-- 前置笔记：[从 AE 到 VAE：让潜变量成为一个分布]({{< relref "posts/ae-to-vae" >}})
