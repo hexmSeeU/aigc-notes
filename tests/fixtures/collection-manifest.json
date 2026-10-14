@@ -3,8 +3,8 @@
     "source": "01-what-ddpm-does.md",
     "source_sha256": "f45af97f4f84fb668ee276c008f35a461bef3c184280bc4b24909a1d19de06a9",
     "target": "content/posts/ddpm-1/index.md",
-    "display_math": 0,
-    "inline_math": 0,
+    "display_math": 6,
+    "inline_math": 15,
     "proofs": 0
   },
   {
