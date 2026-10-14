@@ -1,11 +1,14 @@
 [
   {
     "slug": "ddpm-1",
-    "math_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-    "math_count": 0,
+    "math_sha256": "fedce8a8831ed8848c9256fb38a3a6ffca6c36f165b64570ef96a25ef75bd2b5",
+    "math_count": 21,
     "links": [
       "{{< relref \"posts/ddpm-2\" >}}",
-      "https://arxiv.org/pdf/2006.11239"
+      "https://arxiv.org/pdf/2006.11239",
+      "{{< relref \"posts/ae-to-vae\" >}}",
+      "https://arxiv.org/abs/2006.11239",
+      "{{< relref \"posts/ddim-1\" >}}"
     ],
     "heading_ids": [
       "为什么先把好好的图片弄坏",
