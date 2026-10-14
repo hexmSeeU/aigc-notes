@@ -18,7 +18,7 @@ for(const item of manifest){
  assert.equal((html.match(/aria-current=(?:"page"|'page'|page(?=[\s>]))/g)||[]).length,1,slug+' current episode');
  assert.ok(html.includes('/collections/'+slug.split('-')[0]+'/'),slug+' collection');
 }
-for(const id of ['ddpm','elbo'])assert.ok(fs.existsSync(path.join(dir,'collections',id,'index.html')));
+for(const id of ['ddpm','elbo','ddim'])assert.ok(fs.existsSync(path.join(dir,'collections',id,'index.html')));
 const rss=fs.readFileSync(path.join(dir,'index.xml'),'utf8');
 for(const item of manifest)assert.ok(rss.includes('/posts/'+item.target.split('/')[2]+'/'));
 assert.ok(!rss.includes('/posts/ddpm-derivation/'));
@@ -31,6 +31,8 @@ let prior=-1;
 for(const title of expectedTitles){const position=archive.indexOf(title);assert.ok(position>prior,'Archive chronology: '+title);prior=position;}
 assert.ok(!archive.includes('学习合集')&&!archive.includes('独立笔记'),'Archive has no type-separated sections');
 assert.ok(!archive.includes('/posts/ddpm-derivation/'),'Legacy article is not a duplicate archive entry');
+assert.ok(!archive.includes('/posts/ddim-derivation/'),'Legacy DDIM is not a duplicate archive entry');
+assert.ok(archive.includes('/collections/ddim/'),'DDIM archive opens its collection');
 console.log('Unified archive output checks passed');
 const guidance=fs.readFileSync(path.join(dir,'collections/guidance/index.html'),'utf8');
 const cg=fs.readFileSync(path.join(dir,'posts/classifier-guidance/index.html'),'utf8');
@@ -52,3 +54,4 @@ assert.ok(rss.includes('/posts/classifier-free-guidance/'),'CFG appears in RSS')
 assert.ok(cg.includes('/posts/classifier-free-guidance/'),'CG links to its next episode');
 assert.ok(cfg.includes('/posts/classifier-guidance/'),'CFG links to its previous episode');
 console.log('Guidance output checks passed');
+
