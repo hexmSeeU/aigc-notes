@@ -19,6 +19,9 @@
         {{ with site.GetPage "/posts/ae-to-vae" }}<a href="{{ .RelPermalink }}">前置：从 AE 到 VAE</a>{{ end }}
       {{ end }}
     {{ end }}
+    {{ if eq .Params.collectionId "ddim" }}
+      {{ with site.GetPage "/posts/ddim-derivation" }}<a href="{{ .RelPermalink }}">查看完整推导</a>{{ end }}
+    {{ end }}
   </nav>
 </article>
 {{ end }}

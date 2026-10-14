@@ -7,12 +7,12 @@
       "如果一次输入 \\(32\\) 张图，为什么 \\(\\mu\\) 不是只有 \\(16\\) 个数？",
       "生成时，\\(z\\) 又是从哪里来的？"
     ],
-    "original_source_sha256": "46aa5408a980daf6d653f777c346a52252a6f755985d867eb61ebe7508eac327",
+    "original_source_sha256": "4d41ef5bc36806c966eb22e539887e96f5ed37deff6e3baa43153c47eae2e05f",
     "original_meta": {
       "title": "从 AE 到 VAE：让潜变量成为一个分布",
       "description": "从一张 28×28 的手写数字出发，理解编码器、重参数化与 KL 损失，串起 VAE 的训练和生成。",
       "date": "2026-10-08T16:00:00+08:00",
-      "lastmod": "2026-10-08T18:00:20+08:00",
+      "lastmod": "2026-10-14T16:23:16+08:00",
       "slug": "ae-to-vae",
       "categories": [
         "基础"

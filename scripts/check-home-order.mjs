@@ -3,7 +3,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 export const expectedHomeSlugs = [
-  'classifier-free-guidance', 'classifier-guidance', 'ddim-derivation',
+  'ddim-1', 'ddim-2', 'ddim-3', 'ddim-4', 'ddim-5',
+  'classifier-free-guidance', 'classifier-guidance',
   'ddpm-1', 'ddpm-2', 'ddpm-3', 'ddpm-4', 'ae-to-vae',
   'elbo-1', 'elbo-2', 'elbo-3',
 ];
@@ -28,3 +29,4 @@ export function checkHomeOrder(dir) {
   });
   assertHomeOrder(slugs);
 }
+

@@ -16,6 +16,8 @@
 </nav>
 {{- end }}
 {{- with .Params.legacyCollection }}
-{{- $collection := site.GetPage (printf "/collections/%s" .) }}
-<aside class="legacy-notice">这篇完整笔记已整理为四篇独立文章。<a href="{{ $collection.RelPermalink }}">进入 DDPM 合集，按顺序阅读 →</a><span>此页保留原文及原有章节链接，方便回查。</span></aside>
+{{- $id := . }}
+{{- $collection := site.GetPage (printf "/collections/%s" $id) }}
+{{- $episodes := where site.RegularPages "Params.collection" $id }}
+<aside class="legacy-notice">这篇完整笔记已整理为 {{ len $episodes }} 篇独立文章。<a href="{{ $collection.RelPermalink }}">进入 {{ upper $id }} 合集，按顺序阅读 →</a><span>此页保留完整推导，方便回查。</span></aside>
 {{- end }}

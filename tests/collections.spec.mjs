@@ -3,6 +3,19 @@ import fs from 'node:fs';
 const manifest=JSON.parse(fs.readFileSync('tests/fixtures/collection-manifest.json','utf8'));
 const baseline=JSON.parse(fs.readFileSync('tests/fixtures/continuous-reading-baseline.json','utf8'));
 const url=(base,path)=>new URL(path,base).href;
+for (const [id, count] of [['ddpm', 4], ['ddim', 5]]) {
+  test(`${id} legacy notice identifies its own collection and episode count`, async ({page, baseURL}) => {
+    await page.goto(url(baseURL, `posts/${id}-derivation/`));
+    const notice = page.locator('.legacy-notice');
+    await expect(notice).toContainText(`已整理为 ${count} 篇独立文章`);
+    await expect(notice.locator('a')).toHaveText(`进入 ${id.toUpperCase()} 合集，按顺序阅读 →`);
+    await expect(notice.locator('a')).toHaveAttribute('href', new URL(`collections/${id}/`, baseURL).pathname);
+    await expect(notice).toContainText('此页保留完整推导，方便回查。');
+    await notice.locator('a').click();
+    await expect(page).toHaveURL(url(baseURL, `collections/${id}/`));
+    await expect(page.locator('.collection-episodes .episode-card')).toHaveCount(count);
+  });
+}
 for(const width of [320,375,768,1440]){
   for(const item of manifest){
     const slug=item.target.split('/')[2];
@@ -52,7 +65,7 @@ for(const width of [320,375,768,1440]){
     await expect(entries).toHaveCount(5);
     await expect(entries.locator('h3')).toHaveText(['从 AE 到 VAE：让潜变量成为一个分布','ELBO：从似然下界到训练损失','理解 DDPM：原理与推导','DDIM：从边缘分布到跳步采样','扩散模型引导：CG 与 CFG']);
     expect(await entries.locator('time').evaluateAll(xs=>xs.map(x=>x.getAttribute('datetime')))).toEqual(['2026-10-08','2026-10-08','2026-10-09','2026-10-09','2026-10-12']);
-    expect(await entries.locator('.entry-link').evaluateAll(xs=>xs.map(x=>new URL(x.href).pathname.split('/').filter(Boolean).slice(-2).join('/')))).toEqual(['posts/ae-to-vae','collections/elbo','collections/ddpm','posts/ddim-derivation','collections/guidance']);
+    expect(await entries.locator('.entry-link').evaluateAll(xs=>xs.map(x=>new URL(x.href).pathname.split('/').filter(Boolean).slice(-2).join('/')))).toEqual(['posts/ae-to-vae','collections/elbo','collections/ddpm','collections/ddim','collections/guidance']);
     expect(await entries.evaluateAll(xs=>xs.map(x=>x.className))).toEqual(Array(5).fill('archive-entry'));
     const styles=await entries.locator('h3').evaluateAll(xs=>xs.map(x=>({font:getComputedStyle(x).fontFamily,size:getComputedStyle(x).fontSize,weight:getComputedStyle(x).fontWeight,color:getComputedStyle(x).color})));
     for(const style of styles)expect(style).toEqual(styles[0]);
@@ -60,10 +73,10 @@ for(const width of [320,375,768,1440]){
     await expect(page.locator('main')).not.toContainText('学习合集');
     await expect(page.locator('main')).not.toContainText('独立笔记');
     await expect(page.locator('main a[href$="/posts/ddpm-derivation/"]')).toHaveCount(0);
-    for(const [id,count] of [['ddpm',4],['elbo',3]]){
+    for(const [id,count] of [['ddpm',4],['elbo',3],['ddim',5]]){
       await page.locator(`.archive-entry a[href$="/collections/${id}/"]`).click();
       await expect(page).toHaveURL(url(baseURL,`collections/${id}/`));
-      await expect(page.locator('.collection-count time')).toHaveAttribute('datetime',id==='ddpm'?'2026-10-09':'2026-10-08');
+      await expect(page.locator('.collection-count time')).toHaveAttribute('datetime',id==='elbo'?'2026-10-08':'2026-10-09');
       if(id==='ddpm')await expect(page.locator('h1')).toHaveText('理解 DDPM：原理与推导');
       const links=page.locator('.collection-episodes .episode-card');
       expect(await links.evaluateAll(xs=>xs.map(x=>new URL(x.href).pathname.split('/').filter(Boolean).at(-1)))).toEqual(Array.from({length:count},(_,i)=>`${id}-${i+1}`));
@@ -83,7 +96,7 @@ for(const width of [320,375,768,1440]){
       await page.goto(url(baseURL,'archives/'));
     }
     await expect(page.locator('.archive-entry a[href$="/posts/ae-to-vae/"]')).toHaveCount(1);
-    await expect(page.locator('.archive-entry a[href$="/posts/ddim-derivation/"]')).toHaveCount(1);
+    await expect(page.locator('.archive-entry a[href$="/collections/ddim/"]')).toHaveCount(1);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   });
 }
@@ -99,18 +112,18 @@ test('direct proof anchors reach continuous content and remain usable after repe
   const toc=page.locator('.reading-toc details');await toc.evaluate(el=>el.open=true);
   await toc.locator(`a[href="#${id}"]`).click();await expect(heading).toBeVisible();
 });
-test('home and RSS expose eleven releases without duplicate legacy or collection entries',async({page,request,baseURL})=>{
+test('home and RSS expose fifteen releases without duplicate legacy or collection entries',async({page,request,baseURL})=>{
   await page.goto(baseURL);
   await expect(page.locator('.home-collections')).toHaveCount(0);
   await expect(page.locator('main')).not.toContainText('学习合集');
   await expect(page.locator('.post-entry')).toHaveCount(10);
-  await expect(page.locator('.post-entry h2').first()).toHaveText('扩散模型引导（二）：Classifier-Free Guidance');
+  await expect(page.locator('.post-entry h2').first()).toHaveText('DDIM（一）：为什么可以换一条生成路径');
   const releaseLinks=await page.locator('.post-entry .entry-link').evaluateAll(xs=>xs.map(x=>x.href));
   await page.locator('.pagination .next').click();
   await expect(page).toHaveURL(url(baseURL,'page/2/'));
-  await expect(page.locator('.post-entry')).toHaveCount(1);
+  await expect(page.locator('.post-entry')).toHaveCount(5);
   releaseLinks.push(...await page.locator('.post-entry .entry-link').evaluateAll(xs=>xs.map(x=>x.href)));
-  expect(new Set(releaseLinks).size).toBe(11);
+  expect(new Set(releaseLinks).size).toBe(15);
   await page.locator('.pagination .prev').click();
   await expect(page).toHaveURL(baseURL);
   await expect(page.locator('[data-home-cover]')).toBeVisible();
@@ -157,3 +170,4 @@ for(const [slug,id,title] of [
   await expect(heading).toHaveText(new RegExp(`^${title}#?$`));await expect(heading).toBeVisible();await expect(heading).toBeInViewport();
  });
 }
+
