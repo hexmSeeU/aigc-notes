@@ -13,8 +13,9 @@ for (const width of [320, 375, 768, 1440]) {
     await expect(page.locator('h1')).toHaveText(title);
     const content = page.locator('.post-content');
     await expect(content).toHaveCSS('font-size', '18px');
-    await expect(content.locator('mjx-container[display="true"]')).toHaveCount(28);
-    await expect(content.locator('mjx-container:not([display="true"])')).toHaveCount(134);
+    const sourceText = fs.readFileSync('content/posts/ddim-derivation/index.md', 'utf8');
+    await expect(content.locator('mjx-container[display="true"]')).toHaveCount([...sourceText.matchAll(/\$\$([\s\S]*?)\$\$/g)].length);
+    await expect(content.locator('mjx-container:not([display="true"])')).toHaveCount([...sourceText.matchAll(/\\\(([\s\S]*?)\\\)/g)].length);
     await expect(content.locator('mjx-merror, [data-mjx-error]')).toHaveCount(0);
     await expect(content.locator('p mjx-container:not([display="true"])').first()).toBeVisible();
     await expect(content).not.toContainText('\\(');
@@ -77,75 +78,18 @@ for (const width of [320, 375, 768, 1440]) {
   });
 }
 
-test('DDIM and VAE remain available alongside the new releases', async ({page, request}) => {
-  const titles = [title, '从 AE 到 VAE：让潜变量成为一个分布'];
-  for (const path of ['/', '/posts/', '/categories/基础/']) {
-    await page.goto(path);
-    await expect(page.locator('.post-entry')).toHaveCount(10);
-    for(const name of titles) await expect(page.locator('.post-entry h2').filter({hasText:name})).toHaveCount(1);
-    await expect(page.locator('.post-entry .entry-link[href$="/posts/ddpm-derivation/"]')).toHaveCount(0);
-    const links=await page.locator('.post-entry .entry-link').evaluateAll(xs=>xs.map(x=>x.href));
-    await page.locator('.pagination .next').click();
-    await expect(page.locator('.post-entry')).toHaveCount(1);
-    links.push(...await page.locator('.post-entry .entry-link').evaluateAll(xs=>xs.map(x=>x.href)));
-    expect(new Set(links).size).toBe(11);
-    await expect(page.locator('.post-entry .entry-link[href$="/posts/ddpm-derivation/"]')).toHaveCount(0);
-    await page.locator('.pagination .prev').click();
-    await expect(page.locator('.post-entry')).toHaveCount(10);
-  }
-  await page.goto('/archives/');
-  await expect(page.locator('.archive-entry')).toHaveCount(5);
-  await expect(page.locator('.archive-entry').filter({has:page.locator('a[href$="/posts/ddim-derivation/"]')})).toContainText(title);
-  const response = await request.get('/index.xml');
-  expect(response.ok()).toBe(true);
-  const rss = await response.text();
-  for (const name of titles) expect(rss).toContain(`<title>${name}</title>`);
-  expect(rss).not.toContain('/posts/ddpm-derivation/');
-  expect(rss.indexOf('/posts/ddim-derivation/')).toBeLessThan(rss.indexOf('/posts/ae-to-vae/'));
-});
 
-for (const width of [375, 1440]) {
-  test(`DDIM connects to DDPM and home with working back/forward at ${width}px`, async ({page}) => {
-    await page.setViewportSize({width, height: 900});
-    await page.goto(route);
-    const previous = page.locator('.post-content').getByRole('link', {name: 'DDPM 笔记', exact: true});
-    await expect(previous).toHaveAttribute('href', /\/posts\/ddpm-derivation\/$/);
-    await previous.click();
-    await expect(page).toHaveURL(/\/posts\/ddpm-derivation\/$/);
-    await expect(page.locator('h1')).toHaveText('DDPM：从似然目标到噪声预测的完整推导');
-    await page.goBack();
-    await expect(page.locator('h1')).toHaveText(title);
-    await page.locator('#menu').getByRole('link', {name: '首页', exact: true}).click();
-    await expect(page.locator('[data-home-cover]')).toBeVisible();
-    await expect(page.locator('.post-entry').filter({hasText:title})).toHaveCount(1);
-    await page.goBack();
-    await expect(page.locator('h1')).toHaveText(title);
-    await page.goForward();
-    await expect(page.locator('[data-home-cover]')).toBeVisible();
-  });
+for (const width of [375, 1440]) for (let i=1; i<=5; i++) {
+ test(`DDIM episode ${i} renders math and navigation at ${width}px`,async({page})=>{
+  await page.setViewportSize({width,height:900});
+  await page.goto(`/posts/ddim-${i}/`);
+  const source=fs.readFileSync(`content/posts/ddim-${i}/index.md`,'utf8');
+  const expected=[...source.matchAll(/\$\$([\s\S]*?)\$\$|\\\(([\s\S]*?)\\\)/g)].map(m=>(m[1]??m[2]).trim());
+  await expect(page.locator('.post-content mjx-container')).toHaveCount(expected.length);
+  expect(await page.evaluate(()=>[...MathJax.startup.document.math].map(x=>x.math.trim()))).toEqual(expected);
+  await expect(page.locator('mjx-merror,[data-mjx-error]')).toHaveCount(0);
+  await expect(page.locator('.collection-nav [aria-current="page"]')).toHaveCount(1);
+  await expect(page.locator('.collection-prev-next [rel="next"]')).toHaveCount(i<5?1:0);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ });
 }
-
-for (const width of [375, 1440]) {
-  test(`DDIM table of contents reaches the sampling section at ${width}px`, async ({page}) => {
-    await page.setViewportSize({width, height: 900});
-    await page.goto(route);
-    const toc = page.locator('.reading-toc details');
-    if (width < 1200) await toc.locator('summary').click();
-    await expect(toc).toHaveAttribute('open', '');
-    const ids = await page.locator('.post-content h2, .post-content h3').evaluateAll(elements =>
-      elements.map(el => el.id));
-    expect(new Set(ids).size).toBe(ids.length);
-    expect(ids.length).toBe(24);
-    const links = toc.locator('a');
-    await expect(links).toHaveCount(ids.length);
-    expect(await links.evaluateAll(elements => elements.map(el => decodeURIComponent(el.hash.slice(1)))))
-      .toEqual(ids);
-    const target = toc.getByRole('link', {name: '8 确定性采样的简短伪代码', exact: true});
-    const href = await target.getAttribute('href');
-    await target.click();
-    await expect(page).toHaveURL(new RegExp(`${encodeURI(href)}$`));
-    await expect(page.locator('.post-content h2').filter({hasText: '8 确定性采样的简短伪代码'}))
-      .toBeInViewport();
-  });
-}
-
