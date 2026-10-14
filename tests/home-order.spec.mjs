@@ -26,6 +26,6 @@ for (const width of [375, 1440]) {
     await expect(page.locator('[data-home-cover]')).toBeVisible();
     await page.goBack();
     await expect(page).toHaveURL(new URL('page/2/', baseURL).href);
-    await expect(page.locator('.post-entry h2')).toContainText('ELBO（三）');
+    await expect(page.locator('.post-entry h2').filter({hasText:'ELBO（三）'})).toHaveCount(1);
   });
 }
