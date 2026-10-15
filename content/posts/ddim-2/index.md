@@ -158,8 +158,3 @@ $$q_\sigma(x_t\mid x_{t-1},x_0)=
 上面的标准化目标公式要求 \(t\geq2\)。正向起点仍为 \(q_\sigma(x_1\mid x_0)\)，而不是对零分母强行使用同一表达式。
 
 参考：[DDIM 原论文第 3.1 节及附录 B](https://arxiv.org/html/2010.02502v4)。
-
-
-[前一篇]({{< relref "posts/ddim-1" >}})
-
-[继续阅读下一篇]({{< relref "posts/ddim-3" >}})

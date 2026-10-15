@@ -17,7 +17,9 @@ test('moving closing chapters preserves every non-heading content line and its m
  for(const item of baseline.articles){
   const source=fs.readFileSync(`content/posts/${item.slug}/index.md`,'utf8');
   const body=source.slice(source.indexOf('\n}\n')+2);
-  const lines=body.split('\n').filter(x=>x.trim()&&!/^#{2,6} /.test(x)).sort();
+  // Reinsert only the audited navigation deletions when checking the original snapshot.
+  const lines=[...body.split('\n'),...(item.removed_navigation_lines??[])].filter(x=>x.trim()&&!/^#{2,6} /.test(x)).sort();
+  for(const line of item.removed_navigation_lines??[])assert.ok(!body.includes(line),item.slug+' removed redundant navigation');
   const math=[...body.matchAll(/\$\$([\s\S]*?)\$\$|\\\(([\s\S]*?)\\\)/g)].map(m=>m[1]??m[2]).sort();
   assert.equal(math.length,item.math_count,item.slug);
   assert.equal(createHash('sha256').update(JSON.stringify(math)).digest('hex'),item.math_multiset_sha256,item.slug);

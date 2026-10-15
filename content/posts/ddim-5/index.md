@@ -166,9 +166,6 @@ return x  # 最后 s = 0 时输出 x0_hat
 
 参考：[DDIM 原论文第 4.2 节与附录 C.1、D.3](https://arxiv.org/html/2010.02502v4)。
 
-
-[前一篇]({{< relref "posts/ddim-4" >}})
-
 ## 8 自检
 
 1. 跳到 \(s\) 时，网络输入当前 \(t\) 还是目标 \(s\)？
