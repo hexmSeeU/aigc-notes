@@ -119,7 +119,10 @@
         "5-看一眼最终要得到的更新"
       ],
       "math_count": 29,
-      "math_multiset_sha256": "9849eeac01d7add4f0517c6bb6a9a04b373f4d956f64bfea279784f3d7df46bb"
+      "math_multiset_sha256": "9849eeac01d7add4f0517c6bb6a9a04b373f4d956f64bfea279784f3d7df46bb",
+      "removed_navigation_lines": [
+        "[继续阅读下一篇]({{< relref \"posts/ddim-2\" >}})"
+      ]
     },
     {
       "slug": "ddim-2",
@@ -135,7 +138,11 @@
         "7-零新噪声与起点单独处理"
       ],
       "math_count": 50,
-      "math_multiset_sha256": "99e464c8709b43ed520edb8b67bc4c36cb0b8abc8640771cd78eafb2a889cb23"
+      "math_multiset_sha256": "99e464c8709b43ed520edb8b67bc4c36cb0b8abc8640771cd78eafb2a889cb23",
+      "removed_navigation_lines": [
+        "[前一篇]({{< relref \"posts/ddim-1\" >}})",
+        "[继续阅读下一篇]({{< relref \"posts/ddim-3\" >}})"
+      ]
     },
     {
       "slug": "ddim-3",
@@ -148,7 +155,11 @@
         "4-确定性更新怎样理解"
       ],
       "math_count": 19,
-      "math_multiset_sha256": "c3ece8e39ec25b21bdcdb5ccfc13c49129319081f24537a779a2abe55a53981d"
+      "math_multiset_sha256": "c3ece8e39ec25b21bdcdb5ccfc13c49129319081f24537a779a2abe55a53981d",
+      "removed_navigation_lines": [
+        "[前一篇]({{< relref \"posts/ddim-2\" >}})",
+        "[继续阅读下一篇]({{< relref \"posts/ddim-4\" >}})"
+      ]
     },
     {
       "slug": "ddim-4",
@@ -161,7 +172,11 @@
         "4-为什么直接删随机项不等于-ddim"
       ],
       "math_count": 30,
-      "math_multiset_sha256": "aed7c56d098b23d49e48741d3adbc6a2a65d1e9bbcb011a35270ecdee76b53f5"
+      "math_multiset_sha256": "aed7c56d098b23d49e48741d3adbc6a2a65d1e9bbcb011a35270ecdee76b53f5",
+      "removed_navigation_lines": [
+        "[前一篇]({{< relref \"posts/ddim-3\" >}})",
+        "[继续阅读下一篇]({{< relref \"posts/ddim-5\" >}})"
+      ]
     },
     {
       "slug": "ddim-5",
@@ -179,7 +194,10 @@
         "参考答案"
       ],
       "math_count": 59,
-      "math_multiset_sha256": "7d397a578d53342686b8f893172c972ad43452cba45adc0d7e5a0b3b9bf71124"
+      "math_multiset_sha256": "7d397a578d53342686b8f893172c972ad43452cba45adc0d7e5a0b3b9bf71124",
+      "removed_navigation_lines": [
+        "[前一篇]({{< relref \"posts/ddim-4\" >}})"
+      ]
     },
     {
       "slug": "ddim-derivation",
