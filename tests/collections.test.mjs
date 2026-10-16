@@ -25,8 +25,8 @@ for(const [collection,count] of [['ddpm',4],['elbo',3]]){
     }
   });
 }
-test('legacy DDPM keeps its URL and content while avoiding duplicate releases',()=>{
-  const {meta,body}=read('content/posts/ddpm-derivation/index.md');
+test('archived DDPM retains its complete original source',()=>{
+  const {meta,body}=read('archive/legacy/ddpm-derivation.md');
   assert.equal(meta.slug,'ddpm-derivation');assert.equal(meta.hiddenInHomeList,true);
   assert.equal(meta.hiddenInRss,true);assert.equal(meta.legacyCollection,'ddpm');
   assert.equal((body.match(/\$\$/g)||[]).length/2,82);

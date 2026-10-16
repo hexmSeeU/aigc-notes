@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import {validateArticle} from '../scripts/check-content.mjs';
 
-const articlePath = 'content/posts/ddpm-derivation/index.md';
+const articlePath = 'archive/legacy/ddpm-derivation.md';
 const readArticle = () => {
   assert.ok(fs.existsSync(articlePath), 'The approved DDPM article must exist');
   const text = fs.readFileSync(articlePath, 'utf8');
@@ -12,7 +12,7 @@ const readArticle = () => {
   return {metadata: JSON.parse(text.slice(0, end)), body: text.slice(end).trim()};
 };
 
-test('DDPM is the published second article with a real dated math-enabled bundle', () => {
+test('Archived DDPM retains original publication metadata with a real dated math-enabled bundle', () => {
   const {metadata} = readArticle();
   assert.deepEqual(validateArticle(metadata), []);
   assert.equal(metadata.title, 'DDPM：从似然目标到噪声预测的完整推导');

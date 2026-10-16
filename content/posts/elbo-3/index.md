@@ -314,7 +314,7 @@ $$
 
 右边的第二个分布是生成模型给定 \(x_0\) 后的整条路径后验。更新反向生成模型参数 \(\theta\)，它也会改变，因此差距 KL 仍可能改变。
 
-负 ELBO 如何继续分解成噪声端 KL、反向单步 KL 和重建项，以及怎样进一步得到噪声预测目标，已经在 [DDPM 笔记]({{< relref "posts/ddpm-derivation" >}}) 中完整推过，这里沿用那部分。
+负 ELBO 如何继续分解成噪声端 KL、反向单步 KL 和重建项，以及怎样进一步得到噪声预测目标，已经在 [DDPM 笔记]({{< relref "collections/ddpm" >}}) 中完整推过，这里沿用那部分。
 
 需要保留边界：路径分解是负 ELBO 的精确改写；在固定方差等设定下可继续化成带权误差；去掉时间步权重得到常见的简化噪声 MSE，是训练目标的调整，不能直接把它称作原始负 ELBO。
 
@@ -322,7 +322,7 @@ $$
 
 - Kingma, D. P. & Welling, M. [Auto-Encoding Variational Bayes](https://arxiv.org/abs/1312.6114)：§2.3–2.4、§3、附录 B
 - Ho, J., Jain, A. & Abbeel, P. [Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2006.11239)：§2 的变分界，§3 的参数化与简化训练目标
-- 已有文章：[从 AE 到 VAE]({{< relref "posts/ae-to-vae" >}})、[DDPM：从似然目标到噪声预测的完整推导]({{< relref "posts/ddpm-derivation" >}})
+- 已有文章：[从 AE 到 VAE]({{< relref "posts/ae-to-vae" >}})、[DDPM 学习合集]({{< relref "collections/ddpm" >}})
 
 ## 小结：三个连接现在闭合了
 

@@ -1,3 +1,4 @@
+import {historicalLinks, preservedSource} from './helpers/legacy-source.mjs';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -15,7 +16,7 @@ for(const slug of fs.readdirSync('content/posts')) {
 test('moving closing chapters preserves every non-heading content line and its multiplicity',()=>{
  const baseline=JSON.parse(fs.readFileSync('tests/fixtures/closing-sections-preservation.json','utf8'));
  for(const item of baseline.articles){
-  const source=fs.readFileSync(`content/posts/${item.slug}/index.md`,'utf8');
+  const source=historicalLinks(preservedSource(item.slug));
   const body=source.slice(source.indexOf('\n}\n')+2);
   // Reinsert only the audited navigation deletions when checking the original snapshot.
   const lines=[...body.split('\n'),...(item.removed_navigation_lines??[])].filter(x=>x.trim()&&!/^#{2,6} /.test(x)).sort();

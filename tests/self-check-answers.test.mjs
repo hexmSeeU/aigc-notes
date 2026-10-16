@@ -1,3 +1,4 @@
+import {historicalLinks, preservedSource} from './helpers/legacy-source.mjs';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -7,7 +8,7 @@ const fixture=JSON.parse(fs.readFileSync('tests/fixtures/self-check-answers.json
 test('all 13 existing self-check questions have directly readable numbered answers',()=>{
  assert.equal(fixture.reduce((n,x)=>n+x.question_count,0),13);
  for(const item of fixture){
-  const source=fs.readFileSync(`content/posts/${item.slug}/index.md`,'utf8');
+  const source=historicalLinks(preservedSource(item.slug));
   for(const question of item.questions)assert.ok(source.includes(question),`${item.slug}: original question preserved`);
   assert.equal((source.match(/^### 参考答案$/gm)||[]).length,1,item.slug);
   const answers=referenceAnswers(source);
@@ -17,7 +18,7 @@ test('all 13 existing self-check questions have directly readable numbered answe
 });
 test('closing chapters retain the reviewed non-answer content and original publication metadata',()=>{
  for(const item of fixture){
-  const source=fs.readFileSync(`content/posts/${item.slug}/index.md`,'utf8');
+  const source=historicalLinks(preservedSource(item.slug));
   assert.equal(createHash('sha256').update(withoutReferenceAnswers(source)).digest('hex'),item.reordered_source_without_answers_sha256,item.slug);
   assert.deepEqual(JSON.parse(source.slice(0,source.indexOf('\n}\n')+2)),item.original_meta,item.slug);
  }
