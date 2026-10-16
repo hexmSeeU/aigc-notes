@@ -8,6 +8,6 @@
   "ShowToc": false,
   "date": "2026-10-12T15:20:00+08:00",
   "archiveOrder": 5,
-  "prerequisite": "/posts/ddim-derivation",
+  "prerequisite": "/collections/ddim",
   "prerequisiteLabel": "前置：DDIM 跳步采样"
 }

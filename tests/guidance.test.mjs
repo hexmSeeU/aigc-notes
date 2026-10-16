@@ -1,3 +1,4 @@
+import {historicalLinks, preservedSource} from './helpers/legacy-source.mjs';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -6,7 +7,7 @@ import {validateArticle} from '../scripts/check-content.mjs';
 const read=path=>{
  assert.ok(fs.existsSync(path),`Expected ${path}`);
  const source=fs.readFileSync(path,'utf8'),end=source.indexOf('\n}\n')+2;
- return {meta:JSON.parse(source.slice(0,end)),body:source.slice(end).trim()};
+ return {meta:JSON.parse(source.slice(0,end)),body:historicalLinks(source.slice(end).trim())};
 };
 test('guidance collection publishes CG and CFG in learning order',()=>{
  const collection=read('content/collections/guidance/index.md');
@@ -42,7 +43,7 @@ test('guidance collection publishes CG and CFG in learning order',()=>{
  assert.doesNotMatch(cfg.body,/TODO|TBD|后续补充/);
  assert.doesNotMatch(article.body.replace(/```[\s\S]*?```/g,''),/<details|<summary|proof-open|选读|^# |\]\([^)]*\.md\)/m);
  assert.doesNotMatch(article.body,/classifier-free-guidance\/|posts\/cfg|TODO|TBD/);
- assert.equal(collection.meta.prerequisite,'/posts/ddim-derivation');
+ assert.equal(collection.meta.prerequisite,'/collections/ddim');
  assert.equal(collection.meta.prerequisiteLabel,'前置：DDIM 跳步采样');
 });
 test('CG collection uses its explicit DDIM prerequisite without changing older collections',()=>{
@@ -80,7 +81,7 @@ test('numbered MathJax equations can shrink their outer scroll box on phones',()
 });
 
 test('CFG preserves the independently reviewed body, all equations, proofs, references and answers',()=>{
- const source=fs.readFileSync('content/posts/classifier-free-guidance/index.md','utf8');
+ const source=historicalLinks(fs.readFileSync('content/posts/classifier-free-guidance/index.md','utf8'));
  const {body}=read('content/posts/classifier-free-guidance/index.md');
  const fixture=JSON.parse(fs.readFileSync('tests/fixtures/cfg-preservation.json','utf8'));
  const hash=s=>createHash('sha256').update(s).digest('hex');

@@ -84,7 +84,7 @@ for(const width of [320,375,768,1440]){
   await expect(page.locator('.collection-episodes h2')).toHaveText(articles.map(x=>x.title));
   await expect(page.locator('.collection-count time')).toHaveAttribute('datetime','2026-10-12');
   await expect(page.locator('main')).not.toContainText('后续补充');
-  await expect(page.locator('.collection-footer a[href$="/posts/ddim-derivation/"]')).toHaveText('前置：DDIM 跳步采样');
+  await expect(page.locator('.collection-footer a[href$="/collections/ddim/"]')).toHaveText('前置：DDIM 跳步采样');
   const links=await page.locator('main a').evaluateAll(xs=>xs.map(x=>x.href));
   for(const href of links)expect((await request.get(href)).status()).toBe(200);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);

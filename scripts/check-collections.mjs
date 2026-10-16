@@ -38,7 +38,7 @@ const guidance=fs.readFileSync(path.join(dir,'collections/guidance/index.html'),
 const cg=fs.readFileSync(path.join(dir,'posts/classifier-guidance/index.html'),'utf8');
 assert.ok(guidance.includes('共 2 篇'),'Guidance contains two published episodes');
 assert.ok(guidance.includes('/posts/classifier-guidance/'),'CG episode has a real article link');
-assert.ok(guidance.includes('/posts/ddim-derivation/'),'Guidance links its DDIM prerequisite');
+assert.ok(guidance.includes('/collections/ddim/'),'Guidance links its DDIM prerequisite');
 assert.ok(cg.includes('/collections/guidance/'),'CG links back to its collection');
 assert.equal((cg.match(/aria-current=(?:"page"|'page'|page(?=[\s>]))/g)||[]).length,1,'CG marks one current episode');
 assert.ok(!cg.includes('raw HTML omitted'),'CG does not lose math or prose to HTML parsing');
@@ -55,3 +55,20 @@ assert.ok(cg.includes('/posts/classifier-free-guidance/'),'CG links to its next 
 assert.ok(cfg.includes('/posts/classifier-guidance/'),'CFG links to its previous episode');
 console.log('Guidance output checks passed');
 
+
+// Aliases must stay redirects, never duplicate articles or index entries.
+for(const id of ['ddim','ddpm']) {
+ const alias=fs.readFileSync(path.join(dir,'posts',`${id}-derivation`,'index.html'),'utf8');
+ assert.match(alias,/http-equiv=["']?refresh/);
+ assert.match(alias,new RegExp(`url=[^>]*?/collections/${id}/`));
+ assert.match(alias,/noindex/);
+ assert.ok(!alias.includes('post-content')&&!alias.includes('MathJax'));
+ assert.ok(alias.length<2000,'Alias contains only redirect and fallback');
+ const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(d,e.name)):[path.join(d,e.name)]);
+ for(const file of walk(dir).filter(f=>/\.(html|xml|json)$/.test(f))){
+  if(file===path.join(dir,'posts',`${id}-derivation`,'index.html'))continue;
+  assert.ok(!fs.readFileSync(file,'utf8').includes(`/posts/${id}-derivation/`),`Legacy link/index entry in ${file}`);
+ }
+}
+assert.ok(!fs.existsSync(path.join(dir,'archive','legacy')),'Archival sources are never published');
+console.log('Legacy redirect and index exclusion checks passed');

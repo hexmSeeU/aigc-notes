@@ -4,14 +4,8 @@ const manifest=JSON.parse(fs.readFileSync('tests/fixtures/collection-manifest.js
 const baseline=JSON.parse(fs.readFileSync('tests/fixtures/continuous-reading-baseline.json','utf8'));
 const url=(base,path)=>new URL(path,base).href;
 for (const [id, count] of [['ddpm', 4], ['ddim', 5]]) {
-  test(`${id} legacy notice identifies its own collection and episode count`, async ({page, baseURL}) => {
+  test(`${id} legacy URL redirects to its collection`, async ({page, baseURL}) => {
     await page.goto(url(baseURL, `posts/${id}-derivation/`));
-    const notice = page.locator('.legacy-notice');
-    await expect(notice).toContainText(`已整理为 ${count} 篇独立文章`);
-    await expect(notice.locator('a')).toHaveText(`进入 ${id.toUpperCase()} 合集，按顺序阅读 →`);
-    await expect(notice.locator('a')).toHaveAttribute('href', new URL(`collections/${id}/`, baseURL).pathname);
-    await expect(notice).toContainText('此页保留完整推导，方便回查。');
-    await notice.locator('a').click();
     await expect(page).toHaveURL(url(baseURL, `collections/${id}/`));
     await expect(page.locator('.collection-episodes .episode-card')).toHaveCount(count);
   });

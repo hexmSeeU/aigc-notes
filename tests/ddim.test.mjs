@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {validateArticle} from '../scripts/check-content.mjs';
 const read = slug => {
- const text=fs.readFileSync(`content/posts/${slug}/index.md`,'utf8');
+ const text=fs.readFileSync(slug.endsWith('-derivation') ? `archive/legacy/${slug}.md` : `content/posts/${slug}/index.md`,'utf8');
  const end=text.indexOf('\n}\n')+2;
  return {meta:JSON.parse(text.slice(0,end)),body:text.slice(end).trim()};
 };

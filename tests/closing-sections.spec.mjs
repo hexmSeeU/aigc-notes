@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 import fs from 'node:fs';
 const baseline=JSON.parse(fs.readFileSync('tests/fixtures/closing-sections-preservation.json','utf8'));
 const closing=/小结|自检|回头检查这条推导|这一篇先停在哪里|把一次生成从头到尾收起来|把完整推导接起来|最后把整条推导接起来/;
-for(const width of [320,1440])for(const item of baseline.articles){
+for(const width of [320,1440])for(const item of baseline.articles.filter(x=>!x.slug.endsWith("-derivation"))){
  test(`${item.slug} keeps final summaries and old anchors at ${width}px`,async({page,baseURL})=>{
   await page.setViewportSize({width,height:900});
   await page.goto(new URL(`posts/${item.slug}/`,baseURL).href);
