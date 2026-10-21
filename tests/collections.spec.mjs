@@ -56,11 +56,11 @@ for(const width of [320,375,768,1440]){
     await page.setViewportSize({width,height:900});
     await page.goto(url(baseURL,'archives/'));
     const entries=page.locator('.archive-entry');
-    await expect(entries).toHaveCount(5);
-    await expect(entries.locator('h3')).toHaveText(['从 AE 到 VAE：让潜变量成为一个分布','ELBO：从似然下界到训练损失','理解 DDPM：原理与推导','DDIM：从边缘分布到跳步采样','扩散模型引导：CG 与 CFG']);
-    expect(await entries.locator('time').evaluateAll(xs=>xs.map(x=>x.getAttribute('datetime')))).toEqual(['2026-10-08','2026-10-08','2026-10-09','2026-10-09','2026-10-12']);
-    expect(await entries.locator('.entry-link').evaluateAll(xs=>xs.map(x=>new URL(x.href).pathname.split('/').filter(Boolean).slice(-2).join('/')))).toEqual(['posts/ae-to-vae','collections/elbo','collections/ddpm','collections/ddim','collections/guidance']);
-    expect(await entries.evaluateAll(xs=>xs.map(x=>x.className))).toEqual(Array(5).fill('archive-entry'));
+    await expect(entries).toHaveCount(6);
+    await expect(entries.locator('h3')).toHaveText(['从 AE 到 VAE：让潜变量成为一个分布','ELBO：从似然下界到训练损失','理解 DDPM：原理与推导','DDIM：从边缘分布到跳步采样','扩散模型引导：CG 与 CFG','Score：噪声预测网络到底学到了什么']);
+    expect(await entries.locator('time').evaluateAll(xs=>xs.map(x=>x.getAttribute('datetime')))).toEqual(['2026-10-08','2026-10-08','2026-10-09','2026-10-09','2026-10-12','2026-10-21']);
+    expect(await entries.locator('.entry-link').evaluateAll(xs=>xs.map(x=>new URL(x.href).pathname.split('/').filter(Boolean).slice(-2).join('/')))).toEqual(['posts/ae-to-vae','collections/elbo','collections/ddpm','collections/ddim','collections/guidance','posts/score']);
+    expect(await entries.evaluateAll(xs=>xs.map(x=>x.className))).toEqual(Array(6).fill('archive-entry'));
     const styles=await entries.locator('h3').evaluateAll(xs=>xs.map(x=>({font:getComputedStyle(x).fontFamily,size:getComputedStyle(x).fontSize,weight:getComputedStyle(x).fontWeight,color:getComputedStyle(x).color})));
     for(const style of styles)expect(style).toEqual(styles[0]);
     await expect(page.locator('.archive-collections,.archive-standalone,details')).toHaveCount(0);
@@ -106,23 +106,24 @@ test('direct proof anchors reach continuous content and remain usable after repe
   const toc=page.locator('.reading-toc details');await toc.evaluate(el=>el.open=true);
   await toc.locator(`a[href="#${id}"]`).click();await expect(heading).toBeVisible();
 });
-test('home and RSS expose fifteen releases without duplicate legacy or collection entries',async({page,request,baseURL})=>{
+test('home and RSS expose sixteen releases without duplicate legacy or collection entries',async({page,request,baseURL})=>{
   await page.goto(baseURL);
   await expect(page.locator('.home-collections')).toHaveCount(0);
   await expect(page.locator('main')).not.toContainText('学习合集');
   await expect(page.locator('.post-entry')).toHaveCount(10);
-  await expect(page.locator('.post-entry h2').first()).toHaveText('DDIM（一）：为什么可以换一条生成路径');
+  await expect(page.locator('.post-entry h2').first()).toHaveText('Score：噪声预测网络到底学到了什么');
   const releaseLinks=await page.locator('.post-entry .entry-link').evaluateAll(xs=>xs.map(x=>x.href));
   await page.locator('.pagination .next').click();
   await expect(page).toHaveURL(url(baseURL,'page/2/'));
-  await expect(page.locator('.post-entry')).toHaveCount(5);
+  await expect(page.locator('.post-entry')).toHaveCount(6);
   releaseLinks.push(...await page.locator('.post-entry .entry-link').evaluateAll(xs=>xs.map(x=>x.href)));
-  expect(new Set(releaseLinks).size).toBe(15);
+  expect(new Set(releaseLinks).size).toBe(16);
   await page.locator('.pagination .prev').click();
   await expect(page).toHaveURL(baseURL);
   await expect(page.locator('[data-home-cover]')).toBeVisible();
   const rss=await (await request.get(url(baseURL,'index.xml'))).text();
   for(const item of manifest)expect(rss).toContain(`/posts/${item.target.split('/')[2]}/`);
+  expect(rss).toContain('/posts/score/');
   expect(rss).not.toContain('/posts/ddpm-derivation/');
   expect(rss).not.toContain('/collections/ddpm/');
   expect(rss).not.toContain('/collections/elbo/');

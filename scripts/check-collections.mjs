@@ -25,8 +25,8 @@ assert.ok(!rss.includes('/posts/ddpm-derivation/'));
 assert.ok(!rss.includes('/collections/'));
 console.log('Collection output checks passed');
 const archive=fs.readFileSync(path.join(dir,'archives','index.html'),'utf8');
-const expectedTitles=['从 AE 到 VAE：让潜变量成为一个分布','ELBO：从似然下界到训练损失','理解 DDPM：原理与推导','DDIM：从边缘分布到跳步采样','扩散模型引导：CG 与 CFG'];
-assert.equal((archive.match(/<article\b[^>]*\bclass=(?:"archive-entry"|'archive-entry'|archive-entry(?=[\s>]))/g)||[]).length,5,'Five uniformly styled archive rows');
+const expectedTitles=['从 AE 到 VAE：让潜变量成为一个分布','ELBO：从似然下界到训练损失','理解 DDPM：原理与推导','DDIM：从边缘分布到跳步采样','扩散模型引导：CG 与 CFG','Score：噪声预测网络到底学到了什么'];
+assert.equal((archive.match(/<article\b[^>]*\bclass=(?:"archive-entry"|'archive-entry'|archive-entry(?=[\s>]))/g)||[]).length,6,'Six uniformly styled archive rows');
 let prior=-1;
 for(const title of expectedTitles){const position=archive.indexOf(title);assert.ok(position>prior,'Archive chronology: '+title);prior=position;}
 assert.ok(!archive.includes('学习合集')&&!archive.includes('独立笔记'),'Archive has no type-separated sections');
