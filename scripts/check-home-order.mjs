@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 export const expectedHomeSlugs = [
+  'score',
   'ddim-1', 'ddim-2', 'ddim-3', 'ddim-4', 'ddim-5',
   'classifier-free-guidance', 'classifier-guidance',
   'ddpm-1', 'ddpm-2', 'ddpm-3', 'ddpm-4', 'ae-to-vae',
