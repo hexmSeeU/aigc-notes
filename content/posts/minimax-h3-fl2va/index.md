@@ -219,7 +219,7 @@ $$
 
 ## 5. 展平以后，位置与模态怎样保留？
 
-视频 token 展平前对应一个 \([37,15,26]\) 网格。展平仅改变存放顺序，三个位置坐标 \((p_t,p_h,p_w)\) 仍会传入三维 RoPE，用于旋转注意力的 Q、K。
+视频 token 展平前对应一个 \([37,15,26]\) 网格。展平仅改变存放顺序，三个位置坐标 \((p_t,p_h,p_w)\) 仍会传入三维 RoPE，用于旋转注意力的 Q、K。该配置实际旋转每个 head 的前 96 维，剩余 32 维直通；V 不做这次旋转。上下文 Token Refiner 的注意力也不使用这套 RoPE。
 
 实际位置不是直接照抄整数网格。实现对空间与时间坐标做了缩放；首帧条件放在目标时间轴开头，尾帧条件放在末端。音频也有时间坐标，两个声道还通过空间轴位置区分。因此不能将“首尾帧排在音频之前”误解为它们只约束视频最早的一段。
 
@@ -227,7 +227,7 @@ $$
 
 ## 6. AdaLN：完整写出一个共享 block
 
-默认主干包含 50 个 block。每个 block 都包含注意力和 SwiGLU FFN 两个残差分支。两者共享跨模态的主干计算权重，再通过依赖模态与生成进度的调制参数调整各类 token。
+默认主干包含 50 个 block，不包括前面的两层上下文 Token Refiner。每个 block 都包含注意力和 SwiGLU FFN 两个残差分支。两者共享跨模态的主干计算权重，再通过依赖模态与生成进度的调制参数调整各类 token。
 
 代码沿用 AdaLN 命名，但这里实际的归一化操作是 **RMSNorm**。不能仅凭名称把它写成标准 LayerNorm。
 
@@ -308,7 +308,7 @@ $$
 
 ## 7. 输出头怎样还原两种更新量？
 
-经过 50 个主干 block，隐藏特征仍为 \([L,5376]\)。输出层再次使用 RMSNorm 与时间调制，再分别投影：
+经过 50 个主干 block，隐藏特征仍为 \([L,5376]\)。输出层再次使用 RMSNorm 与时间调制；这里按时间索引选择 shift、scale，没有块内的残差 gate，也没有另按三种模态展开调制分支。随后分别投影：
 
 ~~~text
 视频输出投影：5376 → 96
@@ -384,13 +384,13 @@ $$
 
 ## 9. 首尾帧约束究竟固定了什么？
 
-KeyframeEncoder 先编码关键帧，再构造固定的条件 anchor。默认 imgvid_cond_noise_aug 为 0.999，代码中的混合形式是：
+KeyframeEncoder 先编码关键帧，再构造固定的条件 anchor。默认 imgvid_cond_noise_aug 配置值为 0.999，但实现先将它转换成 pipe.torch_dtype 的张量。记转换后的实际系数为 \(\rho\)，混合形式为：
 
 $$
-c_k=0.999\,c_{\mathrm{clean}}+0.001\,\epsilon_k.
+c_k=\rho\,c_{\mathrm{clean}}+(1-\rho)\,\epsilon_k.
 $$
 
-这是 latent 的线性混合系数，**不是“99.9% 像素保真率”**，也不是独立测得的质量指标。条件 anchor 在外层采样过程中复用，不像目标音视频 latent 那样被 scheduler 逐轮更新。
+忽略数值舍入时，名义上的两个系数是 0.999 与 0.001；实际扰动取决于 dtype。特别是 BF16 的常规舍入会把 0.999 舍入为 1.0，此时 \(1-\rho=0\)，不能声称默认 BF16 一定加入 0.1% 噪声。这个配置也**不是“99.9% 像素保真率”**，更不是独立测得的质量指标。条件 anchor 在外层采样过程中复用，不像目标音视频 latent 那样被 scheduler 逐轮更新。
 
 “条件固定”也不表示条件 token 在每个 Transformer block 中的隐藏特征不变。它们参与共同的注意力与 FFN，内部特征会被计算和更新；下一轮前向仍从固定的输入条件重新开始。
 
@@ -404,7 +404,7 @@ $$
 - [固定版本的音视频 Pipeline](https://github.com/modelscope/DiffSynth-Studio/blob/e5a44c42776978457b61d51d595a1f6746c3d87a/diffsynth/pipelines/minimax_h3_audio_video.py)：查看 NoiseInitializer、PromptEmbedder、KeyframeEncoder、PackedSequenceBuilder 与 model_fn_minimax_h3。
 - [同版本 DiT](https://github.com/modelscope/DiffSynth-Studio/blob/e5a44c42776978457b61d51d595a1f6746c3d87a/diffsynth/models/minimax_h3_dit.py)：查看默认维度、Token Refiner、Q/K 归一化、AdaLN、SwiGLU 与输出头。
 
-特别补清了四处容易被简化叙述掩盖的细节：上下文投影后的 Token Refiner；Q/K 在 RoPE 前的 RMSNorm；主干与调度器之间的时间和符号转换；固定条件输入与可变化的层内特征之间的区别。
+特别补清了容易被简化叙述掩盖的细节：上下文投影后的 Token Refiner；Q/K 在 RoPE 前的 RMSNorm；主干与调度器之间的时间和符号转换；固定条件输入与可变化的层内特征之间的区别；以及条件噪声系数受 dtype 舍入影响的边界。
 
 本文没有运行模型权重或进行生成质量对比，因此不报告吞吐、显存、对齐精度或保真率。结构上的信息通路与实际效果之间，仍需要实验验证。
 
