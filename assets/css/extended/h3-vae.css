@@ -1,0 +1,6 @@
+/* Keep the VAE configuration tables readable inside their existing scroll area. */
+.post-content #vae-encoder ~ table th,
+.post-content #vae-encoder ~ table td {
+  min-width: 130px;
+  overflow-wrap: normal;
+}

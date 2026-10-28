@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="905" viewBox="0 0 320 905" role="img" aria-labelledby="title desc">
+<title id="title">H3 视频编码器残差块</title><desc id="desc">主路依次经过逐时间 GroupNorm、SiLU、两次 A 卷积，右侧 shortcut 为恒等或 P 卷积，最后逐元素相加。</desc>
+<defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7Z" fill="#356960"/></marker></defs>
+<rect width="320" height="1010" rx="12" fill="#fff"/>
+<text x="160" y="30" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="bold" fill="#203a35">ResnetBlock3D</text>
+<rect x="16" y="48" width="264" height="74" rx="8" fill="#eef5f2" stroke="#7caaa0"/>
+<text x="148.0" y="73" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">输入 X</text>
+<text x="148.0" y="96" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[B,Cin,T,H,W]</text>
+<path d="M148 122 V138 H304 V685 H285" fill="none" stroke="#b48538" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M148 138 V140" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="145" width="264" height="74" rx="8" fill="#eef5f2" stroke="#7caaa0"/>
+<text x="148.0" y="170" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">逐时间 GroupNorm，32 组</text>
+<text x="148.0" y="193" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">SiLU 激活</text>
+<path d="M148 219 V243" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="248" width="264" height="120" rx="8" fill="#eef5f2" stroke="#7caaa0"/>
+<text x="148.0" y="273" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">卷积 A：Cin→Cout</text>
+<text x="148.0" y="296" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">kernel=(3,3,3)</text>
+<text x="148.0" y="319" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">stride=(1,1,1)</text>
+<text x="148.0" y="342" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[B,Cout,T,H,W]</text>
+<path d="M148 368 V392" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="397" width="264" height="74" rx="8" fill="#eef5f2" stroke="#7caaa0"/>
+<text x="148.0" y="422" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">逐时间 GroupNorm，32 组</text>
+<text x="148.0" y="445" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">SiLU 激活</text>
+<path d="M148 471 V495" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="500" width="264" height="120" rx="8" fill="#eef5f2" stroke="#7caaa0"/>
+<text x="148.0" y="525" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">卷积 A：Cout→Cout</text>
+<text x="148.0" y="548" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">kernel=(3,3,3)</text>
+<text x="148.0" y="571" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">stride=(1,1,1)</text>
+<text x="148.0" y="594" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[B,Cout,T,H,W]</text>
+<path d="M148 620 V644" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="649" width="264" height="74" rx="8" fill="#eef5f2" stroke="#7caaa0"/>
+<text x="148.0" y="674" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">逐元素相加</text>
+<text x="148.0" y="697" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[B,Cout,T,H,W]</text>
+<text x="160" y="753" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#203a35">右侧旁路（shortcut）：</text>
+<text x="160" y="775" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">Cin=Cout：恒等传递</text>
+<text x="160" y="797" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">Cin≠Cout：P 卷积 Cin→Cout</text>
+<text x="160" y="819" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">P：kernel=1，stride=1，无 padding</text>
+<text x="160" y="841" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">A：时间左补 2 零，右侧不补</text>
+<text x="160" y="863" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">空间四边各反射补 1 格</text>
+</svg>
