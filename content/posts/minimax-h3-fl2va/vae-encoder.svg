@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="1881" viewBox="0 0 320 1881" role="img" aria-labelledby="title desc">
+<title id="title">H3 视频 VAE Encoder 整体结构</title><desc id="desc">17 帧片段内部的逻辑尺寸。图到 48 通道 moments 为止，尚未执行整段视频裁尾及通道选择。</desc>
+<defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7Z" fill="#356960"/></marker></defs>
+<rect width="320" height="1881" rx="12" fill="#fff"/>
+<text x="160" y="30" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="bold" fill="#203a35">H3 视频 VAE Encoder</text>
+<text x="160" y="54" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">形状顺序：B,C,T,H,W</text>
+<rect x="16" y="74" width="288" height="74" rx="8" fill="#eef5f2" stroke="#7caaa0"/>
+<text x="160.0" y="99" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">输入片段</text>
+<text x="160.0" y="122" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[1,3,17,480,832]</text>
+<path d="M160 148 V167" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="172" width="288" height="74" rx="8" fill="#eef5f2" stroke="#7caaa0"/>
+<text x="160.0" y="197" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">输入卷积 A：3→128</text>
+<text x="160.0" y="220" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[1,128,17,480,832]</text>
+<path d="M160 246 V265" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="270" width="288" height="97" rx="8" fill="#eef5f2" stroke="#7caaa0"/>
+<text x="160.0" y="295" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">阶段 1：残差块 ×2</text>
+<text x="160.0" y="318" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">128→128，128→128</text>
+<text x="160.0" y="341" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[1,128,17,480,832]</text>
+<path d="M160 367 V386" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="391" width="288" height="97" rx="8" fill="#fff3df" stroke="#b48538"/>
+<text x="160.0" y="416" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">下采样 D1：128→128</text>
+<text x="160.0" y="439" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">stride=(1,2,2)</text>
+<text x="160.0" y="462" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[1,128,17,240,416]</text>
+<path d="M160 488 V507" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="512" width="288" height="97" rx="8" fill="#eef5f2" stroke="#7caaa0"/>
+<text x="160.0" y="537" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">阶段 2：残差块 ×2</text>
+<text x="160.0" y="560" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">128→256，256→256</text>
+<text x="160.0" y="583" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[1,256,17,240,416]</text>
+<path d="M160 609 V628" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="633" width="288" height="97" rx="8" fill="#fff3df" stroke="#b48538"/>
+<text x="160.0" y="658" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">下采样 D2：256→256</text>
+<text x="160.0" y="681" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">stride=(2,2,2)</text>
+<text x="160.0" y="704" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[1,256,9,120,208]</text>
+<path d="M160 730 V749" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="754" width="288" height="97" rx="8" fill="#eef5f2" stroke="#7caaa0"/>
+<text x="160.0" y="779" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">阶段 3：残差块 ×2</text>
+<text x="160.0" y="802" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">256→256，256→256</text>
+<text x="160.0" y="825" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[1,256,9,120,208]</text>
+<path d="M160 851 V870" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="875" width="288" height="97" rx="8" fill="#fff3df" stroke="#b48538"/>
+<text x="160.0" y="900" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">下采样 D3：256→256</text>
+<text x="160.0" y="923" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">stride=(2,2,2)</text>
+<text x="160.0" y="946" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[1,256,5,60,104]</text>
+<path d="M160 972 V991" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="996" width="288" height="97" rx="8" fill="#eef5f2" stroke="#7caaa0"/>
+<text x="160.0" y="1021" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">阶段 4：残差块 ×2</text>
+<text x="160.0" y="1044" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">256→512，512→512</text>
+<text x="160.0" y="1067" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[1,512,5,60,104]</text>
+<path d="M160 1093 V1112" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="1117" width="288" height="97" rx="8" fill="#fff3df" stroke="#b48538"/>
+<text x="160.0" y="1142" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">下采样 D4：512→512</text>
+<text x="160.0" y="1165" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">stride=(1,2,2)</text>
+<text x="160.0" y="1188" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[1,512,5,30,52]</text>
+<path d="M160 1214 V1233" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="1238" width="288" height="120" rx="8" fill="#eef5f2" stroke="#7caaa0"/>
+<text x="160.0" y="1263" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">阶段 5：残差块 ×2</text>
+<text x="160.0" y="1286" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">512→512，512→512</text>
+<text x="160.0" y="1309" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">无下采样</text>
+<text x="160.0" y="1332" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[1,512,5,30,52]</text>
+<path d="M160 1358 V1377" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="1382" width="288" height="120" rx="8" fill="#eef5f2" stroke="#7caaa0"/>
+<text x="160.0" y="1407" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">阶段 6：残差块 ×2</text>
+<text x="160.0" y="1430" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">512→1024，1024→1024</text>
+<text x="160.0" y="1453" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">无下采样</text>
+<text x="160.0" y="1476" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[1,1024,5,30,52]</text>
+<path d="M160 1502 V1521" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="1526" width="288" height="97" rx="8" fill="#eef5f2" stroke="#7caaa0"/>
+<text x="160.0" y="1551" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">逐时间 GroupNorm → SiLU</text>
+<text x="160.0" y="1574" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="normal" fill="#203a35">输出卷积 A：1024→48</text>
+<text x="160.0" y="1597" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[1,48,5,30,52]</text>
+<path d="M160 1623 V1642" stroke="#356960" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="16" y="1647" width="288" height="74" rx="8" fill="#eef5f2" stroke="#7caaa0"/>
+<text x="160.0" y="1672" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#203a35">quant_conv P：48→48</text>
+<text x="160.0" y="1695" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">[1,48,5,30,52]</text>
+<text x="160" y="1760" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">A：kernel=3，stride=1</text>
+<text x="160" y="1782" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">D：kernel=3，stride 见节点</text>
+<text x="160" y="1804" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">P：kernel=1，stride=1</text>
+<text x="160" y="1826" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">完整时空 padding 见正文参数表</text>
+<text x="160" y="1848" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="normal" fill="#203a35">此图不包含整段视频的全局裁尾</text>
+</svg>
